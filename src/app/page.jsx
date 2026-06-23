@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const BRAND = {
   name: 'Chokola',
@@ -72,8 +72,8 @@ const SECTION_IDS = ['home', 'about', 'menu', 'branch', 'contact'];
 
 const FOOTER_LINKS = [
   { label: 'Home', href: '#home' },
-  { label: 'Menu', href: '#menu' },
   { label: 'About Us', href: '#about' },
+  { label: 'Menu', href: '#menu' },
   { label: 'Branch', href: '#branch' },
   { label: 'Contact', href: '#contact' },
 ];
@@ -109,7 +109,6 @@ const FORM_INITIAL_STATE = {
   name: '',
   phone: '',
   email: '',
-  subject: '',
   message: '',
 };
 
@@ -129,7 +128,6 @@ function getContactFieldErrors(formState) {
   const name = formState.name.trim();
   const phone = formState.phone.replace(/\D/g, '');
   const email = formState.email.trim();
-  const subject = formState.subject.trim();
   const message = formState.message.trim();
 
   if (!name) errors.name = 'Please enter your name.';
@@ -141,7 +139,6 @@ function getContactFieldErrors(formState) {
   if (!phone || phone.length !== PHONE_DIGIT_LENGTH) {
     errors.phone = 'Please enter a valid US phone number.';
   }
-  if (!subject) errors.subject = 'Please enter a subject.';
   if (!message) {
     errors.message = 'Please write your message.';
   } else if (formState.message.length > MESSAGE_MAX_LENGTH) {
@@ -200,6 +197,12 @@ function Icon({ name, size = 20, className = '' }) {
         <path d="M12 7v5l3 2" />
       </>
     ),
+    clock3: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 2" />
+      </>
+    ),
     phone: <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8 9.6a16 16 0 0 0 6.4 6.4l1.2-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z" />,
     mail: (
       <>
@@ -214,6 +217,15 @@ function Icon({ name, size = 20, className = '' }) {
         <path d="M17.5 6.5h.01" />
       </>
     ),
+    facebook: <path d="M14 8h3V4h-3c-3 0-5 2-5 5v3H6v4h3v6h4v-6h3l1-4h-4V9c0-.7.3-1 1-1z" />,
+    music2: (
+      <>
+        <circle cx="8" cy="18" r="3" />
+        <circle cx="18" cy="16" r="3" />
+        <path d="M11 18V5l10-2v13" />
+      </>
+    ),
+    check: <path d="M20 6L9 17l-5-5" />,
     messageCircle: <path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5z" />,
     menu: (
       <>
@@ -367,7 +379,7 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
             className="max-w-[720px] font-serif leading-[0.96] text-[#3B2424]"
           >
             <span className="block text-[2.75rem] font-bold sm:text-[3.35rem] md:text-[3.95rem] lg:text-[4.15rem] xl:text-[4.65rem] lg:whitespace-nowrap">
-              <span className="text-[#C9A86A]">Desserts</span>
+              Premium <span className="text-[#C9A86A]">Desserts</span>
             </span>
             <span className="mt-1 block text-[2.35rem] font-medium text-[#4A2E2B]/92 sm:text-[2.9rem] md:text-[3.35rem] lg:text-[3.45rem] xl:text-[3.95rem] lg:whitespace-nowrap">Crafted With Love</span>
           </h1>
@@ -403,10 +415,6 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
             <div>
               <p className="font-serif text-2xl font-semibold leading-none text-[#C9A86A]">Daily</p>
               <p className="mt-1.5 text-xs font-medium leading-none text-[#4A2E2B]/78">Fresh Made</p>
-            </div>
-            <div>
-              <p className="font-serif text-2xl font-semibold leading-none text-[#C9A86A]">Premium</p>
-              <p className="mt-1.5 text-xs font-medium leading-none text-[#4A2E2B]/78">Ingredients</p>
             </div>
           </div>
         </div>
@@ -449,99 +457,124 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
   );
 }
 
+function MenuCard({ item }) {
+  return (
+    <article className="flex h-full flex-col overflow-hidden rounded-[30px] border border-[#EAD9C8]/80 bg-[#FFF5F0]">
+      <div className="relative aspect-[5/6] w-full overflow-hidden">
+        <Image
+          src={item.image}
+          alt={item.alt}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
+          className="object-cover saturate-[0.88] contrast-[0.97] sepia-[0.06]"
+        />
+      </div>
+
+      <div className="flex min-h-[155px] flex-1 flex-col border-t border-[#EAD9C8]/70 px-6 py-4">
+        <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#C9A86A]">{item.label}</p>
+        <h3 className="mt-1.5 font-serif text-2xl font-semibold leading-tight text-[#4A2E2B]">{item.title}</h3>
+        <p className="mt-2 text-sm leading-6 text-[#4A2E2B]/66">{item.description}</p>
+        <p className="mt-auto pt-3 text-xs leading-5 text-[#4A2E2B]/52">Crafted fresh daily</p>
+      </div>
+    </article>
+  );
+}
+
 function MenuSection() {
-  const ingredients = [
+  const [showAllDesserts, setShowAllDesserts] = useState(false);
+  const menuCards = [
     {
       title: 'Waffles',
-      image: '/about-waffle-chocolate-wide.png',
-      alt: 'Golden waffles with chocolate sauce',
+      description: 'Warm golden waffles layered with rich chocolate and premium toppings.',
+      label: 'Signature',
+      image: '/about-waffles-plate.jpg',
+      alt: 'Golden waffles served with ice cream and chocolate',
     },
     {
       title: 'Crepes',
-      image: '/about-waffle-dessert.png',
-      alt: 'Premium dessert with berries and cream',
-      isAccent: true,
-    },
-    {
-      title: 'Pancakes',
-      image: '/about-waffle-ice-cream.png',
-      alt: 'Stacked dessert with waffles and ice cream',
+      description: 'Thin handcrafted crepes made fresh daily with delicious fillings.',
+      label: 'Handcrafted',
+      image: '/about-dessert-prep.jpg',
+      alt: 'Chef finishing a handcrafted dessert',
     },
     {
       title: 'Chocolate',
-      image: '/chocolate-sensations.png',
-      alt: 'Rich chocolate dessert with dripping chocolate sauce',
-      isAccent: true,
+      description: 'Rich chocolate creations crafted for sharing and unforgettable moments.',
+      label: 'Premium',
+      image: '/hero-chocolate-brownie-stack.jpg',
+      alt: 'Rich layered chocolate dessert',
     },
     {
-      title: 'Fresh Fruits',
-      image: '/new-hero-dessert.png',
-      alt: 'Fresh strawberry dessert composition',
-      isAccent: true,
+      title: 'Pancakes',
+      description: 'Soft pancakes finished with smooth sauces and carefully chosen toppings.',
+      label: 'Fresh Daily',
+      image: '/about-waffle-dessert-wide.jpg',
+      alt: 'Fresh dessert stack with cream and fruit',
     },
     {
       title: 'Ice Cream',
-      image: '/hero-choco-ice-cream.png',
-      alt: 'Chocolate ice cream dessert cup',
-    },
-    {
-      title: 'Mini Pancakes',
-      image: '/about-waffle-dessert.png',
-      alt: 'Small sweet dessert with berries',
-      isAccent: true,
+      description: 'Creamy ice cream with elegant toppings and refreshing flavors.',
+      label: 'Chilled',
+      image: '/about-ice-cream-cup.jpg',
+      alt: 'Chocolate and vanilla ice cream in a dessert cup',
     },
     {
       title: 'Sweet Cups',
-      image: '/hero-ice-cream-cup.png',
-      alt: 'Creamy dessert cup with topping',
+      description: 'Small sweet moments crafted with premium ingredients and beautiful presentation.',
+      label: 'Best Seller',
+      image: '/about-pink-milkshake.jpg',
+      alt: 'Pink dessert drink presented in a glass',
     },
   ];
+
   return (
-    <section id="menu" className="bg-white px-6 py-20 lg:px-10 lg:py-24" aria-labelledby="menu-title">
-      <div className="mx-auto max-w-6xl">
+    <section id="menu" className="bg-white px-6 py-12 lg:px-10" aria-labelledby="menu-title">
+      <div className="mx-auto max-w-7xl">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.28em] text-[#A85F78]">Our Menu</p>
-          <h2 id="menu-title" className="mt-4 font-serif text-4xl font-semibold leading-tight text-[#3B2424] md:text-5xl">
-            Crafted From Sweet Premium Ingredients
+          <p className="text-base font-bold uppercase tracking-[0.3em] text-[#B07A8D]">Menu</p>
+          <h2 id="menu-title" className="mt-2 font-serif text-4xl font-semibold leading-[1.08] text-[#3B2424] sm:text-5xl lg:text-[3.5rem]">
+            Signature Desserts
           </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-[#3B2424]/72">
-            We bring together waffles, crepes, pancakes, chocolate, fruits, and ice cream to create memorable dessert moments.
+          <p className="mx-auto mt-2 max-w-3xl text-sm leading-7 text-[#4A2E2B]/64 sm:text-base sm:leading-8">
+            Warm waffles, rich chocolate creations, handcrafted cakes, premium brownies, ice cream, and sweet cups made fresh daily using carefully selected ingredients and crafted for sharing every sweet moment.
           </p>
         </div>
 
-        <div className="mx-auto mt-24 grid max-w-6xl grid-cols-2 gap-x-5 gap-y-24 sm:gap-x-7 md:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
-          {ingredients.map((item) => (
-            <article
-              key={item.title}
-              className={`group relative flex min-h-[150px] items-end justify-center rounded-[24px] border border-[#A85F78]/10 ${item.isAccent ? 'bg-[#F6C9D2]' : 'bg-[#A85F78]'} px-4 pb-6 pt-20 shadow-[0_16px_44px_rgba(59,36,36,0.08)] transition-all duration-300 ease-out hover:-translate-y-2 hover:border-[#C9A86A]/35 hover:shadow-[0_24px_58px_rgba(59,36,36,0.14)] sm:min-h-[165px] sm:pt-24`}
-            >
-              <div className="absolute -top-[42%] left-1/2 h-[132px] w-[88%] -translate-x-1/2 drop-shadow-[0_22px_18px_rgba(59,36,36,0.16)] transition-transform duration-300 ease-out group-hover:scale-105 sm:h-[160px] sm:w-[90%]">
-                <Image
-                  src={item.image}
-                  alt={item.alt}
-                  fill
-                  sizes="(max-width: 640px) 44vw, (max-width: 1024px) 40vw, 260px"
-                  className="object-contain"
-                />
-              </div>
-              <h3 className={`text-center font-serif text-lg font-semibold leading-tight ${item.isAccent ? 'text-[#3B2424]' : 'text-[#FFF8F4]'}`}>{item.title}</h3>
-            </article>
+        <div className="mx-auto mt-8 grid max-w-[920px] grid-cols-1 gap-7 sm:mt-10 sm:grid-cols-2 lg:max-w-[860px] lg:grid-cols-3 lg:gap-6">
+          {menuCards.slice(0, 3).map((item) => (
+            <MenuCard key={item.title} item={item} />
           ))}
         </div>
 
-        <div className="mx-auto mt-12 max-w-xl text-center">
-          <p className="font-serif text-2xl font-semibold leading-tight text-[#3B2424]">Want to see the full menu?</p>
-          <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-[#3B2424]/70">
-            Explore our complete menu with all desserts, flavors, and sweet creations.
-          </p>
-          <a
-            href="https://drive.google.com/your-menu-pdf-link"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-6 inline-flex min-h-14 items-center justify-center rounded-full bg-[#F6C9D2] px-8 text-sm font-semibold leading-none text-[#3B2424] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#A85F78] hover:text-white focus-visible:bg-[#A85F78] focus-visible:text-white"
+        <AnimatePresence initial={false}>
+          {showAllDesserts && (
+            <motion.div
+              id="more-desserts"
+              key="more-desserts"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+              className="mx-auto mt-7 grid max-w-[920px] grid-cols-1 gap-7 overflow-hidden sm:grid-cols-2 lg:max-w-[860px] lg:grid-cols-3 lg:gap-6"
+            >
+              {menuCards.slice(3).map((item) => (
+                <MenuCard key={item.title} item={item} />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="mt-6 px-2 text-center">
+          <button
+            type="button"
+            aria-expanded={showAllDesserts}
+            aria-controls="more-desserts"
+            onClick={() => setShowAllDesserts((current) => !current)}
+            className="mx-auto flex w-full min-w-0 max-w-[320px] items-center justify-center gap-2 rounded-full bg-[#E7B5BB] px-6 py-3.5 text-sm font-bold leading-none text-[#4A2E2B] transition-colors duration-300 hover:bg-[#B07A8D] hover:text-[#FFF5F0] focus-visible:bg-[#B07A8D] focus-visible:text-[#FFF5F0] sm:w-fit sm:min-w-[220px] sm:max-w-none sm:px-8 lg:px-[34px] lg:py-4"
           >
-            Explore Menu
-          </a>
+            <span>{showAllDesserts ? 'Show Less' : 'View More Desserts'}</span>
+            <span aria-hidden="true">{showAllDesserts ? '\u2191' : '\u2193'}</span>
+          </button>
         </div>
       </div>
     </section>
@@ -633,7 +666,7 @@ function AboutSection() {
         </div>
 
         <div className="relative flex min-h-[520px] items-start pt-2 sm:min-h-[594px] lg:min-h-[659px] lg:pt-3">
-          <div className="max-w-[370px]">
+          <div className="max-w-[540px]">
             <h2 id="about-title" className="font-sans text-3xl font-bold leading-tight text-[#2E1D1B] sm:text-[2.15rem]">
               About Us
             </h2>
@@ -656,11 +689,10 @@ function AboutSection() {
 }
 function getBranchStatus() {
   const now = new Date();
-  const day = now.getDay();
   const hour = now.getHours();
   const minute = now.getMinutes();
   const currentMinutes = hour * 60 + minute;
-  const opensAt = day === 5 ? 14 * 60 : 10 * 60;
+  const opensAt = 10 * 60;
   const closesAt = 24 * 60;
 
   return currentMinutes >= opensAt && currentMinutes < closesAt ? 'Open Now' : 'Closed Now';
@@ -672,9 +704,8 @@ function BranchSection() {
     name: 'Chokola Dessert Lounge',
     address: '24 Sweet Avenue, Dessert District, Cairo, Egypt',
     phone: '+1 234 567 890',
-    phoneHref: 'tel:+1234567890',
     mapsUrl: 'https://www.google.com/maps/search/?api=1&query=24%20Sweet%20Avenue%20Dessert%20District%20Cairo%20Egypt',
-    amenities: ['Parking available', 'Indoor seating available', 'Family friendly', 'Free Wi-Fi'],
+    amenities: ['Parking', 'Free WiFi', 'Family Friendly', 'Cozy Seating'],
   };
   const isOpen = branchStatus === 'Open Now';
 
@@ -690,93 +721,65 @@ function BranchSection() {
   }, []);
 
   return (
-    <section id="branch" className="bg-[#FFF1F4] px-6 py-24 lg:px-10" aria-labelledby="branch-title">
-      <div className="mx-auto max-w-6xl">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.28em] text-[#B07A8D]">Branch Location</p>
-          <h2 id="branch-title" className="mt-4 font-serif text-4xl font-semibold leading-tight text-[#4A2E2B] md:text-5xl">
-            Our Branch
-          </h2>
-        </div>
-
-        <div className="mt-12 grid items-stretch gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="relative min-h-[380px] overflow-hidden rounded-[28px] border border-[#E7B5BB]/45 bg-[#FFF5F0] lg:min-h-[600px]">
+    <section id="branch" className="bg-[linear-gradient(180deg,#FFF5F7_0%,#FFF8F3_100%)] px-6 py-24 lg:px-10 lg:py-28" aria-labelledby="branch-title">
+      <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
+        <div className="relative min-h-[420px] overflow-hidden rounded-[30px] sm:min-h-[560px] lg:min-h-[680px]">
             <Image
               src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1400&q=85"
-              alt="Warm premium dessert lounge branch interior"
+              alt="Warm Chokola dessert lounge storefront and entrance"
               fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
+              sizes="(max-width: 1024px) 100vw, 54vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgba(74,46,43,0.22)_100%)]" aria-hidden="true" />
+        </div>
+
+        <div className="max-w-[500px] lg:py-8">
+          <p className="text-sm font-bold uppercase tracking-[0.28em] text-[#B07A8D]">Our Branch</p>
+          <h2 id="branch-title" className="mt-4 font-serif text-4xl font-semibold leading-tight text-[#4A2E2B] sm:text-5xl">
+            {branch.name}
+          </h2>
+          <p className="mt-6 max-w-md text-base leading-8 text-[#4A2E2B]/68">
+            A cozy destination crafted for sweet moments and unforgettable dessert experiences.
+          </p>
+
+          <span className={`mt-7 inline-flex min-h-10 items-center gap-2.5 rounded-full px-4 text-sm font-bold ${isOpen ? 'bg-[#EAF4E8] text-[#4F7D49]' : 'bg-[#F5E7E8] text-[#9A5F68]'}`}>
+            <span className={`h-2.5 w-2.5 rounded-full ${isOpen ? 'bg-[#5F9258]' : 'bg-[#B07A8D]'}`} aria-hidden="true" />
+            {branchStatus}
+          </span>
+
+          <div className="mt-9 space-y-5 text-sm leading-6 text-[#4A2E2B]/82">
+            <p className="flex items-start gap-3">
+              <Icon name="mapPin" className="mt-0.5 shrink-0 text-[#B07A8D]" size={18} />
+              <span>{branch.address}</span>
+            </p>
+            <p className="flex items-start gap-3">
+              <Icon name="clock3" className="mt-0.5 shrink-0 text-[#C9A86A]" size={18} />
+              <span>Daily · 10 AM - 12 AM</span>
+            </p>
+            <p className="flex items-start gap-3">
+              <Icon name="phone" className="mt-0.5 shrink-0 text-[#B07A8D]" size={18} />
+              <span>{branch.phone}</span>
+            </p>
           </div>
 
-          <div className="flex flex-col justify-center rounded-[28px] border border-[#E7B5BB]/45 bg-white/88 p-7 shadow-[0_18px_54px_rgba(74,46,43,0.08)] backdrop-blur-xl sm:p-9 lg:p-12">
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <h3 className="font-serif text-3xl font-semibold leading-tight text-[#4A2E2B] md:text-4xl">{branch.name}</h3>
-              <span className="inline-flex min-h-9 items-center gap-2 rounded-full border border-[#E7B5BB]/60 bg-[#FFF5F0] px-4 text-xs font-bold uppercase tracking-[0.16em] text-[#4A2E2B]">
-                <span className={`h-2 w-2 rounded-full ${isOpen ? 'bg-[#6F9C68]' : 'bg-[#B07A8D]'}`} aria-hidden="true" />
-                {branchStatus}
+          <div className="mt-8 flex flex-wrap gap-2.5">
+            {branch.amenities.map((item) => (
+              <span key={item} className="rounded-full border border-[#EAD9C8]/70 bg-[#FFF8F3] px-4 py-2.5 text-xs font-semibold text-[#4A2E2B]/72">
+                {item}
               </span>
-            </div>
-
-            <div className="mt-10 grid gap-7 text-[#725758]">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#B07A8D]">Address</p>
-                <p className="mt-2 flex gap-3 text-base leading-7 text-[#4A2E2B]">
-                  <Icon name="mapPin" className="mt-1 shrink-0 text-[#B07A8D]" size={19} />
-                  {branch.address}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#B07A8D]">Opening Hours</p>
-                <div className="mt-2 space-y-2 text-base leading-7 text-[#4A2E2B]">
-                  <p className="flex gap-3">
-                    <Icon name="clock" className="mt-1 shrink-0 text-[#B07A8D]" size={19} />
-                    <span>Saturday - Thursday: 10:00 AM - 12:00 AM</span>
-                  </p>
-                  <p className="pl-8">Friday: 2:00 PM - 12:00 AM</p>
-                </div>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#B07A8D]">Phone</p>
-                <p className="mt-2 flex gap-3 text-base leading-7 text-[#4A2E2B]">
-                  <Icon name="phone" className="mt-1 shrink-0 text-[#B07A8D]" size={19} />
-                  {branch.phone}
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-8 grid grid-cols-1 gap-3 text-sm font-semibold text-[#4A2E2B] sm:grid-cols-2">
-              {branch.amenities.map((item) => (
-                <div key={item} className="flex items-center gap-2 rounded-full bg-[#FFF5F0] px-4 py-3">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#C9A86A]" aria-hidden="true" />
-                  {item}
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href={branch.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open Chokola Dessert Lounge directions in Google Maps"
-                className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#E7B5BB] px-6 text-sm font-semibold leading-none text-[#4A2E2B] transition-colors duration-300 hover:bg-[#B07A8D] hover:text-[#FFF5F0] focus-visible:bg-[#B07A8D] focus-visible:text-[#FFF5F0]"
-              >
-                Get Directions
-                <Icon name="arrowRight" className="ml-2" size={17} />
-              </a>
-              <a
-                href={branch.phoneHref}
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#E7B5BB]/80 bg-transparent px-6 text-sm font-semibold leading-none text-[#4A2E2B] transition-[transform,border-color] duration-300 ease-out hover:scale-[1.03] hover:border-[#B07A8D]/80"
-              >
-                Call Branch
-              </a>
-            </div>
+            ))}
           </div>
+
+          <a
+            href={branch.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Chokola Dessert Lounge directions in Google Maps"
+            className="mt-9 inline-flex min-h-14 items-center justify-center rounded-full bg-[#E7B5BB] px-8 text-sm font-bold leading-none text-[#4A2E2B] transition-colors duration-300 hover:bg-[#B07A8D] hover:text-[#FFF5F0] focus-visible:bg-[#B07A8D] focus-visible:text-[#FFF5F0]"
+          >
+            Get Directions
+            <Icon name="arrowRight" className="ml-2" size={17} />
+          </a>
         </div>
       </div>
     </section>
@@ -855,24 +858,63 @@ function ContactSection() {
   const statusClass = status.type === 'success' ? 'text-green-700 bg-green-50 border-green-200' : status.type === 'error' ? 'text-red-700 bg-red-50 border-red-200' : 'text-[#725758] bg-[#FFF1F4] border-[#A85F78]/15';
 
   return (
-    <section id="contact" className="bg-white px-6 py-24" aria-labelledby="contact-title">
-      <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-        <div>
+    <section id="contact" className="bg-white px-6 py-24 lg:px-10" aria-labelledby="contact-title">
+      <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+        <div className="max-w-[590px]">
           <p className="mb-3 text-sm font-bold uppercase tracking-[0.28em] text-[#A85F78]">Contact Us</p>
-          <h2 id="contact-title" className="font-serif text-3xl font-semibold leading-tight text-[#3B2424] md:text-4xl">
-            Have a question? We would love to hear from you.
+          <h2 id="contact-title" className="font-serif text-4xl font-semibold leading-tight text-[#3B2424] md:text-5xl">
+            Have a Question?
+            <span className="block">We Would Love to Hear From You.</span>
           </h2>
-          <p className="mt-5 leading-8 text-[#725758]">
-            Reach us for branch information, menu details, collaborations, or general inquiries.
+          <p className="mt-5 max-w-lg leading-8 text-[#725758]">
+            Reach us for branch information, menu details, collaborations, event bookings, or general inquiries.
           </p>
-          <address className="mt-8 space-y-4 not-italic text-[#4A2E2B]">
-            <p className="flex items-center gap-3"><Icon name="phone" className="text-[#B07A8D]" /> +1 234 567 890</p>
-            <p className="flex items-center gap-3"><Icon name="mail" className="text-[#B07A8D]" /> hello@chokola.com</p>
+
+          <address className="mt-8 grid gap-3 not-italic sm:grid-cols-3 lg:grid-cols-1">
+            <a href="tel:+1234567890" className="flex items-center gap-4 rounded-[24px] border border-[#F0DFE1] bg-[#FFF8F3] p-5 text-[#4A2E2B]">
+              <Icon name="phone" className="shrink-0 text-[#B07A8D]" size={20} />
+              <span>
+                <span className="block text-sm font-semibold">Call Us</span>
+                <span className="mt-1 block text-sm text-[#4A2E2B]/66">+1 234 567 890</span>
+              </span>
+            </a>
+            <a href="mailto:hello@chokola.com" className="flex items-center gap-4 rounded-[24px] border border-[#F0DFE1] bg-[#FFF8F3] p-5 text-[#4A2E2B]">
+              <Icon name="mail" className="shrink-0 text-[#B07A8D]" size={20} />
+              <span>
+                <span className="block text-sm font-semibold">Email Us</span>
+                <span className="mt-1 block text-sm text-[#4A2E2B]/66">hello@chokola.com</span>
+              </span>
+            </a>
+            <div className="flex items-center gap-4 rounded-[24px] border border-[#F0DFE1] bg-[#FFF8F3] p-5 text-[#4A2E2B]">
+              <Icon name="mapPin" className="shrink-0 text-[#B07A8D]" size={20} />
+              <span>
+                <span className="block text-sm font-semibold">Location</span>
+                <span className="mt-1 block text-sm text-[#4A2E2B]/66">Cairo, Egypt</span>
+              </span>
+            </div>
           </address>
+
+          <div className="mt-8">
+            <h3 className="text-sm font-semibold text-[#4A2E2B]">Follow Us</h3>
+            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3 text-sm text-[#725758]">
+              <a href="https://instagram.com/chokola" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-[#B07A8D]">
+                <Icon name="instagram" size={17} /> Instagram
+              </a>
+              <a href="https://facebook.com/chokola" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-[#B07A8D]">
+                <Icon name="facebook" size={17} /> Facebook
+              </a>
+              <a href="https://tiktok.com/@chokola" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-[#B07A8D]">
+                <Icon name="music2" size={17} /> TikTok
+              </a>
+              <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-[#B07A8D]">
+                <Icon name="messageCircle" size={17} /> WhatsApp
+              </a>
+            </div>
+          </div>
         </div>
 
-        <form onSubmit={handleContactSubmit} noValidate className="rounded-[24px] border border-[#A85F78]/15 bg-white/82 p-6 shadow-[0_22px_70px_rgba(59,36,36,0.10)] backdrop-blur-xl md:p-9">
-          <div className="grid gap-6 md:grid-cols-2">
+        <form onSubmit={handleContactSubmit} noValidate className="w-full max-w-[500px] justify-self-end rounded-[32px] border border-[#F0DFE1] bg-[#FFFDFC] p-6 md:p-8">
+          <div className="space-y-7">
             <div>
               <label htmlFor="name" className="mb-2 block text-sm font-semibold text-[#3B2424]">Name <span className="text-red-600">*</span></label>
               <input
@@ -883,7 +925,7 @@ function ContactSection() {
                 autoComplete="name"
                 aria-invalid={Boolean(fieldErrors.name)}
                 aria-describedby={fieldErrors.name ? 'name-error' : undefined}
-                className="w-full rounded-[22px] border border-[#E7B5BB]/55 bg-white px-5 py-4 text-left outline-none transition-all duration-300 placeholder:text-[#725758]/60 focus:border-[#B07A8D] focus:ring-4 focus:ring-[#E7B5BB]/30"
+                className="h-16 w-full rounded-[18px] border border-[#F0DFE1] bg-white px-5 text-left outline-none transition-all duration-300 placeholder:text-[#725758]/60 focus:border-[#B07A8D] focus:ring-2 focus:ring-[#E7B5BB]/24"
                 placeholder="Your Name"
               />
               {fieldErrors.name && <p id="name-error" className="mt-2 text-sm text-red-700">{fieldErrors.name}</p>}
@@ -899,15 +941,15 @@ function ContactSection() {
                 autoComplete="email"
                 aria-invalid={Boolean(fieldErrors.email)}
                 aria-describedby={fieldErrors.email ? 'email-error' : undefined}
-                className="w-full rounded-[22px] border border-[#E7B5BB]/55 bg-white px-5 py-4 text-left outline-none transition-all duration-300 placeholder:text-[#725758]/60 focus:border-[#B07A8D] focus:ring-4 focus:ring-[#E7B5BB]/30"
+                className="h-16 w-full rounded-[18px] border border-[#F0DFE1] bg-white px-5 text-left outline-none transition-all duration-300 placeholder:text-[#725758]/60 focus:border-[#B07A8D] focus:ring-2 focus:ring-[#E7B5BB]/24"
                 placeholder="example@email.com"
               />
               {fieldErrors.email && <p id="email-error" className="mt-2 text-sm text-red-700">{fieldErrors.email}</p>}
             </div>
             <div>
               <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-[#3B2424]">Contact Number <span className="text-red-600">*</span></label>
-              <div className="flex min-h-[58px] overflow-hidden rounded-[22px] border border-[#E7B5BB]/55 bg-white transition-all duration-300 focus-within:border-[#B07A8D] focus-within:ring-4 focus-within:ring-[#E7B5BB]/30">
-                <span className="flex shrink-0 items-center border-r border-[#E7B5BB]/45 bg-[#FFF5F0] px-5 text-sm font-bold text-[#4A2E2B]" aria-hidden="true">
+              <div className="flex h-16 overflow-hidden rounded-[18px] border border-[#F0DFE1] bg-white transition-all duration-300 focus-within:border-[#B07A8D] focus-within:ring-2 focus-within:ring-[#E7B5BB]/24">
+                <span className="flex shrink-0 items-center border-r border-[#F0DFE1] bg-[#FFF8F3] px-5 text-sm font-bold text-[#4A2E2B]" aria-hidden="true">
                   +1
                 </span>
                 <input
@@ -927,22 +969,8 @@ function ContactSection() {
               </div>
               {fieldErrors.phone && <p id="phone-error" className="mt-2 text-sm text-red-700">{fieldErrors.phone}</p>}
             </div>
-            <div>
-              <label htmlFor="subject" className="mb-2 block text-sm font-semibold text-[#3B2424]">Subject <span className="text-red-600">*</span></label>
-              <input
-                id="subject"
-                name="subject"
-                value={formState.subject}
-                onChange={handleChange}
-                aria-invalid={Boolean(fieldErrors.subject)}
-                aria-describedby={fieldErrors.subject ? 'subject-error' : undefined}
-                className="w-full rounded-[22px] border border-[#E7B5BB]/55 bg-white px-5 py-4 text-left outline-none transition-all duration-300 placeholder:text-[#725758]/60 focus:border-[#B07A8D] focus:ring-4 focus:ring-[#E7B5BB]/30"
-                placeholder="Subject"
-              />
-              {fieldErrors.subject && <p id="subject-error" className="mt-2 text-sm text-red-700">{fieldErrors.subject}</p>}
-            </div>
           </div>
-          <div className="mt-6">
+          <div className="mt-7">
             <label htmlFor="message" className="mb-2 block text-sm font-semibold text-[#3B2424]">Your Message <span className="text-red-600">*</span></label>
             <div className="relative">
               <textarea
@@ -952,13 +980,10 @@ function ContactSection() {
                 onChange={handleChange}
                 maxLength={MESSAGE_MAX_LENGTH}
                 aria-invalid={Boolean(fieldErrors.message)}
-                aria-describedby={fieldErrors.message ? 'message-error message-counter' : 'message-counter'}
-                className="min-h-52 w-full rounded-[22px] border border-[#E7B5BB]/55 bg-white px-5 py-4 pb-11 text-left outline-none transition-all duration-300 placeholder:text-[#725758]/60 focus:border-[#B07A8D] focus:ring-4 focus:ring-[#E7B5BB]/30"
+                aria-describedby={fieldErrors.message ? 'message-error' : undefined}
+                className="min-h-[240px] w-full resize-y rounded-[18px] border border-[#F0DFE1] bg-white px-5 py-4 text-left outline-none transition-all duration-300 placeholder:text-[#725758]/60 focus:border-[#B07A8D] focus:ring-2 focus:ring-[#E7B5BB]/24"
                 placeholder="Your Message"
               />
-              <span id="message-counter" className="pointer-events-none absolute bottom-4 right-5 text-xs font-medium text-[#725758]/65">
-                {formState.message.length} / {MESSAGE_MAX_LENGTH}
-              </span>
             </div>
             {fieldErrors.message && <p id="message-error" className="mt-2 text-sm text-red-700">{fieldErrors.message}</p>}
           </div>
@@ -972,7 +997,7 @@ function ContactSection() {
           <button
             type="submit"
             disabled={isSubmitting || !isFormValid}
-            className="mt-6 w-full rounded-full bg-[#E7B5BB] px-7 py-4 font-semibold text-[#4A2E2B] transition-colors duration-300 hover:bg-[#B07A8D] hover:text-[#FFF5F0] disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-[#E7B5BB] disabled:hover:text-[#4A2E2B]"
+            className="mx-auto mt-8 flex min-h-14 w-full max-w-[220px] items-center justify-center rounded-full bg-[#E7B5BB] px-8 text-sm font-bold text-[#4A2E2B] transition-colors duration-300 hover:bg-[#B07A8D] hover:text-[#FFF5F0] disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-[#E7B5BB] disabled:hover:text-[#4A2E2B]"
           >
             {isSubmitting ? 'Sending...' : 'Send Message'}
           </button>
@@ -984,46 +1009,90 @@ function ContactSection() {
 
 function Footer() {
   return (
-    <footer className="section-dark px-6 py-12 text-white">
-      <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr]">
+    <footer className="rounded-t-[32px] bg-[linear-gradient(135deg,#FFF5F0_0%,#F3E7EA_50%,#DCCDD1_100%)] px-6 py-14 text-[#6B5654] lg:px-10 lg:py-16">
+      <div className="mx-auto grid max-w-7xl items-start gap-10 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.75fr_1fr_0.8fr] lg:gap-12">
         <div>
-          <div className="relative h-20 w-[clamp(120px,9vw,150px)]">
+          <div className="relative h-20 w-[210px]">
             <Image
-              src="/chokola-logo.png"
+              src="/chokola-logo-cropped.png"
               alt="Chokola Dessert Lounge logo"
               fill
-              sizes="(max-width: 640px) 120px, (max-width: 1024px) 9vw, 150px"
+              sizes="210px"
               className="object-contain object-left"
             />
           </div>
-          <p className="mt-4 max-w-sm leading-7 text-white/65">
-            Premium desserts, soft elegance, and sweet lounge moments.
+          <p className="mt-3 max-w-xs text-sm leading-6 text-[#6B5654]">
+            Premium desserts crafted daily for sweet moments and unforgettable experiences.
           </p>
+
+          <div className="mt-5 flex gap-2.5">
+            {[
+              { label: 'Instagram', href: 'https://instagram.com/chokola', icon: 'instagram' },
+              { label: 'Facebook', href: 'https://facebook.com/chokola', icon: 'facebook' },
+              { label: 'TikTok', href: 'https://tiktok.com/@chokola', icon: 'music2' },
+              { label: 'WhatsApp', href: 'https://wa.me/1234567890', icon: 'messageCircle' },
+            ].map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.label}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#B07A8D]/28 text-[#B07A8D] transition-colors duration-300 hover:border-[#B07A8D] hover:bg-[#B07A8D] hover:text-white focus-visible:bg-[#B07A8D] focus-visible:text-white"
+              >
+                <Icon name={social.icon} size={17} />
+              </a>
+            ))}
+          </div>
         </div>
 
         <div>
-          <h2 className="font-semibold text-[#F6C9D2]">Quick Links</h2>
-          <div className="mt-4 space-y-2 text-white/65">
+          <h2 className="text-sm font-semibold text-[#4A2E2B]">Navigation</h2>
+          <div className="mt-5 space-y-3 text-sm text-[#6B5654]">
             {FOOTER_LINKS.map((link) => (
               <p key={link.href}>
-                <a href={link.href} className="transition-colors duration-300 hover:text-[#E7B5BB] focus-visible:text-[#E7B5BB]">{link.label}</a>
+                <a href={link.href} className="transition-colors duration-300 hover:text-[#C9A86A] focus-visible:text-[#C9A86A]">{link.label}</a>
               </p>
             ))}
           </div>
         </div>
 
         <div>
-          <h2 className="font-semibold text-[#F6C9D2]">Contact</h2>
-          <address className="mt-4 space-y-2 text-white/65 not-italic">
-            <p>+1 234 567 890</p>
-            <p>hello@chokola.com</p>
-            <p>@chokola</p>
+          <h2 className="text-sm font-semibold text-[#4A2E2B]">Contact</h2>
+          <address className="mt-5 space-y-4 text-sm text-[#6B5654] not-italic">
+            <a href="tel:+1234567890" className="flex items-center gap-3 transition-colors duration-300 hover:text-[#C9A86A]">
+              <Icon name="phone" className="shrink-0 text-[#B07A8D]" size={17} />
+              +1 234 567 890
+            </a>
+            <a href="mailto:hello@chokola.com" className="flex items-center gap-3 transition-colors duration-300 hover:text-[#C9A86A]">
+              <Icon name="mail" className="shrink-0 text-[#B07A8D]" size={17} />
+              hello@chokola.com
+            </a>
+            <p className="flex items-center gap-3">
+              <Icon name="mapPin" className="shrink-0 text-[#B07A8D]" size={17} />
+              Cairo, Egypt
+            </p>
           </address>
+        </div>
+
+        <div>
+          <h2 className="text-sm font-semibold text-[#4A2E2B]">Opening Hours</h2>
+          <div className="mt-5 space-y-3 text-sm leading-6 text-[#6B5654]">
+            <div>
+              <p className="font-semibold text-[#4A2E2B]">Daily</p>
+              <p>{'10 AM \u2013 12 AM'}</p>
+            </div>
+            <div>
+              <p className="font-semibold text-[#4A2E2B]">Friday</p>
+              <p>{'2 PM \u2013 12 AM'}</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="mx-auto mt-10 max-w-6xl border-t border-white/10 pt-6 text-center text-sm text-white/45">
-        &copy; 2026 Chokola Dessert Lounge. All rights reserved.
+      <div className="mx-auto mt-10 flex max-w-7xl flex-col items-center justify-center gap-2 border-t border-[#4A2E2B]/12 pt-5 text-center text-xs text-[#6B5654]/80 sm:flex-row sm:gap-6">
+        <p>&copy; 2026 Chokola Dessert Lounge. All rights reserved.</p>
+        <p>Crafted with love in Cairo, Egypt.</p>
       </div>
     </footer>
   );

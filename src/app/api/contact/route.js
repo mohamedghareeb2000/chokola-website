@@ -13,7 +13,6 @@ function validateContactPayload(payload) {
   const name = normalize(payload?.name);
   const phone = normalize(payload?.phone).replace(/\D/g, '');
   const email = normalize(payload?.email);
-  const subject = normalize(payload?.subject);
   const message = normalize(payload?.message);
 
   if (!name) fieldErrors.name = 'Please enter your name.';
@@ -25,7 +24,6 @@ function validateContactPayload(payload) {
   if (!phone || phone.length !== PHONE_DIGIT_LENGTH) {
     fieldErrors.phone = 'Please enter a valid US phone number.';
   }
-  if (!subject) fieldErrors.subject = 'Please enter a subject.';
   if (!message) {
     fieldErrors.message = 'Please write your message.';
   } else if (message.length > MESSAGE_MAX_LENGTH) {
@@ -34,12 +32,11 @@ function validateContactPayload(payload) {
 
   if (name.length > 120) fieldErrors.name = 'Name is too long.';
   if (email.length > 160) fieldErrors.email = 'Email address is too long.';
-  if (subject.length > 160) fieldErrors.subject = 'Subject is too long.';
 
   return {
     isValid: Object.keys(fieldErrors).length === 0,
     fieldErrors,
-    data: { name, phone: `+1 ${phone}`, email, subject, message },
+    data: { name, phone: `+1 ${phone}`, email, message },
   };
 }
 
@@ -75,7 +72,6 @@ export async function POST(request) {
       name: validation.data.name,
       phone: validation.data.phone,
       email: validation.data.email,
-      subject: validation.data.subject,
       messageLength: validation.data.message.length,
       receivedAt: new Date().toISOString(),
       hasEmailProviderConfigured: Boolean(process.env.CONTACT_EMAIL_API_KEY),
