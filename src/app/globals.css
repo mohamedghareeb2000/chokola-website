@@ -1,16 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --chokola-primary: #E7B5BB;
-  --chokola-secondary: #4A2E2B;
-  --chokola-background: #FFF5F0;
-  --chokola-accent: #B07A8D;
-  --chokola-cream: #FFF9F6;
-  --chokola-muted: #7B5A56;
+  --color-white: #FFFFFF;
+  --color-soft-blush: #FFF1F4;
+  --color-dusty-mauve: #A85F78;
+  --color-blush-pink: #F6C9D2;
+  --color-chocolate-brown: #3B2424;
+  --color-warm-cream: #FFF8F4;
+  --color-nude-beige: #F3E4D8;
+  --color-soft-gold: #C9A86A;
+
+  --font-script: "Angelista", cursive;
+  --font-heading: "Poppins", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  --radius-soft: 24px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 22px 70px rgba(59, 36, 36, 0.10);
+  --shadow-card: 0 16px 44px rgba(59, 36, 36, 0.08);
+  --border-soft: rgba(168, 95, 120, 0.18);
+
+  --dusty-mauve: var(--color-dusty-mauve);
+  --blush-pink: var(--color-blush-pink);
+  --chocolate-brown: var(--color-chocolate-brown);
+  --warm-cream: var(--color-warm-cream);
+  --nude-beige: var(--color-nude-beige);
+  --soft-gold: var(--color-soft-gold);
+  --chokola-primary: var(--color-blush-pink);
+  --chokola-secondary: var(--color-chocolate-brown);
+  --chokola-background: var(--color-white);
+  --chokola-accent: var(--color-dusty-mauve);
+  --chokola-cream: var(--color-nude-beige);
+  --chokola-muted: #725758;
 }
 
 * {
@@ -28,10 +54,20 @@ body {
   overflow-x: hidden;
   background: var(--chokola-background);
   color: var(--chokola-secondary);
-  font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-body), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  letter-spacing: 0;
 }
 
 img,
@@ -60,32 +96,26 @@ textarea {
 }
 
 :focus-visible {
-  outline: 3px solid rgba(176, 122, 141, 0.58);
+  outline: 3px solid rgba(168, 95, 120, 0.5);
   outline-offset: 4px;
 }
 
 .font-script {
-  font-family: Angelista, 'Brush Script MT', 'Segoe Script', cursive;
+  font-family: var(--font-script);
 }
 
-.hero-bg {
-  background:
-    radial-gradient(circle at 12% 18%, rgba(231, 181, 187, 0.58), transparent 26%),
-    radial-gradient(circle at 88% 10%, rgba(255, 245, 240, 0.95), transparent 26%),
-    radial-gradient(circle at 72% 70%, rgba(176, 122, 141, 0.16), transparent 30%),
-    linear-gradient(180deg, #FFF5F0 0%, #FFF9F6 50%, #FFFFFF 100%);
+.font-serif {
+  font-family: var(--font-heading), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .section-soft {
-  background:
-    radial-gradient(circle at 16% 20%, rgba(231,181,187,0.22), transparent 24%),
-    linear-gradient(180deg, #FFFFFF 0%, #FFF5F0 100%);
+  background: var(--color-soft-blush);
 }
 
 .section-dark {
   background:
-    radial-gradient(circle at 15% 15%, rgba(231,181,187,0.18), transparent 24%),
-    linear-gradient(135deg, #4A2E2B 0%, #2E1A18 100%);
+    radial-gradient(circle at 15% 15%, rgba(246, 201, 210, 0.14), transparent 24%),
+    linear-gradient(135deg, #3B2424 0%, #231515 100%);
 }
 
 .text-balance {

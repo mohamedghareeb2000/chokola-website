@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 
-const MAX_FIELD_LENGTH = 1000;
+const MESSAGE_MAX_LENGTH = 500;
+const PHONE_DIGIT_LENGTH = 10;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function normalize(value) {
   return typeof value === 'string' ? value.trim() : '';
@@ -9,21 +11,35 @@ function normalize(value) {
 function validateContactPayload(payload) {
   const fieldErrors = {};
   const name = normalize(payload?.name);
-  const phone = normalize(payload?.phone);
+  const phone = normalize(payload?.phone).replace(/\D/g, '');
+  const email = normalize(payload?.email);
+  const subject = normalize(payload?.subject);
   const message = normalize(payload?.message);
 
   if (!name) fieldErrors.name = 'Please enter your name.';
-  if (!phone) fieldErrors.phone = 'Please enter your phone number.';
-  if (!message) fieldErrors.message = 'Please write your message.';
+  if (!email) {
+    fieldErrors.email = 'Please enter your email address.';
+  } else if (!EMAIL_PATTERN.test(email)) {
+    fieldErrors.email = 'Please enter a valid email address.';
+  }
+  if (!phone || phone.length !== PHONE_DIGIT_LENGTH) {
+    fieldErrors.phone = 'Please enter a valid US phone number.';
+  }
+  if (!subject) fieldErrors.subject = 'Please enter a subject.';
+  if (!message) {
+    fieldErrors.message = 'Please write your message.';
+  } else if (message.length > MESSAGE_MAX_LENGTH) {
+    fieldErrors.message = 'Message cannot exceed 500 characters.';
+  }
 
   if (name.length > 120) fieldErrors.name = 'Name is too long.';
-  if (phone.length > 40) fieldErrors.phone = 'Phone number is too long.';
-  if (message.length > MAX_FIELD_LENGTH) fieldErrors.message = 'Message is too long.';
+  if (email.length > 160) fieldErrors.email = 'Email address is too long.';
+  if (subject.length > 160) fieldErrors.subject = 'Subject is too long.';
 
   return {
     isValid: Object.keys(fieldErrors).length === 0,
     fieldErrors,
-    data: { name, phone, message },
+    data: { name, phone: `+1 ${phone}`, email, subject, message },
   };
 }
 
@@ -58,6 +74,8 @@ export async function POST(request) {
     console.info('Contact form submission received', {
       name: validation.data.name,
       phone: validation.data.phone,
+      email: validation.data.email,
+      subject: validation.data.subject,
       messageLength: validation.data.message.length,
       receivedAt: new Date().toISOString(),
       hasEmailProviderConfigured: Boolean(process.env.CONTACT_EMAIL_API_KEY),

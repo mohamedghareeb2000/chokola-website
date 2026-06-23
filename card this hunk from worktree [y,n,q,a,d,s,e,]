@@ -1,0 +1,523 @@
+warning: in the working copy of 'src/app/globals.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/app/page.jsx', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/src/app/globals.css b/src/app/globals.css[m
+[1mindex 8779388..14eef45 100644[m
+[1m--- a/src/app/globals.css[m
+[1m+++ b/src/app/globals.css[m
+[36m@@ -1,15 +1,21 @@[m
+[31m-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');[m
+[32m+[m[32m@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');[m
+ [m
+ @tailwind base;[m
+ @tailwind components;[m
+ @tailwind utilities;[m
+ [m
+ :root {[m
+[31m-  --chokola-primary: #E7B5BB;[m
+[31m-  --chokola-secondary: #4A2E2B;[m
+[31m-  --chokola-background: #FFF5F0;[m
+[31m-  --chokola-accent: #B07A8D;[m
+[31m-  --chokola-cream: #FFF9F6;[m
+[32m+[m[32m  --dusty-mauve: #B0708D;[m
+[32m+[m[32m  --blush-pink: #E7B5BB;[m
+[32m+[m[32m  --chocolate-brown: #4A2E2B;[m
+[32m+[m[32m  --warm-cream: #F5F3F0;[m
+[32m+[m[32m  --nude-beige: #EAD9C8;[m
+[32m+[m[32m  --soft-gold: #C9A86A;[m
+[32m+[m[32m  --chokola-primary: var(--blush-pink);[m
+[32m+[m[32m  --chokola-secondary: var(--chocolate-brown);[m
+[32m+[m[32m  --chokola-background: var(--warm-cream);[m
+[32m+[m[32m  --chokola-accent: var(--dusty-mauve);[m
+[32m+[m[32m  --chokola-cream: var(--nude-beige);[m
+   --chokola-muted: #7B5A56;[m
+ }[m
+ [m
+[36m@@ -64,22 +70,23 @@[m [mtextarea {[m
+   outline-offset: 4px;[m
+ }[m
+ [m
+[31m-.font-script {[m
+[31m-  font-family: Angelista, 'Brush Script MT', 'Segoe Script', cursive;[m
+[32m+[m[32m.font-script,[m
+[32m+[m[32m.font-serif {[m
+[32m+[m[32m  font-family: Georgia, Cambria, 'Times New Roman', serif;[m
+ }[m
+ [m
+ .hero-bg {[m
+   background:[m
+     radial-gradient(circle at 12% 18%, rgba(231, 181, 187, 0.58), transparent 26%),[m
+[31m-    radial-gradient(circle at 88% 10%, rgba(255, 245, 240, 0.95), transparent 26%),[m
+[32m+[m[32m    radial-gradient(circle at 88% 10%, rgba(245, 243, 240, 0.95), transparent 26%),[m
+     radial-gradient(circle at 72% 70%, rgba(176, 122, 141, 0.16), transparent 30%),[m
+[31m-    linear-gradient(180deg, #FFF5F0 0%, #FFF9F6 50%, #FFFFFF 100%);[m
+[32m+[m[32m    linear-gradient(180deg, #F5F3F0 0%, #EAD9C8 52%, #FFFFFF 100%);[m
+ }[m
+ [m
+ .section-soft {[m
+   background:[m
+     radial-gradient(circle at 16% 20%, rgba(231,181,187,0.22), transparent 24%),[m
+[31m-    linear-gradient(180deg, #FFFFFF 0%, #FFF5F0 100%);[m
+[32m+[m[32m    linear-gradient(180deg, #FFFFFF 0%, #F5F3F0 100%);[m
+ }[m
+ [m
+ .section-dark {[m
+[1mdiff --git a/src/app/page.jsx b/src/app/page.jsx[m
+[1mindex 9a17adc..c3f949a 100644[m
+[1m--- a/src/app/page.jsx[m
+[1m+++ b/src/app/page.jsx[m
+[36m@@ -9,9 +9,10 @@[m [mconst BRAND = {[m
+   subtitle: 'Dessert Lounge',[m
+   primary: '#E7B5BB',[m
+   secondary: '#4A2E2B',[m
+[31m-  background: '#FFF5F0',[m
+[31m-  accent: '#B07A8D',[m
+[31m-  cream: '#FFF9F6',[m
+[32m+[m[32m  background: '#F5F3F0',[m
+[32m+[m[32m  accent: '#B0708D',[m
+[32m+[m[32m  cream: '#EAD9C8',[m
+[32m+[m[32m  gold: '#C9A86A',[m
+   muted: '#7B5A56',[m
+ };[m
+ [m
+[36m@@ -64,6 +65,12 @@[m [mconst NAV_LINKS = [[m
+   { label: 'Home', href: '#home' },[m
+   { label: 'Menu', href: '#menu' },[m
+   { label: 'About Us', href: '#about' },[m
+[32m+[m[32m];[m
+[32m+[m
+[32m+[m[32mconst FOOTER_LINKS = [[m
+[32m+[m[32m  { label: 'Home', href: '#home' },[m
+[32m+[m[32m  { label: 'Menu', href: '#menu' },[m
+[32m+[m[32m  { label: 'About Us', href: '#about' },[m
+   { label: 'Location', href: '#location' },[m
+   { label: 'Contact', href: '#contact' },[m
+ ];[m
+[36m@@ -185,17 +192,15 @@[m [mfunction Icon({ name, size = 20, className = '' }) {[m
+ [m
+ const Logo = memo(function Logo() {[m
+   return ([m
+[31m-    <div className="flex items-center gap-3">[m
+[31m-      <div className="relative h-12 w-36 sm:h-14 sm:w-44">[m
+[31m-        <Image[m
+[31m-          src="/chokola-logo.png"[m
+[31m-          alt="Chokola Dessert Lounge logo"[m
+[31m-          fill[m
+[31m-          priority[m
+[31m-          sizes="(max-width: 640px) 144px, 176px"[m
+[31m-          className="object-contain object-left"[m
+[31m-        />[m
+[31m-      </div>[m
+[32m+[m[32m    <div className="relative flex h-16 w-[clamp(150px,38vw,210px)] shrink-0 items-center bg-transparent sm:h-20 sm:w-[clamp(170px,24vw,250px)] lg:h-24 lg:w-[clamp(190px,17vw,300px)] xl:h-28 xl:w-[clamp(210px,16vw,340px)]">[m
+[32m+[m[32m      <Image[m
+[32m+[m[32m        src="/chokola-logo.png"[m
+[32m+[m[32m        alt="Chokola Dessert Lounge logo"[m
+[32m+[m[32m        fill[m
+[32m+[m[32m        priority[m
+[32m+[m[32m        sizes="(max-width: 640px) 38vw, (max-width: 1024px) 24vw, (max-width: 1280px) 17vw, 340px"[m
+[32m+[m[32m        className="object-contain object-left"[m
+[32m+[m[32m      />[m
+     </div>[m
+   );[m
+ });[m
+[36m@@ -219,8 +224,8 @@[m [mfunction useHeroMotion(shouldReduceMotion) {[m
+ [m
+ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu }) {[m
+   return ([m
+[31m-    <nav className="fixed inset-x-0 top-0 z-50 border-b border-[#E7B5BB]/45 bg-[#FFF5F0]/95 px-4 py-3 shadow-[0_10px_35px_rgba(74,46,43,0.08)] backdrop-blur-xl sm:px-6 lg:px-10" aria-label="Main navigation">[m
+[31m-      <div className="mx-auto flex h-16 w-full max-w-[1600px] items-center justify-between">[m
+[32m+[m[32m    <nav className="fixed inset-x-0 top-0 z-50 bg-[#F5F3F0]/82 px-4 py-2 backdrop-blur-md sm:px-6 lg:px-10" aria-label="Main navigation">[m
+[32m+[m[32m      <div className="mx-auto flex min-h-20 w-full max-w-[1600px] items-center justify-between gap-3 sm:min-h-24 lg:min-h-28">[m
+         <a href="#home" onClick={onCloseMenu} aria-label="Go to Chokola homepage">[m
+           <Logo />[m
+         </a>[m
+[36m@@ -240,14 +245,14 @@[m [mfunction Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu }) {[m
+         <div className="flex items-center gap-3">[m
+           <a[m
+             href="#contact"[m
+[31m-            className="hidden rounded-full bg-[#E7B5BB] px-5 py-2.5 text-sm font-semibold text-[#4A2E2B] shadow-[0_12px_30px_rgba(231,181,187,0.45)] transition hover:-translate-y-0.5 hover:bg-[#B07A8D] hover:text-white sm:inline-flex"[m
+[32m+[m[32m            className="hidden rounded-full bg-[#E7B5BB] px-5 py-2.5 text-sm font-semibold text-[#4A2E2B] shadow-[0_12px_30px_rgba(231,181,187,0.45)] transition hover:-translate-y-0.5 hover:bg-[#B0708D] hover:text-white md:inline-flex"[m
+           >[m
+             Contact Us[m
+           </a>[m
+           <button[m
+             type="button"[m
+             onClick={onToggleMenu}[m
+[31m-            className="grid h-11 w-11 place-items-center rounded-full border border-[#E7B5BB] bg-white text-[#B07A8D] transition hover:bg-[#FFF9F6] md:hidden"[m
+[32m+[m[32m            className="grid h-11 w-11 place-items-center rounded-full border border-[#E7B5BB] bg-white text-[#B0708D] transition hover:bg-[#EAD9C8] md:hidden"[m
+             aria-controls="mobile-menu"[m
+             aria-expanded={mobileMenuOpen}[m
+             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}[m
+[36m@@ -263,7 +268,7 @@[m [mfunction Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu }) {[m
+           initial={{ opacity: 0, y: -12, scale: 0.98 }}[m
+           animate={{ opacity: 1, y: 0, scale: 1 }}[m
+           transition={{ duration: 0.25 }}[m
+[31m-          className="mx-auto mt-3 max-w-[1600px] rounded-[1.5rem] border border-[#E7B5BB]/60 bg-[#FFF9F6]/95 p-4 shadow-[0_20px_60px_rgba(74,46,43,0.12)] md:hidden"[m
+[32m+[m[32m          className="mx-auto mt-3 max-w-[1600px] rounded-[1.5rem] border border-[#E7B5BB]/60 bg-[#EAD9C8]/95 p-4 shadow-[0_20px_60px_rgba(74,46,43,0.12)] md:hidden"[m
+         >[m
+           <div className="grid gap-2 text-sm font-semibold text-[#4A2E2B]">[m
+             {NAV_LINKS.map((link) => ([m
+[36m@@ -283,34 +288,39 @@[m [mfunction Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu }) {[m
+   );[m
+ }[m
+ [m
+[31m-function Hero({ activeSlide, setActiveSlide }) {[m
+[32m+[m[32mfunction Hero({ activeSlide, setActiveSlide, mobileMenuOpen, onToggleMenu, onCloseMenu }) {[m
+   const shouldReduceMotion = useReducedMotion();[m
+   const currentSlide = HERO_SLIDES[activeSlide];[m
+   const motionConfig = useHeroMotion(shouldReduceMotion);[m
+ [m
+   return ([m
+[31m-    <section id="home" className="hero-bg relative min-h-screen overflow-hidden px-4 pt-[108px] sm:px-6 lg:px-10" aria-labelledby="hero-title">[m
+[32m+[m[32m    <section id="home" className="hero-bg relative min-h-screen overflow-hidden px-4 pt-28 sm:px-6 sm:pt-32 lg:px-10 lg:pt-36 xl:pt-40" aria-labelledby="hero-title">[m
+[32m+[m[32m      <Navbar mobileMenuOpen={mobileMenuOpen} onToggleMenu={onToggleMenu} onCloseMenu={onCloseMenu} />[m
+[32m+[m[32m      <div[m
+[32m+[m[32m        aria-hidden="true"[m
+[32m+[m[32m        className="absolute inset-x-4 top-28 h-px bg-gradient-to-r from-transparent via-[#C9A86A]/35 to-transparent sm:top-32 lg:top-36 xl:top-40"[m
+[32m+[m[32m      />[m
+       <motion.div[m
+         animate={shouldReduceMotion ? undefined : { x: [0, 18, 0], y: [0, -12, 0] }}[m
+         transition={motionConfig.atmosphereTransition}[m
+[31m-        className="absolute -left-32 top-10 h-[420px] w-[420px] rounded-full bg-[#E7B5BB]/60 blur-3xl"[m
+[32m+[m[32m        className="absolute -left-32 top-10 h-[420px] w-[420px] rounded-full bg-[#E7B5BB]/45 blur-3xl"[m
+       />[m
+       <motion.div[m
+         animate={shouldReduceMotion ? undefined : { x: [0, -20, 0], y: [0, 14, 0] }}[m
+         transition={{ ...motionConfig.atmosphereTransition, duration: 11 }}[m
+[31m-        className="absolute right-[-120px] top-[120px] h-[560px] w-[560px] rounded-full bg-[#B07A8D]/15 blur-3xl"[m
+[32m+[m[32m        className="absolute right-[-120px] top-[120px] h-[560px] w-[560px] rounded-full bg-[#B0708D]/15 blur-3xl"[m
+       />[m
+ [m
+[31m-      <div className="relative z-10 mx-auto grid min-h-[calc(100vh-108px)] w-full max-w-[1650px] items-center gap-10 lg:grid-cols-[0.82fr_1.18fr] xl:gap-14">[m
+[31m-        <div className="max-w-[620px] pb-10 lg:pb-0">[m
+[32m+[m[32m      <div className="relative z-10 mx-auto grid min-h-[calc(100vh-7rem)] w-full max-w-[1650px] items-center gap-9 sm:min-h-[calc(100vh-8rem)] lg:min-h-[calc(100vh-9rem)] lg:grid-cols-[0.84fr_1.16fr] xl:min-h-[calc(100vh-10rem)] xl:gap-16">[m
+[32m+[m[32m        <div className="max-w-[680px] pb-8 pt-2 sm:pb-10 lg:pb-0 lg:pt-0">[m
+           <motion.div[m
+             variants={fadeUp}[m
+             initial="hidden"[m
+             animate="visible"[m
+[31m-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#E7B5BB]/70 bg-white/45 px-4 py-2 text-sm font-medium text-[#B07A8D] backdrop-blur-md"[m
+[32m+[m[32m            className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#E7B5BB]/70 bg-white/50 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[#B0708D] backdrop-blur-md sm:mb-6"[m
+           >[m
+             <Icon name="sparkles" size={16} />[m
+[31m-            Life is sweeter with dessert[m
+[32m+[m[32m            Signature dessert lounge[m
+           </motion.div>[m
+ [m
+           <motion.h1[m
+[36m@@ -319,7 +329,7 @@[m [mfunction Hero({ activeSlide, setActiveSlide }) {[m
+             initial={{ opacity: 0, y: 40, filter: shouldReduceMotion ? 'none' : 'blur(10px)' }}[m
+             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}[m
+             transition={{ duration: 0.7 }}[m
+[31m-            className="font-serif text-5xl font-black leading-[0.94] tracking-tight text-[#B07A8D] sm:text-6xl md:text-7xl xl:text-[7rem]"[m
+[32m+[m[32m            className="font-serif text-[clamp(3.25rem,13vw,5.6rem)] font-bold leading-[0.9] text-[#B0708D] sm:text-[clamp(4.6rem,9vw,7.2rem)] lg:text-[clamp(5.2rem,6.7vw,7.8rem)]"[m
+           >[m
+             {currentSlide.name}[m
+           </motion.h1>[m
+[36m@@ -329,14 +339,14 @@[m [mfunction Hero({ activeSlide, setActiveSlide }) {[m
+             initial={{ opacity: 0, y: 14 }}[m
+             animate={{ opacity: 1, y: 0 }}[m
+             transition={{ duration: 0.45, delay: 0.1 }}[m
+[31m-            className="mt-6 flex flex-wrap items-center gap-3"[m
+[32m+[m[32m            className="mt-5 flex flex-wrap items-center gap-3 sm:mt-6"[m
+           >[m
+[31m-            <div className="flex items-center gap-1 text-[#C9A66A]" aria-label="Rated four out of five stars">[m
+[31m-              <span aria-hidden="true">★</span>[m
+[31m-              <span aria-hidden="true">★</span>[m
+[31m-              <span aria-hidden="true">★</span>[m
+[31m-              <span aria-hidden="true">★</span>[m
+[31m-              <span className="text-[#E7D8D2]" aria-hidden="true">★</span>[m
+[32m+[m[32m            <div className="flex items-center gap-1 text-[#C9A86A]" aria-label="Rated four out of five stars">[m
+[32m+[m[32m              <span aria-hidden="true">&#9733;</span>[m
+[32m+[m[32m              <span aria-hidden="true">&#9733;</span>[m
+[32m+[m[32m              <span aria-hidden="true">&#9733;</span>[m
+[32m+[m[32m              <span aria-hidden="true">&#9733;</span>[m
+[32m+[m[32m              <span className="text-[#EAD9C8]" aria-hidden="true">&#9733;</span>[m
+             </div>[m
+             <span className="text-sm font-medium text-[#7B5A56]">4.8 dessert favorite</span>[m
+           </motion.div>[m
+[36m@@ -346,59 +356,70 @@[m [mfunction Hero({ activeSlide, setActiveSlide }) {[m
+             initial={{ opacity: 0, y: 14 }}[m
+             animate={{ opacity: 1, y: 0 }}[m
+             transition={{ duration: 0.45, delay: 0.14 }}[m
+[31m-            className="mt-6 max-w-[520px] text-base leading-7 text-[#4A2E2B] sm:text-lg sm:leading-8"[m
+[32m+[m[32m            className="mt-5 max-w-[610px] border-l border-[#C9A86A]/50 pl-5 text-base leading-7 text-[#4A2E2B]/90 sm:mt-6 sm:text-lg sm:leading-8"[m
+           >[m
+             Elegant desserts, soft feminine details, warm chocolate notes, and a premium dessert lounge experience designed for sweet moments.[m
+           </motion.p>[m
+ [m
+[31m-          <motion.div variants={fadeUp} initial="hidden" animate="visible" className="mt-8 flex flex-wrap gap-4">[m
+[32m+[m[32m          <motion.div variants={fadeUp} initial="hidden" animate="visible" className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">[m
+             <a[m
+               href="#menu"[m
+[31m-              className="group rounded-full bg-[#E7B5BB] px-8 py-4 text-sm font-semibold text-[#4A2E2B] shadow-[0_18px_40px_rgba(231,181,187,0.45)] transition hover:-translate-y-1 hover:bg-[#B07A8D] hover:text-white focus-visible:bg-[#B07A8D] focus-visible:text-white"[m
+[32m+[m[32m              className="group inline-flex items-center justify-center rounded-full bg-[#E7B5BB] px-8 py-4 text-sm font-bold text-[#4A2E2B] shadow-[0_18px_40px_rgba(176,112,141,0.20)] transition hover:-translate-y-1 hover:bg-[#B0708D] hover:text-white focus-visible:bg-[#B0708D] focus-visible:text-white"[m
+             >[m
+               View Menu[m
+               <Icon name="arrowRight" size={17} className="ml-2 inline transition group-hover:translate-x-1" />[m
+             </a>[m
+             <a[m
+               href="#contact"[m
+[31m-              className="rounded-full border border-[#E7B5BB] bg-white/45 px-8 py-4 text-sm font-semibold text-[#B07A8D] backdrop-blur-md transition hover:-translate-y-1 hover:bg-white/70 focus-visible:bg-white"[m
+[32m+[m[32m              className="inline-flex items-center justify-center rounded-full border border-[#C9A86A]/45 bg-white/50 px-8 py-4 text-sm font-bold text-[#B0708D] backdrop-blur-md transition hover:-translate-y-1 hover:bg-white/75 focus-visible:bg-white"[m
+             >[m
+               Contact Us[m
+             </a>[m
+[32m+[m[32m            <span className="inline-flex items-center justify-center rounded-full border border-[#E7B5BB]/70 bg-[#F5F3F0]/65 px-5 py-3 text-sm font-semibold text-[#7B5A56] backdrop-blur-md">[m
+[32m+[m[32m              Featured {currentSlide.price}[m
+[32m+[m[32m            </span>[m
+           </motion.div>[m
+ [m
+[31m-          <motion.div variants={fadeUp} initial="hidden" animate="visible" className="mt-12 flex items-center gap-4" aria-label="Featured dessert selector">[m
+[32m+[m[32m          <motion.div variants={fadeUp} initial="hidden" animate="visible" className="mt-9 flex items-center gap-3 sm:mt-12 sm:gap-4" aria-label="Featured dessert selector">[m
+             {HERO_SLIDES.map((slide, index) => ([m
+               <button[m
+                 key={slide.name}[m
+                 type="button"[m
+                 onClick={() => setActiveSlide(index)}[m
+[31m-                className={`relative h-16 w-16 overflow-hidden rounded-full bg-white p-1.5 shadow-[0_14px_30px_rgba(74,46,43,0.12)] transition ${activeSlide === index ? 'scale-110 ring-2 ring-[#E7B5BB]' : 'opacity-90 hover:scale-105'}`}[m
+[32m+[m[32m                className={`relative h-14 w-14 overflow-hidden rounded-full bg-white p-1.5 shadow-[0_14px_30px_rgba(74,46,43,0.12)] transition sm:h-16 sm:w-16 ${activeSlide === index ? 'scale-110 ring-2 ring-[#C9A86A]' : 'opacity-90 hover:scale-105'}`}[m
+                 aria-label={`Show ${slide.name}`}[m
+                 aria-pressed={activeSlide === index}[m
+               >[m
+                 <Image src={slide.image} alt="" width={64} height={64} sizes="64px" className="h-full w-full rounded-full object-cover" />[m
+[31m-                {activeSlide === index && <span className="absolute -bottom-3 left-1/2 h-1 w-8 -translate-x-1/2 rounded-full bg-[#B07A8D]" />}[m
+[32m+[m[32m                {activeSlide === index && <span className="absolute -bottom-3 left-1/2 h-1 w-8 -translate-x-1/2 rounded-full bg-[#B0708D]" />}[m
+               </button>[m
+             ))}[m
+           </motion.div>[m
+         </div>[m
+ [m
+[31m-        <div className="relative flex min-h-[420px] items-center justify-center lg:min-h-[calc(100vh-150px)]">[m
+[32m+[m[32m        <div className="relative flex min-h-[320px] items-center justify-center sm:min-h-[430px] lg:min-h-[calc(100vh-150px)]">[m
+[32m+[m[32m          <div[m
+[32m+[m[32m            aria-hidden="true"[m
+[32m+[m[32m            className="absolute aspect-square w-[320px] rounded-full border border-[#C9A86A]/35 sm:w-[500px] lg:w-[680px] xl:w-[760px]"[m
+[32m+[m[32m          />[m
+[32m+[m[32m          <div[m
+[32m+[m[32m            aria-hidden="true"[m
+[32m+[m[32m            className="absolute aspect-square w-[250px] rounded-full border border-white/70 sm:w-[390px] lg:w-[540px] xl:w-[620px]"[m
+[32m+[m[32m          />[m
+           <motion.div[m
+             key={`halo-${activeSlide}`}[m
+             initial={{ opacity: 0, scale: 0.8 }}[m
+             animate={{ opacity: 1, scale: 1 }}[m
+             transition={{ duration: 0.8 }}[m
+[31m-            className="absolute h-[340px] w-[340px] rounded-full bg-white/55 blur-2xl sm:h-[480px] sm:w-[480px] xl:h-[650px] xl:w-[650px]"[m
+[32m+[m[32m            className="absolute h-[300px] w-[300px] rounded-full bg-white/50 blur-2xl sm:h-[480px] sm:w-[480px] xl:h-[650px] xl:w-[650px]"[m
+           />[m
+ [m
+           <motion.div[m
+             key={`product-${currentSlide.name}`}[m
+[31m-            initial={{ x: shouldReduceMotion ? 0 : 180, opacity: 0, rotate: shouldReduceMotion ? 0 : -10, scale: 0.78 }}[m
+[32m+[m[32m            initial={{ x: shouldReduceMotion ? 0 : 120, opacity: 0, rotate: shouldReduceMotion ? 0 : -5, scale: 0.84 }}[m
+             animate={{ x: 0, opacity: 1, ...motionConfig.float }}[m
+             transition={motionConfig.floatTransition}[m
+[31m-            className="relative z-10 aspect-square w-[300px] overflow-hidden rounded-full shadow-[0_40px_90px_rgba(74,46,43,0.18)] sm:w-[460px] md:w-[560px] lg:w-[640px] xl:w-[720px]"[m
+[32m+[m[32m            className="relative z-10 aspect-square w-[280px] overflow-hidden rounded-full border-[10px] border-white/55 shadow-[0_40px_90px_rgba(74,46,43,0.18)] sm:w-[450px] md:w-[540px] lg:w-[620px] xl:w-[700px]"[m
+           >[m
+             <Image[m
+               src={currentSlide.image}[m
+[36m@@ -420,7 +441,7 @@[m [mfunction MenuSection() {[m
+     <section id="menu" className="section-soft px-6 py-24" aria-labelledby="menu-title">[m
+       <div className="mx-auto max-w-6xl">[m
+         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }} variants={fadeUp} className="mx-auto max-w-2xl text-center">[m
+[31m-          <p className="mb-3 text-sm font-bold uppercase tracking-[0.28em] text-[#B07A8D]">Our Menu</p>[m
+[32m+[m[32m          <p className="mb-3 text-sm font-bold uppercase tracking-[0.28em] text-[#B0708D]">Our Menu</p>[m
+           <h2 id="menu-title" className="font-serif text-4xl font-bold text-[#4A2E2B] md:text-5xl">[m
+             A curated world of sweetness[m
+           </h2>[m
+[36m@@ -443,7 +464,7 @@[m [mfunction MenuSection() {[m
+               <div className="p-7">[m
+                 <div className="flex items-start justify-between gap-4">[m
+                   <h3 className="font-serif text-2xl font-bold text-[#4A2E2B]">{item.title}</h3>[m
+[31m-                  <span className="rounded-full bg-[#FFF5F0] px-3 py-1 text-sm font-semibold text-[#B07A8D]">{item.price}</span>[m
+[32m+[m[32m                  <span className="rounded-full bg-[#F5F3F0] px-3 py-1 text-sm font-semibold text-[#B0708D]">{item.price}</span>[m
+                 </div>[m
+                 <p className="mt-3 leading-7 text-[#7B5A56]">{item.desc}</p>[m
+               </div>[m
+[36m@@ -493,23 +514,23 @@[m [mfunction LocationSection() {[m
+   return ([m
+     <section id="location" className="section-soft px-6 py-24" aria-labelledby="location-title">[m
+       <div className="mx-auto max-w-6xl">[m
+[31m-        <p className="mb-3 text-sm font-bold uppercase tracking-[0.28em] text-[#B07A8D]">Our Branch</p>[m
+[32m+[m[32m        <p className="mb-3 text-sm font-bold uppercase tracking-[0.28em] text-[#B0708D]">Our Branch</p>[m
+         <h2 id="location-title" className="font-serif text-4xl font-bold text-[#4A2E2B] md:text-5xl">[m
+           Visit Chokola[m
+         </h2>[m
+ [m
+         <div className="mt-12 grid overflow-hidden rounded-[2rem] border border-[#E7B5BB]/55 bg-white/80 shadow-[0_28px_80px_rgba(74,46,43,0.12)] backdrop-blur-xl lg:grid-cols-[0.9fr_1.1fr]">[m
+           <div className="p-8 md:p-12">[m
+[31m-            <h3 className="font-serif text-3xl font-bold text-[#4A2E2B]">Chokola — Main Branch</h3>[m
+[32m+[m[32m            <h3 className="font-serif text-3xl font-bold text-[#4A2E2B]">Chokola - Main Branch</h3>[m
+             <div className="mt-7 space-y-5 text-[#7B5A56]">[m
+               <p className="flex gap-3">[m
+[31m-                <Icon name="mapPin" className="mt-1 shrink-0 text-[#B07A8D]" /> 24 Sweet Avenue, Dessert District[m
+[32m+[m[32m                <Icon name="mapPin" className="mt-1 shrink-0 text-[#B0708D]" /> 24 Sweet Avenue, Dessert District[m
+               </p>[m
+               <p className="flex gap-3">[m
+[31m-                <Icon name="clock" className="mt-1 shrink-0 text-[#B07A8D]" /> Open daily: 10:00 AM - 11:00 PM[m
+[32m+[m[32m                <Icon name="clock" className="mt-1 shrink-0 text-[#B0708D]" /> Open daily: 10:00 AM - 11:00 PM[m
+               </p>[m
+               <p className="flex gap-3">[m
+[31m-                <Icon name="phone" className="mt-1 shrink-0 text-[#B07A8D]" /> +1 234 567 890[m
+[32m+[m[32m                <Icon name="phone" className="mt-1 shrink-0 text-[#B0708D]" /> +1 234 567 890[m
+               </p>[m
+             </div>[m
+             <a[m
+[36m@@ -517,17 +538,17 @@[m [mfunction LocationSection() {[m
+               target="_blank"[m
+               rel="noreferrer"[m
+               aria-label="Open Chokola location in Google Maps"[m
+[31m-              className="mt-9 inline-flex items-center rounded-full bg-[#E7B5BB] px-7 py-4 font-semibold text-[#4A2E2B] transition hover:-translate-y-1 hover:bg-[#B07A8D] hover:text-white focus-visible:bg-[#B07A8D] focus-visible:text-white"[m
+[32m+[m[32m              className="mt-9 inline-flex items-center rounded-full bg-[#E7B5BB] px-7 py-4 font-semibold text-[#4A2E2B] transition hover:-translate-y-1 hover:bg-[#B0708D] hover:text-white focus-visible:bg-[#B0708D] focus-visible:text-white"[m
+             >[m
+               Get Directions <Icon name="arrowRight" className="ml-2" size={18} />[m
+             </a>[m
+           </div>[m
+ [m
+[31m-          <div className="relative min-h-[360px] bg-[#FFF5F0]">[m
+[31m-            <div className="absolute inset-6 rounded-[1.5rem] border border-[#E7B5BB]/60 bg-[linear-gradient(135deg,#FFF9F6,#FFF5F0)] p-8">[m
+[32m+[m[32m          <div className="relative min-h-[360px] bg-[#F5F3F0]">[m
+[32m+[m[32m            <div className="absolute inset-6 rounded-[1.5rem] border border-[#E7B5BB]/60 bg-[linear-gradient(135deg,#EAD9C8,#F5F3F0)] p-8">[m
+               <div className="grid h-full place-items-center rounded-[1.2rem] border-2 border-dashed border-[#E7B5BB] text-center">[m
+                 <div>[m
+[31m-                  <Icon name="mapPin" className="mx-auto mb-4 text-[#B07A8D]" size={44} />[m
+[32m+[m[32m                  <Icon name="mapPin" className="mx-auto mb-4 text-[#B0708D]" size={44} />[m
+                   <p className="font-serif text-3xl font-bold text-[#4A2E2B]">Map Placeholder</p>[m
+                   <p className="mt-2 text-[#7B5A56]">Embed your Google Map here</p>[m
+                 </div>[m
+[36m@@ -600,13 +621,13 @@[m [mfunction ContactSection() {[m
+     }[m
+   }[m
+ [m
+[31m-  const statusClass = status.type === 'success' ? 'text-green-700 bg-green-50 border-green-200' : status.type === 'error' ? 'text-red-700 bg-red-50 border-red-200' : 'text-[#7B5A56] bg-[#FFF9F6] border-[#E7B5BB]/60';[m
+[32m+[m[32m  const statusClass = status.type === 'success' ? 'text-green-700 bg-green-50 border-green-200' : status.type === 'error' ? 'text-red-700 bg-red-50 border-red-200' : 'text-[#7B5A56] bg-[#EAD9C8] border-[#E7B5BB]/60';[m
+ [m
+   return ([m
+     <section id="contact" className="section-soft px-6 py-24" aria-labelledby="contact-title">[m
+       <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.9fr_1.1fr]">[m
+         <div>[m
+[31m-          <p className="mb-3 text-sm font-bold uppercase tracking-[0.28em] text-[#B07A8D]">Contact Us</p>[m
+[32m+[m[32m          <p className="mb-3 text-sm font-bold uppercase tracking-[0.28em] text-[#B0708D]">Contact Us</p>[m
+           <h2 id="contact-title" className="font-serif text-4xl font-bold leading-tight text-[#4A2E2B] md:text-5xl">[m
+             Have a question? We would love to hear from you.[m
+           </h2>[m
+[36m@@ -614,10 +635,10 @@[m [mfunction ContactSection() {[m
+             Reach us for branch information, menu details, collaborations, or general inquiries.[m
+           </p>[m
+           <address className="mt-9 space-y-4 not-italic text-[#4A2E2B]">[m
+[31m-            <p className="flex items-center gap-3"><Icon name="phone" className="text-[#B07A8D]" /> +1 234 567 890</p>[m
+[31m-            <p className="flex items-center gap-3"><Icon name="messageCircle" className="text-[#B07A8D]" /> WhatsApp available</p>[m
+[31m-            <p className="flex items-center gap-3"><Icon name="instagram" className="text-[#B07A8D]" /> @chokola</p>[m
+[31m-            <p className="flex items-center gap-3"><Icon name="mail" className="text-[#B07A8D]" /> hello@chokola.com</p>[m
+[32m+[m[32m            <p className="flex items-center gap-3"><Icon name="phone" className="text-[#B0708D]" /> +1 234 567 890</p>[m
+[32m+[m[32m            <p className="flex items-center gap-3"><Icon name="messageCircle" className="text-[#B0708D]" /> WhatsApp available</p>[m
+[32m+[m[32m            <p className="flex items-center gap-3"><Icon name="instagram" className="text-[#B0708D]" /> @chokola</p>[m
+[32m+[m[32m            <p className="flex items-center gap-3"><Icon name="mail" className="text-[#B0708D]" /> hello@chokola.com</p>[m
+           </address>[m
+         </div>[m
+ [m
+[36m@@ -633,7 +654,7 @@[m [mfunction ContactSection() {[m
+                 autoComplete="name"[m
+                 aria-invalid={Boolean(fieldErrors.name)}[m
+                 aria-describedby={fieldErrors.name ? 'name-error' : undefined}[m
+[31m-                className="w-full rounded-2xl border border-[#E7B5BB]/70 bg-[#FFF9F6] px-4 py-4 outline-none transition focus:border-[#B07A8D] focus:ring-4 focus:ring-[#E7B5BB]/35"[m
+[32m+[m[32m                className="w-full rounded-2xl border border-[#E7B5BB]/70 bg-[#EAD9C8] px-4 py-4 outline-none transition focus:border-[#B0708D] focus:ring-4 focus:ring-[#E7B5BB]/35"[m
+                 placeholder="Your name"[m
+               />[m
+               {fieldErrors.name && <p id="name-error" className="mt-2 text-sm text-red-700">{fieldErrors.name}</p>}[m
+[36m@@ -649,7 +670,7 @@[m [mfunction ContactSection() {[m
+                 inputMode="tel"[m
+                 aria-invalid={Boolean(fieldErrors.phone)}[m
+                 aria-describedby={fieldErrors.phone ? 'phone-error' : undefined}[m
+[31m-                className="w-full rounded-2xl border border-[#E7B5BB]/70 bg-[#FFF9F6] px-4 py-4 outline-none transition focus:border-[#B07A8D] focus:ring-4 focus:ring-[#E7B5BB]/35"[m
+[32m+[m[32m                className="w-full rounded-2xl border border-[#E7B5BB]/70 bg-[#EAD9C8] px-4 py-4 outline-none transition focus:border-[#B0708D] focus:ring-4 focus:ring-[#E7B5BB]/35"[m
+                 placeholder="Your phone"[m
+               />[m
+               {fieldErrors.phone && <p id="phone-error" className="mt-2 text-sm text-red-700">{fieldErrors.phone}</p>}[m
+[36m@@ -664,7 +685,7 @@[m [mfunction ContactSection() {[m
+               onChange={handleChange}[m
+               aria-invalid={Boolean(fieldErrors.message)}[m
+               aria-describedby={fieldErrors.message ? 'message-error' : undefined}[m
+[31m-              className="min-h-40 w-full rounded-2xl border border-[#E7B5BB]/70 bg-[#FFF9F6] px-4 py-4 outline-none transition focus:border-[#B07A8D] focus:ring-4 focus:ring-[#E7B5BB]/35"[m
+[32m+[m[32m              className="min-h-40 w-full rounded-2xl border border-[#E7B5BB]/70 bg-[#EAD9C8] px-4 py-4 outline-none transition focus:border-[#B0708D] focus:ring-4 focus:ring-[#E7B5BB]/35"[m
+               placeholder="Write your message"[m
+             />[m
+             {fieldErrors.message && <p id="message-error" className="mt-2 text-sm text-red-700">{fieldErrors.message}</p>}[m
+[36m@@ -679,7 +700,7 @@[m [mfunction ContactSection() {[m
+           <button[m
+             type="submit"[m
+             disabled={isSubmitting}[m
+[31m-            className="mt-6 w-full rounded-full bg-[#E7B5BB] px-7 py-4 font-semibold text-[#4A2E2B] transition hover:-translate-y-1 hover:bg-[#B07A8D] hover:text-white disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:translate-y-0 disabled:hover:bg-[#E7B5BB] disabled:hover:text-[#4A2E2B]"[m
+[32m+[m[32m            className="mt-6 w-full rounded-full bg-[#E7B5BB] px-7 py-4 font-semibold text-[#4A2E2B] transition hover:-translate-y-1 hover:bg-[#B0708D] hover:text-white disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:translate-y-0 disabled:hover:bg-[#E7B5BB] disabled:hover:text-[#4A2E2B]"[m
+           >[m
+             {isSubmitting ? 'Sending...' : 'Send Message'}[m
+           </button>[m
+[36m@@ -694,7 +715,15 @@[m [mfunction Footer() {[m
+     <footer className="section-dark px-6 py-12 text-white">[m
+       <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr]">[m
+         <div>[m
+[31m-          <div className="font-script text-5xl text-[#E7B5BB]">Chokola</div>[m
+[32m+[m[32m          <div className="relative h-20 w-[clamp(120px,9vw,150px)]">[m
+[32m+[m[32m            <Image[m
+[32m+[m[32m              src="/chokola-logo.png"[m
+[32m+[m[32m              alt="Chokola Dessert Lounge logo"[m
+[32m+[m[32m              fill[m
+[32m+[m[32m              sizes="(max-width: 640px) 120px, (max-width: 1024px) 9vw, 150px"[m
+[32m+[m[32m              className="object-contain object-left"[m
+[32m+[m[32m            />[m
+[32m+[m[32m          </div>[m
+           <p className="mt-4 max-w-sm leading-7 text-white/65">[m
+             Premium desserts, soft elegance, and sweet lounge moments.[m
+           </p>[m
+[36m@@ -703,7 +732,7 @@[m [mfunction Footer() {[m
+         <div>[m
+           <h2 className="font-semibold text-[#E7B5BB]">Quick Links</h2>[m
+           <div className="mt-4 space-y-2 text-white/65">[m
+[31m-            {NAV_LINKS.slice(0, 4).map((link) => ([m
+[32m+[m[32m            {FOOTER_LINKS.slice(0, 4).map((link) => ([m
+               <p key={link.href}>[m
+                 <a href={link.href} className="hover:text-[#E7B5BB] focus-visible:text-[#E7B5BB]">{link.label}</a>[m
+               </p>[m
+[36m@@ -722,7 +751,7 @@[m [mfunction Footer() {[m
+       </div>[m
+ [m
+       <div className="mx-auto mt-10 max-w-6xl border-t border-white/10 pt-6 text-center text-sm text-white/45">[m
+[31m-        © 2026 Chokola Dessert Lounge. All rights reserved.[m
+[32m+[m[32m        &copy; 2026 Chokola Dessert Lounge. All rights reserved.[m
+       </div>[m
+     </footer>[m
+   );[m
+[36m@@ -731,12 +760,12 @@[m [mfunction Footer() {[m
+ const selfCheck = {[m
+   hasSixMenuItems: MENU_ITEMS.length === 6,[m
+   hasNoOrderingLabels: !JSON.stringify({ menuItems: MENU_ITEMS, navLinks: NAV_LINKS }).toLowerCase().match(/cart|checkout|order now|add to cart|payment|delivery/),[m
+[31m-  hasRequiredSections: ['#home', '#menu', '#about', '#location', '#contact'].every((href) => NAV_LINKS.some((link) => link.href === href)),[m
+[32m+[m[32m  hasRequiredSections: ['#home', '#menu', '#about'].every((href) => NAV_LINKS.some((link) => link.href === href)),[m
+   hasHeroSlides: HERO_SLIDES.length === 4,[m
+   hasHeroSlideImages: HERO_SLIDES.every((slide) => Boolean(slide.image && slide.name && slide.price && slide.alt)),[m
+   hasUniqueHeroSlideNames: new Set(HERO_SLIDES.map((slide) => slide.name)).size === HERO_SLIDES.length,[m
+   hasNoDuplicateNavHrefs: new Set(NAV_LINKS.map((link) => link.href)).size === NAV_LINKS.length,[m
+[31m-  usesChokolaBrand: BRAND.name === 'Chokola' && BRAND.primary === '#E7B5BB' && BRAND.secondary === '#4A2E2B',[m
+[32m+[m[32m  usesChokolaBrand: BRAND.name === 'Chokola' && BRAND.primary === '#E7B5BB' && BRAND.secondary === '#4A2E2B' && BRAND.accent === '#B0708D',[m
+ };[m
+ [m
+ if (typeof console !== 'undefined') {[m
+[36m@@ -774,9 +803,14 @@[m [mexport default function ChokolaLandingPage() {[m
+   }, [mobileMenuOpen]);[m
+ [m
+   return ([m
+[31m-    <main className="min-h-screen overflow-hidden bg-[#FFF5F0] text-[#4A2E2B]">[m
+[31m-      <Navbar mobileMenuOpen={mobileMenuOpen} onToggleMenu={toggleMobileMenu} onCloseMenu={closeMobileMenu} />[m
+[31m-      <Hero activeSlide={activeSlide} setActiveSlide={setActiveSlide} />[m
+[32m+[m[32m    <main className="min-h-screen overflow-hidden bg-[#F5F3F0] text-[#4A2E2B]">[m
+[32m+[m[32m      <Hero[m
+[32m+[m[32m        activeSlide={activeSlide}[m
+[32m+[m[32m        setActiveSlide={setActiveSlide}[m
+[32m+[m[32m        mobileMenuOpen={mobileMenuOpen}[m
+[32m+[m[32m        onToggleMenu={toggleMobileMenu}[m
+[32m+[m[32m        onCloseMenu={closeMobileMenu}[m
+[32m+[m[32m      />[m
+       <MenuSection />[m
+       <AboutSection />[m
+       <LocationSection />[m
