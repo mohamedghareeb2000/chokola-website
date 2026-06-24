@@ -9,9 +9,12 @@ colors:
   nude-beige: "#EAD9C8"
   soft-gold: "#C9A86A"
 typography:
+  logo:
+    fontFamily: "Angelista"
+    usage: "Official logo artwork only; never render as live website text"
   display:
-    fontFamily: "Angelista, cursive"
-    fontWeight: 400
+    fontFamily: "Montserrat, sans-serif"
+    fontWeight: 600
   body:
     fontFamily: "Montserrat, sans-serif"
     fontWeight: 400
@@ -117,24 +120,24 @@ The official palette is soft, feminine, and indulgent, reflecting luxury, warmth
 
 ## Typography
 
-**Display Font:** Angelista Regular (cursive fallback)
-**Body Font:** Montserrat (sans-serif fallback)
+**Logo Typeface:** Angelista Regular, exclusively within the official logo artwork
+**Website Typeface:** Montserrat
 
-**Character:** Angelista gives Chokola its recognizable feminine signature; Montserrat supplies clarity, balance, and modern structure. The pairing is used consistently across print and digital media.
+**Character:** Angelista gives the official Chokola logo its recognizable feminine signature. It is not a website text face. Montserrat supplies clarity, balance, and modern structure for every live text role.
 
 ### Hierarchy
 
-- **Display** (Angelista Regular): Reserved for the Chokola brand name and key headlines where a signature touch is needed. It is not body copy.
-- **Headline** (Montserrat Semibold): Used for major website section headings and high-priority messages when clarity is more important than the script voice.
+- **Logo artwork** (Angelista Regular): Appears only inside the existing official logo artwork. Never recreate the logo or set headings, the brand name, or any other live website text in Angelista.
+- **Display / Headline** (Montserrat Semibold): Used for major website headings and high-priority messages.
 - **Title** (Montserrat Medium or Semibold): Used for product names, navigation group headings, cards, and form titles.
 - **Body** (Montserrat Regular): Used for descriptions, supporting information, menus, and form content; keep long prose within approximately 65–75 characters per line.
 - **Label** (Montserrat Medium or Semibold): Used for buttons, navigation, prices, short metadata, and form labels. Montserrat Light may be used for quiet supporting text when contrast remains accessible.
 
 ### Named Rules
 
-**The Two-Family Rule.** Angelista and Montserrat are the only official website type families. Serif lettering inside menu images is artwork, not a reusable website font.
+**The Single Live-Family Rule.** Montserrat is the only typeface used for live website text, including headings, body copy, navigation, buttons, labels, forms, product information, and the brand name when it appears as text.
 
-**The Signature Rule.** Use Angelista selectively. Montserrat carries all functional communication, including body text, navigation, menus, UI labels, and controls.
+**The Logo Typeface Rule.** Angelista is exclusive to the existing official logo artwork. Do not load it as a webfont or apply it to any live text. Serif lettering inside supplied menu imagery is also artwork, not a reusable website font.
 
 ## Elevation
 
@@ -202,7 +205,7 @@ Component geometry and motion in this section are website-specific rules extract
 ### Do:
 
 - **Do** use the exact official colors: Dusty Mauve (`#B07A8D`), Blush Pink (`#E7B5BB`), Chocolate Brown (`#4A2E2B`), Warm Cream (`#FFF5F0`), Nude Beige (`#EAD9C8`), and Soft Gold (`#C9A86A`).
-- **Do** use Angelista Regular for the brand name and selective key headlines, and Montserrat Light, Regular, Medium, or Semibold for all supporting communication.
+- **Do** use Montserrat for every live website text role. Preserve Angelista only as part of the existing official logo artwork.
 - **Do** maintain official logo clear space, minimum size, icon proportion, and strong contrast.
 - **Do** use high-quality dessert photography with warm, appetite-led styling and clear product detail.
 - **Do** preserve useful information density while keeping sections readable and well spaced.

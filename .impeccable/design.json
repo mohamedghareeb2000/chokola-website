@@ -12,8 +12,9 @@
       "soft-gold": { "role": "tertiary", "displayName": "Soft Gold", "canonical": "#C9A86A" }
     },
     "typographyMeta": {
-      "display": { "displayName": "Angelista Regular", "purpose": "Official brand name and selective key headlines." },
-      "body": { "displayName": "Montserrat Regular", "purpose": "Official supporting body text and functional communication." },
+      "logo": { "displayName": "Angelista Regular", "purpose": "Existing official logo artwork only; never used for live website text." },
+      "display": { "displayName": "Montserrat Semibold", "purpose": "All live display text and website headings." },
+      "body": { "displayName": "Montserrat Regular", "purpose": "All live body text and functional communication." },
       "title": { "displayName": "Montserrat Semibold", "purpose": "Website headings, product titles, and prominent labels." },
       "label": { "displayName": "Montserrat Medium", "purpose": "Buttons, navigation, form labels, prices, and metadata." }
     },
@@ -105,14 +106,14 @@
     "rules": [
       { "name": "The Official Six Rule", "body": "These six colors are the complete official palette. Never rename, recolor, or supplement them as brand colors without an updated identity standard.", "section": "colors" },
       { "name": "The Contrast Rule", "body": "Chocolate Brown is the default readable foreground on Warm Cream, Blush Pink, and Nude Beige. Dusty Mauve and Soft Gold are accents, not substitutes for legible body text.", "section": "colors" },
-      { "name": "The Two-Family Rule", "body": "Angelista and Montserrat are the only official website type families. Serif lettering inside menu images is artwork, not a reusable website font.", "section": "typography" },
-      { "name": "The Signature Rule", "body": "Use Angelista selectively. Montserrat carries all functional communication, including body text, navigation, menus, UI labels, and controls.", "section": "typography" },
+      { "name": "The Single Live-Family Rule", "body": "Montserrat is the only typeface used for live website text, including headings, body copy, navigation, buttons, labels, forms, product information, and the brand name when it appears as text.", "section": "typography" },
+      { "name": "The Logo Typeface Rule", "body": "Angelista is exclusive to the existing official logo artwork. Do not load it as a webfont or apply it to any live text. Serif lettering inside supplied menu imagery is also artwork, not a reusable website font.", "section": "typography" },
       { "name": "The Tonal-First Rule", "body": "Use color and composition before shadow. Shadows must remain diffuse, chocolate-tinted, and subordinate to product imagery.", "section": "elevation" },
       { "name": "The No-Logo-Effects Rule", "body": "Never add glow, shadow, outline, bevel, or other effects to the official logo. The supplied without background.png is a presentation preview, not an approved logo variant.", "section": "elevation" }
     ],
     "dos": [
       "Do use the exact six official colors without renaming them.",
-      "Do use Angelista Regular and Montserrat in their approved roles.",
+      "Do use Montserrat for every live website text role and preserve Angelista only inside the existing official logo artwork.",
       "Do maintain official logo clear space, minimum size, icon proportion, and strong contrast.",
       "Do use high-quality, appetite-led dessert photography.",
       "Do meet WCAG 2.1 AA."
