@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-24T12:31:11.9340380+03:00",
+  "title": "Design System: Chokola Dessert Lounge",
+  "extensions": {
+    "colorMeta": {
+      "dusty-mauve": { "role": "primary", "displayName": "Dusty Mauve", "canonical": "#B07A8D" },
+      "blush-pink": { "role": "primary", "displayName": "Blush Pink", "canonical": "#E7B5BB" },
+      "chocolate-brown": { "role": "secondary", "displayName": "Chocolate Brown", "canonical": "#4A2E2B" },
+      "warm-cream": { "role": "neutral", "displayName": "Warm Cream", "canonical": "#FFF5F0" },
+      "nude-beige": { "role": "neutral", "displayName": "Nude Beige", "canonical": "#EAD9C8" },
+      "soft-gold": { "role": "tertiary", "displayName": "Soft Gold", "canonical": "#C9A86A" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Angelista Regular", "purpose": "Official brand name and selective key headlines." },
+      "body": { "displayName": "Montserrat Regular", "purpose": "Official supporting body text and functional communication." },
+      "title": { "displayName": "Montserrat Semibold", "purpose": "Website headings, product titles, and prominent labels." },
+      "label": { "displayName": "Montserrat Medium", "purpose": "Buttons, navigation, form labels, prices, and metadata." }
+    },
+    "shadows": [
+      { "name": "soft-ambient", "value": "0 22px 70px rgba(59, 36, 36, 0.10)", "purpose": "Website-specific broad separation for large featured surfaces." },
+      { "name": "card-ambient", "value": "0 16px 44px rgba(59, 36, 36, 0.08)", "purpose": "Website-specific quiet card separation when tonal contrast is insufficient." }
+    ],
+    "motion": [
+      { "name": "state-transition", "value": "300ms cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Current website hover and focus feedback." },
+      { "name": "entrance-fade-up", "value": "650ms ease-out", "purpose": "Current website upward entrance fade." },
+      { "name": "list-stagger", "value": "100ms", "purpose": "Current website stagger interval within a single list." },
+      { "name": "navigation-transition", "value": "280ms ease-out", "purpose": "Current website navigation entrance and active-state movement." },
+      { "name": "scroll-cue-loop", "value": "1800ms ease-in-out", "purpose": "Current website scroll cue loop only." },
+      { "name": "reduced-motion", "value": "0.01ms", "purpose": "Current reduced-motion replacement for animated transitions." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" },
+      { "name": "2xl", "value": "1536px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Current pill-shaped primary action using the official Blush Pink and Chocolate Brown.",
+      "html": "<button class=\"ds-btn-primary\">EXPLORE MENU</button>",
+      "css": ".ds-btn-primary { min-height: 56px; padding: 16px 32px; border: 0; border-radius: 999px; background: #E7B5BB; color: #4A2E2B; font: 600 14px/1 Montserrat, sans-serif; cursor: pointer; transition: background-color 300ms cubic-bezier(0.4,0,0.2,1), color 300ms cubic-bezier(0.4,0,0.2,1), transform 300ms cubic-bezier(0.4,0,0.2,1); } .ds-btn-primary:hover { background: #B07A8D; color: #FFF5F0; transform: translateY(-2px); } .ds-btn-primary:focus-visible { outline: 3px solid rgba(176,122,141,0.5); outline-offset: 4px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Current light secondary action with an official-palette border.",
+      "html": "<button class=\"ds-btn-secondary\">VISIT BRANCH</button>",
+      "css": ".ds-btn-secondary { min-height: 56px; padding: 16px 32px; border: 1px solid rgba(231,181,187,0.70); border-radius: 999px; background: #FFF5F0; color: #4A2E2B; font: 600 14px/1 Montserrat, sans-serif; cursor: pointer; transition: background-color 300ms cubic-bezier(0.4,0,0.2,1), border-color 300ms cubic-bezier(0.4,0,0.2,1), transform 300ms cubic-bezier(0.4,0,0.2,1); } .ds-btn-secondary:hover { border-color: #B07A8D; transform: translateY(-2px); } .ds-btn-secondary:focus-visible { outline: 3px solid rgba(176,122,141,0.5); outline-offset: 4px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Current white website field with rounded geometry and official focus colors.",
+      "html": "<label class=\"ds-field-label\" for=\"ds-name\">Name</label><input class=\"ds-field\" id=\"ds-name\" placeholder=\"Your name\">",
+      "css": ".ds-field-label { display: block; margin-bottom: 8px; color: #4A2E2B; font: 600 14px/1.4 Montserrat, sans-serif; } .ds-field { width: 100%; height: 64px; padding: 0 20px; border: 1px solid #EAD9C8; border-radius: 18px; background: #FFFFFF; color: #4A2E2B; font: 400 16px/1.5 Montserrat, sans-serif; outline: none; transition: border-color 300ms cubic-bezier(0.4,0,0.2,1), box-shadow 300ms cubic-bezier(0.4,0,0.2,1); } .ds-field::placeholder { color: #725758; } .ds-field:focus { border-color: #B07A8D; box-shadow: 0 0 0 2px rgba(231,181,187,0.24); } .ds-field:focus-visible { outline: 3px solid rgba(176,122,141,0.5); outline-offset: 4px; }"
+    },
+    {
+      "name": "Product Card",
+      "kind": "card",
+      "refersTo": "product-card",
+      "description": "Current appetite-led card with a large image area and restrained text block.",
+      "html": "<article class=\"ds-product-card\"><div class=\"ds-product-image\" role=\"img\" aria-label=\"Dessert product photograph\"></div><div class=\"ds-product-copy\"><span class=\"ds-product-label\">SIGNATURE</span><h3>Waffles</h3><p>Warm golden waffles layered with rich chocolate and premium toppings.</p></div></article>",
+      "css": ".ds-product-card { overflow: hidden; border: 1px solid rgba(234,217,200,0.80); border-radius: 30px; background: #FFF5F0; color: #4A2E2B; font-family: Montserrat, sans-serif; } .ds-product-image { aspect-ratio: 5 / 6; background: #EAD9C8; } .ds-product-copy { padding: 16px 24px; border-top: 1px solid rgba(234,217,200,0.70); } .ds-product-label { color: #C9A86A; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; } .ds-product-copy h3 { margin: 6px 0 0; font-size: 24px; line-height: 1.2; } .ds-product-copy p { margin: 8px 0 0; color: #725758; font-size: 14px; line-height: 1.7; }"
+    },
+    {
+      "name": "Navigation Link",
+      "kind": "nav",
+      "description": "Current rounded navigation item with a non-color-only active underline.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Preview navigation\"><a class=\"ds-nav-link ds-nav-link-active\" href=\"#\">Menu</a><a class=\"ds-nav-link\" href=\"#\">Branch</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 12px; padding: 8px; background: #FFF5F0; font-family: Montserrat, sans-serif; } .ds-nav-link { position: relative; padding: 10px 16px; border-radius: 999px; color: #4A2E2B; font-size: 16px; font-weight: 600; text-decoration: none; transition: background-color 300ms cubic-bezier(0.4,0,0.2,1); } .ds-nav-link:hover, .ds-nav-link:focus-visible { background: rgba(231,181,187,0.18); } .ds-nav-link:focus-visible { outline: 3px solid rgba(176,122,141,0.5); outline-offset: 4px; } .ds-nav-link-active::after { content: ''; position: absolute; left: 16px; right: 16px; bottom: 5px; height: 2px; border-radius: 999px; background: #E7B5BB; }"
+    },
+    {
+      "name": "Status Chip",
+      "kind": "chip",
+      "description": "Current pill status pattern that pairs a written state with a visible indicator.",
+      "html": "<span class=\"ds-status\"><span class=\"ds-status-dot\" aria-hidden=\"true\"></span>Open today</span>",
+      "css": ".ds-status { display: inline-flex; min-height: 40px; align-items: center; gap: 10px; padding: 0 16px; border-radius: 999px; background: #FFF5F0; color: #4A2E2B; font: 600 14px/1 Montserrat, sans-serif; } .ds-status-dot { width: 10px; height: 10px; border-radius: 50%; background: #B07A8D; }"
+    },
+    {
+      "name": "Social Icon Button",
+      "kind": "button",
+      "description": "Current compact circular social action using the official Dusty Mauve.",
+      "html": "<button class=\"ds-social\" aria-label=\"Instagram\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"5\"/><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M17.5 6.5h.01\"/></svg></button>",
+      "css": ".ds-social { display: inline-flex; width: 40px; height: 40px; align-items: center; justify-content: center; border: 1px solid rgba(176,122,141,0.28); border-radius: 999px; background: transparent; color: #B07A8D; cursor: pointer; transition: background-color 300ms cubic-bezier(0.4,0,0.2,1), color 300ms cubic-bezier(0.4,0,0.2,1), border-color 300ms cubic-bezier(0.4,0,0.2,1); } .ds-social:hover { border-color: #B07A8D; background: #B07A8D; color: #FFF5F0; } .ds-social:focus-visible { outline: 3px solid rgba(176,122,141,0.5); outline-offset: 4px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Elegant. Modern. Sweet.",
+    "overview": "The official Chokola identity is soft, feminine, indulgent, and warm. The strawberry-and-chocolate logo, appetite-led dessert photography, generous product presentation, and controlled pink–brown palette make the brand feel premium without becoming cold or formal. The official brand board is the single source of truth for identity colors, typography, and logo usage. The website-specific system supports that identity with rounded controls, softly separated surfaces, generous section spacing, and restrained interaction feedback. These digital rules describe the current implementation; they are not additions to the official brand identity.",
+    "keyCharacteristics": [
+      "Official palette and logo remain unchanged across digital applications.",
+      "Dessert imagery is abundant, high quality, and central to product presentation.",
+      "Layouts are warm and generous but retain useful information density.",
+      "Website controls are rounded, tactile, and clearly interactive.",
+      "Motion is restrained, purposeful, and reduced when requested by the user."
+    ],
+    "rules": [
+      { "name": "The Official Six Rule", "body": "These six colors are the complete official palette. Never rename, recolor, or supplement them as brand colors without an updated identity standard.", "section": "colors" },
+      { "name": "The Contrast Rule", "body": "Chocolate Brown is the default readable foreground on Warm Cream, Blush Pink, and Nude Beige. Dusty Mauve and Soft Gold are accents, not substitutes for legible body text.", "section": "colors" },
+      { "name": "The Two-Family Rule", "body": "Angelista and Montserrat are the only official website type families. Serif lettering inside menu images is artwork, not a reusable website font.", "section": "typography" },
+      { "name": "The Signature Rule", "body": "Use Angelista selectively. Montserrat carries all functional communication, including body text, navigation, menus, UI labels, and controls.", "section": "typography" },
+      { "name": "The Tonal-First Rule", "body": "Use color and composition before shadow. Shadows must remain diffuse, chocolate-tinted, and subordinate to product imagery.", "section": "elevation" },
+      { "name": "The No-Logo-Effects Rule", "body": "Never add glow, shadow, outline, bevel, or other effects to the official logo. The supplied without background.png is a presentation preview, not an approved logo variant.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use the exact six official colors without renaming them.",
+      "Do use Angelista Regular and Montserrat in their approved roles.",
+      "Do maintain official logo clear space, minimum size, icon proportion, and strong contrast.",
+      "Do use high-quality, appetite-led dessert photography.",
+      "Do meet WCAG 2.1 AA."
+    ],
+    "donts": [
+      "Don't change official colors, invent additional brand colors, or rename identity elements.",
+      "Don't stretch, distort, rotate, flip, recolor, remove the strawberry icon from, or add effects to the official logo.",
+      "Don't treat serif typography inside menu artwork as an official website font.",
+      "Don't resemble childish candy branding, generic bakery templates, cold or overly formal luxury, excessively minimal layouts, generic SaaS interfaces, or cluttered designs with excessive animation."
+    ]
+  }
+}
