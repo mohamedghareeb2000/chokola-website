@@ -13,7 +13,7 @@ const BRAND = {
   accent: '#B07A8D',
   cream: '#EAD9C8',
   gold: '#C9A86A',
-  muted: '#725758',
+  muted: '#4A2E2B',
 };
 
 const MENU_ITEMS = [
@@ -269,8 +269,8 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
       transition={{ duration: 0.28, ease: 'easeOut' }}
       className={`fixed inset-x-0 top-0 z-50 px-4 transition-all duration-300 sm:px-6 lg:px-10 ${
         isScrolled
-          ? 'border-b border-[#E7B5BB]/24 bg-[#FFF5F0]/92 backdrop-blur-xl'
-          : 'border-b border-transparent bg-white/52 backdrop-blur-sm'
+          ? 'border-b border-chokola-blush/24 bg-chokola-cream/92 backdrop-blur-xl'
+          : 'border-b border-transparent bg-chokola-cream/52 backdrop-blur-sm'
       }`}
       aria-label="Main navigation"
     >
@@ -281,7 +281,7 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
           <Logo />
         </a>
 
-        <div className="relative z-10 hidden flex-1 items-center justify-center gap-3 text-[16.5px] font-semibold text-[#4A2E2B] lg:flex">
+        <div className="relative z-10 hidden flex-1 items-center justify-center gap-3 text-[16.5px] font-semibold text-chokola-chocolate lg:flex">
           {NAV_LINKS.map((link) => {
             const isActive = activeSection === link.href.slice(1);
 
@@ -289,13 +289,13 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
               <a
                 key={link.href}
                 href={link.href}
-                className="group relative rounded-full px-4 py-2.5 text-[#4A2E2B] transition-all duration-300 hover:bg-[#E7B5BB]/12 focus-visible:bg-[#E7B5BB]/12"
+                className="group relative rounded-full px-4 py-2.5 text-chokola-chocolate transition-all duration-300 hover:bg-chokola-blush/12 focus-visible:bg-chokola-blush/12"
                 aria-current={isActive ? 'page' : undefined}
               >
                 {isActive && (
                   <motion.span
                     layoutId="navbar-active-underline"
-                    className="absolute bottom-1.5 left-4 right-4 h-[2px] rounded-full bg-[#E7B5BB]/85"
+                    className="absolute bottom-1.5 left-4 right-4 h-[2px] rounded-full bg-chokola-blush/85"
                     transition={{ duration: 0.28, ease: 'easeOut' }}
                     aria-hidden="true"
                   />
@@ -309,14 +309,14 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
         <div className="relative z-10 ml-auto flex items-center gap-3">
           <a
             href="#contact"
-            className="hidden min-h-11 items-center rounded-full bg-[#E7B5BB] px-6 text-sm font-semibold leading-none text-[#4A2E2B] transition-colors duration-300 hover:bg-[#B07A8D] hover:text-[#FFF5F0] sm:inline-flex"
+            className="hidden min-h-11 items-center rounded-full bg-chokola-blush px-6 text-sm font-semibold leading-none text-chokola-chocolate transition-colors duration-300 hover:bg-chokola-chocolate hover:text-chokola-cream sm:inline-flex"
           >
             Contact Us
           </a>
           <button
             type="button"
             onClick={onToggleMenu}
-            className="grid h-11 w-11 place-items-center rounded-full border border-[#E7B5BB]/45 bg-[#FFF5F0]/78 text-[#B07A8D] transition-all duration-300 hover:bg-[#E7B5BB]/16 lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-full border border-chokola-blush/45 bg-chokola-cream/78 text-chokola-chocolate transition-all duration-300 hover:bg-chokola-blush/16 lg:hidden"
             aria-controls="mobile-menu"
             aria-expanded={mobileMenuOpen}
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
@@ -332,15 +332,15 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
           initial={{ opacity: 0, y: -12, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.25 }}
-          className="mx-auto max-w-[1520px] border-t border-[#E7B5BB]/18 bg-[#FFF5F0]/94 py-3 backdrop-blur-xl lg:hidden"
+          className="mx-auto max-w-[1520px] border-t border-chokola-blush/18 bg-chokola-cream/94 py-3 backdrop-blur-xl lg:hidden"
         >
-          <div className="grid gap-2 text-sm font-semibold text-[#3B2424]">
+          <div className="grid gap-2 text-sm font-semibold text-chokola-chocolate">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={onCloseMenu}
-                className={`rounded-full px-4 py-3 text-[#4A2E2B] transition-all duration-300 hover:bg-[#E7B5BB]/12 focus-visible:bg-[#E7B5BB]/12 ${activeSection === link.href.slice(1) ? 'bg-[#E7B5BB]/12 font-semibold' : ''}`}
+                className={`rounded-full px-4 py-3 text-chokola-chocolate transition-all duration-300 hover:bg-chokola-blush/12 focus-visible:bg-chokola-blush/12 ${activeSection === link.href.slice(1) ? 'bg-chokola-blush/12 font-semibold' : ''}`}
                 aria-current={activeSection === link.href.slice(1) ? 'page' : undefined}
               >
                 {link.label}
@@ -357,7 +357,7 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
   return (
     <section
       id="home"
-      className="relative min-h-screen overflow-hidden bg-white px-4 pb-16 pt-[130px] sm:px-6 sm:pt-[136px] lg:px-10 lg:pt-[138px]"
+      className="relative min-h-screen overflow-hidden bg-chokola-cream px-4 pb-16 pt-[130px] sm:px-6 sm:pt-[136px] lg:px-10 lg:pt-[138px]"
       aria-labelledby="hero-title"
     >
       <Navbar
@@ -367,37 +367,37 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
         isScrolled={isScrolled}
         activeSection={activeSection}
       />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_42%,rgba(246,201,210,0.28),transparent_34%),radial-gradient(circle_at_28%_72%,rgba(243,228,216,0.34),transparent_30%)]" aria-hidden="true" />
+      <div className="hero-atmosphere pointer-events-none absolute inset-0" aria-hidden="true" />
 
       <div className="relative z-10 mx-auto grid min-h-[calc(100vh-210px)] w-full max-w-[1520px] items-center gap-14 lg:grid-cols-[0.45fr_0.55fr] lg:gap-12 xl:gap-14">
         <div className="max-w-[700px] lg:-mt-8">
-          <p className="mb-5 text-xs font-bold uppercase tracking-[0.28em] text-[#C9A86A]">
+          <p className="mb-5 text-xs font-bold uppercase tracking-[0.28em] text-chokola-chocolate">
             Since 2021 • Crafted Fresh Daily
           </p>
           <h1
             id="hero-title"
-            className="max-w-[720px] font-serif leading-[0.96] text-[#3B2424]"
+            className="max-w-[720px] font-serif leading-[0.96] text-chokola-chocolate"
           >
             <span className="block text-[2.75rem] font-bold sm:text-[3.35rem] md:text-[3.95rem] lg:text-[4.15rem] xl:text-[4.65rem] lg:whitespace-nowrap">
-              Premium <span className="text-[#C9A86A]">Desserts</span>
+              Premium <span className="text-chokola-mauve">Desserts</span>
             </span>
-            <span className="mt-1 block text-[2.35rem] font-medium text-[#4A2E2B]/92 sm:text-[2.9rem] md:text-[3.35rem] lg:text-[3.45rem] xl:text-[3.95rem] lg:whitespace-nowrap">Crafted With Love</span>
+            <span className="mt-1 block text-[2.35rem] font-medium text-chokola-chocolate/92 sm:text-[2.9rem] md:text-[3.35rem] lg:text-[3.45rem] xl:text-[3.95rem] lg:whitespace-nowrap">Crafted With Love</span>
           </h1>
 
-          <p className="mt-6 max-w-[560px] text-base leading-7 text-[#3B2424]/78 sm:text-lg sm:leading-8">
+          <p className="mt-6 max-w-[560px] text-base leading-7 text-chokola-chocolate/78 sm:text-lg sm:leading-8">
             Elegant desserts made with premium ingredients to elevate every celebration.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-5" aria-label="Hero calls to action">
             <a
               href="#menu"
-              className="inline-flex min-h-14 items-center justify-center rounded-full bg-[#E7B5BB] px-9 text-sm font-bold leading-none text-[#4A2E2B] transition-all duration-300 hover:-translate-y-1 hover:bg-[#B07A8D] hover:text-[#FFF5F0] focus-visible:bg-[#B07A8D] focus-visible:text-[#FFF5F0]"
+              className="inline-flex min-h-14 items-center justify-center rounded-full bg-chokola-blush px-9 text-sm font-bold leading-none text-chokola-chocolate transition-all duration-300 hover:-translate-y-1 hover:bg-chokola-chocolate hover:text-chokola-cream focus-visible:bg-chokola-chocolate focus-visible:text-chokola-cream"
             >
               Explore Menu
             </a>
             <a
               href="#branch"
-              className="inline-flex min-h-14 items-center justify-center rounded-full border border-[#E7B5BB]/70 bg-white/35 px-9 text-sm font-semibold leading-none text-[#4A2E2B] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#B07A8D]/75 hover:bg-[#FFF5F0]/70"
+              className="inline-flex min-h-14 items-center justify-center rounded-full border border-chokola-blush/70 bg-chokola-cream/35 px-9 text-sm font-semibold leading-none text-chokola-chocolate transition-all duration-300 hover:-translate-y-0.5 hover:border-chokola-mauve/75 hover:bg-chokola-cream/70"
             >
               Visit Branch
             </a>
@@ -405,29 +405,29 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
 
           <div className="mt-8 flex max-w-[560px] flex-wrap items-start gap-x-9 gap-y-5" aria-label="Chokola highlights">
             <div>
-              <p className="font-serif text-2xl font-semibold leading-none text-[#C9A86A]">20+</p>
-              <p className="mt-1.5 text-xs font-medium leading-none text-[#4A2E2B]/78">Desserts</p>
+              <p className="font-serif text-2xl font-semibold leading-none text-chokola-chocolate">20+</p>
+              <p className="mt-1.5 text-xs font-medium leading-none text-chokola-chocolate/78">Desserts</p>
             </div>
             <div>
-              <p className="font-serif text-2xl font-semibold leading-none text-[#C9A86A]">4.9★</p>
-              <p className="mt-1.5 text-xs font-medium leading-none text-[#4A2E2B]/78">Rating</p>
+              <p className="font-serif text-2xl font-semibold leading-none text-chokola-chocolate">4.9★</p>
+              <p className="mt-1.5 text-xs font-medium leading-none text-chokola-chocolate/78">Rating</p>
             </div>
             <div>
-              <p className="font-serif text-2xl font-semibold leading-none text-[#C9A86A]">Daily</p>
-              <p className="mt-1.5 text-xs font-medium leading-none text-[#4A2E2B]/78">Fresh Made</p>
+              <p className="font-serif text-2xl font-semibold leading-none text-chokola-chocolate">Daily</p>
+              <p className="mt-1.5 text-xs font-medium leading-none text-chokola-chocolate/78">Fresh Made</p>
             </div>
           </div>
         </div>
 
         <div className="relative flex min-h-[460px] items-center justify-center lg:min-h-[720px] lg:justify-end">
-          <div className="absolute left-[48%] top-1/2 h-[78%] w-[82%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,rgba(201,168,106,0.22)_0%,rgba(201,168,106,0.10)_34%,transparent_70%)] blur-3xl" aria-hidden="true" />
-          <div className="absolute left-[58%] top-[48%] h-[82%] w-[88%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,245,240,0.74)_0%,rgba(231,181,187,0.18)_38%,transparent_72%)] blur-2xl" aria-hidden="true" />
+          <div className="hero-gold-glow absolute left-[48%] top-1/2 h-[78%] w-[82%] -translate-x-1/2 -translate-y-1/2 blur-3xl" aria-hidden="true" />
+          <div className="hero-blush-glow absolute left-[58%] top-[48%] h-[82%] w-[88%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl" aria-hidden="true" />
           <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-            <span className="absolute right-[20%] top-[22%] h-1.5 w-1.5 rounded-full bg-[#4A2E2B]/18 blur-[0.5px]" />
-            <span className="absolute right-[9%] top-[36%] h-2 w-2 rounded-full bg-[#B07A8D]/14 blur-[0.5px]" />
-            <span className="absolute right-[31%] top-[58%] h-1 w-1 rounded-full bg-[#C9A86A]/38" />
-            <span className="absolute right-[16%] bottom-[25%] h-1.5 w-1.5 rounded-full bg-[#4A2E2B]/14 blur-[0.5px]" />
-            <span className="absolute right-[43%] top-[33%] h-1 w-1 rounded-full bg-[#B07A8D]/18" />
+            <span className="absolute right-[20%] top-[22%] h-1.5 w-1.5 rounded-full bg-chokola-chocolate/18 blur-[0.5px]" />
+            <span className="absolute right-[9%] top-[36%] h-2 w-2 rounded-full bg-chokola-mauve/14 blur-[0.5px]" />
+            <span className="absolute right-[31%] top-[58%] h-1 w-1 rounded-full bg-chokola-gold/38" />
+            <span className="absolute right-[16%] bottom-[25%] h-1.5 w-1.5 rounded-full bg-chokola-chocolate/14 blur-[0.5px]" />
+            <span className="absolute right-[43%] top-[33%] h-1 w-1 rounded-full bg-chokola-mauve/18" />
           </div>
           <Image
             src="/chocolate-sensations-hero.png"
@@ -442,7 +442,7 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
       </div>
       <a
         href="#about"
-        className="absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#B07A8D]/70 transition-colors duration-300 hover:text-[#B07A8D] md:inline-flex"
+        className="absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-chokola-chocolate/78 transition-colors duration-300 hover:text-chokola-chocolate md:inline-flex"
       >
         <motion.span
           animate={{ y: [0, 4, 0] }}
@@ -459,7 +459,7 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
 
 function MenuCard({ item }) {
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-[30px] border border-[#EAD9C8]/80 bg-[#FFF5F0]">
+    <article className="flex h-full flex-col overflow-hidden rounded-[30px] border border-chokola-nude/80 bg-chokola-cream">
       <div className="relative aspect-[5/6] w-full overflow-hidden">
         <Image
           src={item.image}
@@ -470,11 +470,11 @@ function MenuCard({ item }) {
         />
       </div>
 
-      <div className="flex min-h-[155px] flex-1 flex-col border-t border-[#EAD9C8]/70 px-6 py-4">
-        <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#C9A86A]">{item.label}</p>
-        <h3 className="mt-1.5 font-serif text-2xl font-semibold leading-tight text-[#4A2E2B]">{item.title}</h3>
-        <p className="mt-2 text-sm leading-6 text-[#4A2E2B]/66">{item.description}</p>
-        <p className="mt-auto pt-3 text-xs leading-5 text-[#4A2E2B]/52">Crafted fresh daily</p>
+      <div className="flex min-h-[155px] flex-1 flex-col border-t border-chokola-nude/70 px-6 py-4">
+        <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-chokola-chocolate">{item.label}</p>
+        <h3 className="mt-1.5 font-serif text-2xl font-semibold leading-tight text-chokola-chocolate">{item.title}</h3>
+        <p className="mt-2 text-sm leading-6 text-chokola-chocolate/78">{item.description}</p>
+        <p className="mt-auto pt-3 text-xs leading-5 text-chokola-chocolate/78">Crafted fresh daily</p>
       </div>
     </article>
   );
@@ -528,14 +528,14 @@ function MenuSection() {
   ];
 
   return (
-    <section id="menu" className="bg-white px-6 py-12 lg:px-10" aria-labelledby="menu-title">
+    <section id="menu" className="bg-chokola-cream px-6 py-12 lg:px-10" aria-labelledby="menu-title">
       <div className="mx-auto max-w-7xl">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-base font-bold uppercase tracking-[0.3em] text-[#B07A8D]">Menu</p>
-          <h2 id="menu-title" className="mt-2 font-serif text-4xl font-semibold leading-[1.08] text-[#3B2424] sm:text-5xl lg:text-[3.5rem]">
+          <p className="text-base font-bold uppercase tracking-[0.3em] text-chokola-chocolate">Menu</p>
+          <h2 id="menu-title" className="mt-2 font-serif text-4xl font-semibold leading-[1.08] text-chokola-chocolate sm:text-5xl lg:text-[3.5rem]">
             Signature Desserts
           </h2>
-          <p className="mx-auto mt-2 max-w-3xl text-sm leading-7 text-[#4A2E2B]/64 sm:text-base sm:leading-8">
+          <p className="mx-auto mt-2 max-w-3xl text-sm leading-7 text-chokola-chocolate/78 sm:text-base sm:leading-8">
             Warm waffles, rich chocolate creations, handcrafted cakes, premium brownies, ice cream, and sweet cups made fresh daily using carefully selected ingredients and crafted for sharing every sweet moment.
           </p>
         </div>
@@ -570,7 +570,7 @@ function MenuSection() {
             aria-expanded={showAllDesserts}
             aria-controls="more-desserts"
             onClick={() => setShowAllDesserts((current) => !current)}
-            className="mx-auto flex w-full min-w-0 max-w-[320px] items-center justify-center gap-2 rounded-full bg-[#E7B5BB] px-6 py-3.5 text-sm font-bold leading-none text-[#4A2E2B] transition-colors duration-300 hover:bg-[#B07A8D] hover:text-[#FFF5F0] focus-visible:bg-[#B07A8D] focus-visible:text-[#FFF5F0] sm:w-fit sm:min-w-[220px] sm:max-w-none sm:px-8 lg:px-[34px] lg:py-4"
+            className="mx-auto flex w-full min-w-0 max-w-[320px] items-center justify-center gap-2 rounded-full bg-chokola-blush px-6 py-3.5 text-sm font-bold leading-none text-chokola-chocolate transition-colors duration-300 hover:bg-chokola-chocolate hover:text-chokola-cream focus-visible:bg-chokola-chocolate focus-visible:text-chokola-cream sm:w-fit sm:min-w-[220px] sm:max-w-none sm:px-8 lg:px-[34px] lg:py-4"
           >
             <span>{showAllDesserts ? 'Show Less' : 'View More Desserts'}</span>
             <span aria-hidden="true">{showAllDesserts ? '\u2191' : '\u2193'}</span>
@@ -583,7 +583,7 @@ function MenuSection() {
 
 function AboutOrganicTopRight() {
   return (
-    <svg className="pointer-events-none absolute -right-28 -top-28 h-96 w-96 text-[#A85F78] opacity-[0.05]" viewBox="0 0 360 360" fill="none" aria-hidden="true">
+    <svg className="pointer-events-none absolute -right-28 -top-28 h-96 w-96 text-chokola-mauve opacity-[0.05]" viewBox="0 0 360 360" fill="none" aria-hidden="true">
       <path d="M226 28c62 18 105 71 100 133-6 72-66 124-143 129-75 5-133-41-143-105C29 119 69 55 135 31c28-10 58-12 91-3z" fill="currentColor" />
     </svg>
   );
@@ -591,7 +591,7 @@ function AboutOrganicTopRight() {
 
 function AboutFlowBottomLeft() {
   return (
-    <svg className="pointer-events-none absolute -bottom-24 -left-20 h-72 w-[34rem] text-[#F3E4D8] opacity-[0.38]" viewBox="0 0 540 260" fill="none" aria-hidden="true">
+    <svg className="pointer-events-none absolute -bottom-24 -left-20 h-72 w-[34rem] text-chokola-nude opacity-[0.38]" viewBox="0 0 540 260" fill="none" aria-hidden="true">
       <path d="M24 168c69-98 142 18 218-72 55-65 115-47 160-12 40 31 78 31 120-8v184H24V168z" fill="currentColor" />
     </svg>
   );
@@ -599,7 +599,7 @@ function AboutFlowBottomLeft() {
 
 function AboutTextCurve() {
   return (
-    <svg className="pointer-events-none absolute right-[13%] top-[38%] h-36 w-[26rem] text-[#A85F78] opacity-[0.08]" viewBox="0 0 420 150" fill="none" aria-hidden="true">
+    <svg className="pointer-events-none absolute right-[13%] top-[38%] h-36 w-[26rem] text-chokola-mauve opacity-[0.08]" viewBox="0 0 420 150" fill="none" aria-hidden="true">
       <path d="M8 93c84-68 173-64 264-3 45 30 89 38 139 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
@@ -607,7 +607,7 @@ function AboutTextCurve() {
 
 function AboutGoldSparkles() {
   return (
-    <svg className="pointer-events-none absolute right-[34%] top-[27%] h-16 w-24 text-[#C9A86A] opacity-70" viewBox="0 0 100 70" fill="none" aria-hidden="true">
+    <svg className="pointer-events-none absolute right-[34%] top-[27%] h-16 w-24 text-chokola-gold opacity-70" viewBox="0 0 100 70" fill="none" aria-hidden="true">
       <path d="M20 12l4 9 9 4-9 4-4 9-4-9-9-4 9-4 4-9z" fill="currentColor" />
       <path d="M71 36l3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7z" fill="currentColor" />
     </svg>
@@ -616,7 +616,7 @@ function AboutGoldSparkles() {
 
 function AboutWaveBottomRight() {
   return (
-    <svg className="pointer-events-none absolute -bottom-6 right-[-5%] h-24 w-[17rem] text-[#F6C9D2] opacity-[0.06]" viewBox="0 0 540 190" fill="none" aria-hidden="true">
+    <svg className="pointer-events-none absolute -bottom-6 right-[-5%] h-24 w-[17rem] text-chokola-blush opacity-[0.06]" viewBox="0 0 540 190" fill="none" aria-hidden="true">
       <path d="M0 118c80-57 156-44 228-1 87 52 180 52 312-32v105H0v-72z" fill="currentColor" />
     </svg>
   );
@@ -624,7 +624,7 @@ function AboutWaveBottomRight() {
 
 function AboutSection() {
   return (
-    <section id="about" className="relative isolate overflow-hidden bg-[linear-gradient(180deg,#FFF6F8_0%,#FFF3F6_100%)] px-6 py-28 sm:py-32 lg:px-10" aria-labelledby="about-title">
+    <section id="about" className="about-surface relative isolate overflow-hidden px-6 py-28 sm:py-32 lg:px-10" aria-labelledby="about-title">
       <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-[minmax(0,0.48fr)_minmax(0,0.52fr)] lg:gap-14 xl:gap-[4.5rem]">
         <div className="grid gap-5 sm:grid-cols-[1.55fr_0.85fr] sm:grid-rows-[340px_230px] lg:gap-6 lg:grid-rows-[390px_245px]" aria-label="About section editorial bento image layout">
           <div className="relative min-h-[280px] overflow-hidden rounded-[2rem] sm:min-h-0 lg:rounded-[2.25rem]">
@@ -667,10 +667,10 @@ function AboutSection() {
 
         <div className="relative flex min-h-[520px] items-start pt-2 sm:min-h-[594px] lg:min-h-[659px] lg:pt-3">
           <div className="max-w-[540px]">
-            <h2 id="about-title" className="font-sans text-3xl font-bold leading-tight text-[#2E1D1B] sm:text-[2.15rem]">
+            <h2 id="about-title" className="font-sans text-3xl font-bold leading-tight text-chokola-chocolate sm:text-[2.15rem]">
               About Us
             </h2>
-            <div className="mt-4 space-y-3 text-[13px] leading-6 text-[#4A2E2B]/52 sm:text-sm sm:leading-6">
+            <div className="mt-4 space-y-3 text-[13px] leading-6 text-chokola-chocolate/78 sm:text-sm sm:leading-6">
               <p>
                 Chokola brings together warm waffles, rich chocolate, creamy ice cream, sweet cups, and handcrafted desserts made for sharing, celebrating, and creating memorable moments with family and friends.
               </p>
@@ -721,7 +721,7 @@ function BranchSection() {
   }, []);
 
   return (
-    <section id="branch" className="bg-[linear-gradient(180deg,#FFF5F7_0%,#FFF8F3_100%)] px-6 py-24 lg:px-10 lg:py-28" aria-labelledby="branch-title">
+    <section id="branch" className="branch-surface px-6 py-24 lg:px-10 lg:py-28" aria-labelledby="branch-title">
       <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
         <div className="relative min-h-[420px] overflow-hidden rounded-[30px] sm:min-h-[560px] lg:min-h-[680px]">
             <Image
@@ -734,37 +734,37 @@ function BranchSection() {
         </div>
 
         <div className="max-w-[500px] lg:py-8">
-          <p className="text-sm font-bold uppercase tracking-[0.28em] text-[#B07A8D]">Our Branch</p>
-          <h2 id="branch-title" className="mt-4 font-serif text-4xl font-semibold leading-tight text-[#4A2E2B] sm:text-5xl">
+          <p className="text-sm font-bold uppercase tracking-[0.28em] text-chokola-chocolate">Our Branch</p>
+          <h2 id="branch-title" className="mt-4 font-serif text-4xl font-semibold leading-tight text-chokola-chocolate sm:text-5xl">
             {branch.name}
           </h2>
-          <p className="mt-6 max-w-md text-base leading-8 text-[#4A2E2B]/68">
+          <p className="mt-6 max-w-md text-base leading-8 text-chokola-chocolate/78">
             A cozy destination crafted for sweet moments and unforgettable dessert experiences.
           </p>
 
-          <span className={`mt-7 inline-flex min-h-10 items-center gap-2.5 rounded-full px-4 text-sm font-bold ${isOpen ? 'bg-[#EAF4E8] text-[#4F7D49]' : 'bg-[#F5E7E8] text-[#9A5F68]'}`}>
-            <span className={`h-2.5 w-2.5 rounded-full ${isOpen ? 'bg-[#5F9258]' : 'bg-[#B07A8D]'}`} aria-hidden="true" />
+          <span className={`mt-7 inline-flex min-h-10 items-center gap-2.5 rounded-full px-4 text-sm font-bold ${isOpen ? 'bg-chokola-nude/60 text-chokola-chocolate' : 'bg-chokola-blush/35 text-chokola-chocolate'}`}>
+            <span className={`h-2.5 w-2.5 rounded-full ${isOpen ? 'bg-chokola-mauve' : 'bg-chokola-chocolate'}`} aria-hidden="true" />
             {branchStatus}
           </span>
 
-          <div className="mt-9 space-y-5 text-sm leading-6 text-[#4A2E2B]/82">
+          <div className="mt-9 space-y-5 text-sm leading-6 text-chokola-chocolate/82">
             <p className="flex items-start gap-3">
-              <Icon name="mapPin" className="mt-0.5 shrink-0 text-[#B07A8D]" size={18} />
+              <Icon name="mapPin" className="mt-0.5 shrink-0 text-chokola-mauve" size={18} />
               <span>{branch.address}</span>
             </p>
             <p className="flex items-start gap-3">
-              <Icon name="clock3" className="mt-0.5 shrink-0 text-[#C9A86A]" size={18} />
+              <Icon name="clock3" className="mt-0.5 shrink-0 text-chokola-gold" size={18} />
               <span>Daily · 10 AM - 12 AM</span>
             </p>
             <p className="flex items-start gap-3">
-              <Icon name="phone" className="mt-0.5 shrink-0 text-[#B07A8D]" size={18} />
+              <Icon name="phone" className="mt-0.5 shrink-0 text-chokola-mauve" size={18} />
               <span>{branch.phone}</span>
             </p>
           </div>
 
           <div className="mt-8 flex flex-wrap gap-2.5">
             {branch.amenities.map((item) => (
-              <span key={item} className="rounded-full border border-[#EAD9C8]/70 bg-[#FFF8F3] px-4 py-2.5 text-xs font-semibold text-[#4A2E2B]/72">
+              <span key={item} className="rounded-full border border-chokola-nude/70 bg-chokola-cream px-4 py-2.5 text-xs font-semibold text-chokola-chocolate/78">
                 {item}
               </span>
             ))}
@@ -775,7 +775,7 @@ function BranchSection() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Open Chokola Dessert Lounge directions in Google Maps"
-            className="mt-9 inline-flex min-h-14 items-center justify-center rounded-full bg-[#E7B5BB] px-8 text-sm font-bold leading-none text-[#4A2E2B] transition-colors duration-300 hover:bg-[#B07A8D] hover:text-[#FFF5F0] focus-visible:bg-[#B07A8D] focus-visible:text-[#FFF5F0]"
+            className="mt-9 inline-flex min-h-14 items-center justify-center rounded-full bg-chokola-blush px-8 text-sm font-bold leading-none text-chokola-chocolate transition-colors duration-300 hover:bg-chokola-chocolate hover:text-chokola-cream focus-visible:bg-chokola-chocolate focus-visible:text-chokola-cream"
           >
             Get Directions
             <Icon name="arrowRight" className="ml-2" size={17} />
@@ -855,68 +855,72 @@ function ContactSection() {
     }
   }
 
-  const statusClass = status.type === 'success' ? 'text-green-700 bg-green-50 border-green-200' : status.type === 'error' ? 'text-red-700 bg-red-50 border-red-200' : 'text-[#725758] bg-[#FFF1F4] border-[#A85F78]/15';
+  const statusClass = status.type === 'success'
+    ? 'text-chokola-chocolate bg-chokola-nude/60 border-chokola-mauve/35'
+    : status.type === 'error'
+      ? 'text-chokola-chocolate bg-chokola-blush/35 border-chokola-mauve/45'
+      : 'text-chokola-chocolate bg-chokola-blush/20 border-chokola-mauve/20';
 
   return (
-    <section id="contact" className="bg-white px-6 py-24 lg:px-10" aria-labelledby="contact-title">
+    <section id="contact" className="bg-chokola-cream px-6 py-24 lg:px-10" aria-labelledby="contact-title">
       <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
         <div className="max-w-[590px]">
-          <p className="mb-3 text-sm font-bold uppercase tracking-[0.28em] text-[#A85F78]">Contact Us</p>
-          <h2 id="contact-title" className="font-serif text-4xl font-semibold leading-tight text-[#3B2424] md:text-5xl">
+          <p className="mb-3 text-sm font-bold uppercase tracking-[0.28em] text-chokola-chocolate">Contact Us</p>
+          <h2 id="contact-title" className="font-serif text-4xl font-semibold leading-tight text-chokola-chocolate md:text-5xl">
             Have a Question?
             <span className="block">We Would Love to Hear From You.</span>
           </h2>
-          <p className="mt-5 max-w-lg leading-8 text-[#725758]">
+          <p className="mt-5 max-w-lg leading-8 text-chokola-chocolate/78">
             Reach us for branch information, menu details, collaborations, event bookings, or general inquiries.
           </p>
 
           <address className="mt-8 grid gap-3 not-italic sm:grid-cols-3 lg:grid-cols-1">
-            <a href="tel:+1234567890" className="flex items-center gap-4 rounded-[24px] border border-[#F0DFE1] bg-[#FFF8F3] p-5 text-[#4A2E2B]">
-              <Icon name="phone" className="shrink-0 text-[#B07A8D]" size={20} />
+            <a href="tel:+1234567890" className="flex items-center gap-4 rounded-[24px] border border-chokola-nude bg-chokola-cream p-5 text-chokola-chocolate">
+              <Icon name="phone" className="shrink-0 text-chokola-mauve" size={20} />
               <span>
                 <span className="block text-sm font-semibold">Call Us</span>
-                <span className="mt-1 block text-sm text-[#4A2E2B]/66">+1 234 567 890</span>
+                <span className="mt-1 block text-sm text-chokola-chocolate/78">+1 234 567 890</span>
               </span>
             </a>
-            <a href="mailto:hello@chokola.com" className="flex items-center gap-4 rounded-[24px] border border-[#F0DFE1] bg-[#FFF8F3] p-5 text-[#4A2E2B]">
-              <Icon name="mail" className="shrink-0 text-[#B07A8D]" size={20} />
+            <a href="mailto:hello@chokola.com" className="flex items-center gap-4 rounded-[24px] border border-chokola-nude bg-chokola-cream p-5 text-chokola-chocolate">
+              <Icon name="mail" className="shrink-0 text-chokola-mauve" size={20} />
               <span>
                 <span className="block text-sm font-semibold">Email Us</span>
-                <span className="mt-1 block text-sm text-[#4A2E2B]/66">hello@chokola.com</span>
+                <span className="mt-1 block text-sm text-chokola-chocolate/78">hello@chokola.com</span>
               </span>
             </a>
-            <div className="flex items-center gap-4 rounded-[24px] border border-[#F0DFE1] bg-[#FFF8F3] p-5 text-[#4A2E2B]">
-              <Icon name="mapPin" className="shrink-0 text-[#B07A8D]" size={20} />
+            <div className="flex items-center gap-4 rounded-[24px] border border-chokola-nude bg-chokola-cream p-5 text-chokola-chocolate">
+              <Icon name="mapPin" className="shrink-0 text-chokola-mauve" size={20} />
               <span>
                 <span className="block text-sm font-semibold">Location</span>
-                <span className="mt-1 block text-sm text-[#4A2E2B]/66">Cairo, Egypt</span>
+                <span className="mt-1 block text-sm text-chokola-chocolate/78">Cairo, Egypt</span>
               </span>
             </div>
           </address>
 
           <div className="mt-8">
-            <h3 className="text-sm font-semibold text-[#4A2E2B]">Follow Us</h3>
-            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3 text-sm text-[#725758]">
-              <a href="https://instagram.com/chokola" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-[#B07A8D]">
+            <h3 className="text-sm font-semibold text-chokola-chocolate">Follow Us</h3>
+            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3 text-sm text-chokola-chocolate/78">
+              <a href="https://instagram.com/chokola" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-chokola-chocolate">
                 <Icon name="instagram" size={17} /> Instagram
               </a>
-              <a href="https://facebook.com/chokola" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-[#B07A8D]">
+              <a href="https://facebook.com/chokola" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-chokola-chocolate">
                 <Icon name="facebook" size={17} /> Facebook
               </a>
-              <a href="https://tiktok.com/@chokola" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-[#B07A8D]">
+              <a href="https://tiktok.com/@chokola" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-chokola-chocolate">
                 <Icon name="music2" size={17} /> TikTok
               </a>
-              <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-[#B07A8D]">
+              <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-chokola-chocolate">
                 <Icon name="messageCircle" size={17} /> WhatsApp
               </a>
             </div>
           </div>
         </div>
 
-        <form onSubmit={handleContactSubmit} noValidate className="w-full max-w-[500px] justify-self-end rounded-[32px] border border-[#F0DFE1] bg-[#FFFDFC] p-6 md:p-8">
+        <form onSubmit={handleContactSubmit} noValidate className="w-full max-w-[500px] justify-self-end rounded-[32px] border border-chokola-nude bg-chokola-cream p-6 md:p-8">
           <div className="space-y-7">
             <div>
-              <label htmlFor="name" className="mb-2 block text-sm font-semibold text-[#3B2424]">Name <span className="text-red-600">*</span></label>
+              <label htmlFor="name" className="mb-2 block text-sm font-semibold text-chokola-chocolate">Name <span className="text-chokola-chocolate">*</span></label>
               <input
                 id="name"
                 name="name"
@@ -925,13 +929,13 @@ function ContactSection() {
                 autoComplete="name"
                 aria-invalid={Boolean(fieldErrors.name)}
                 aria-describedby={fieldErrors.name ? 'name-error' : undefined}
-                className="h-16 w-full rounded-[18px] border border-[#F0DFE1] bg-white px-5 text-left outline-none transition-all duration-300 placeholder:text-[#725758]/60 focus:border-[#B07A8D] focus:ring-2 focus:ring-[#E7B5BB]/24"
+                className="h-16 w-full rounded-[18px] border border-chokola-nude bg-chokola-cream px-5 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/78 focus:border-chokola-mauve focus:ring-2 focus:ring-chokola-blush/24"
                 placeholder="Your Name"
               />
-              {fieldErrors.name && <p id="name-error" className="mt-2 text-sm text-red-700">{fieldErrors.name}</p>}
+              {fieldErrors.name && <p id="name-error" className="mt-2 text-sm text-chokola-chocolate">{fieldErrors.name}</p>}
             </div>
             <div>
-              <label htmlFor="email" className="mb-2 block text-sm font-semibold text-[#3B2424]">Email <span className="text-red-600">*</span></label>
+              <label htmlFor="email" className="mb-2 block text-sm font-semibold text-chokola-chocolate">Email <span className="text-chokola-chocolate">*</span></label>
               <input
                 id="email"
                 name="email"
@@ -941,15 +945,15 @@ function ContactSection() {
                 autoComplete="email"
                 aria-invalid={Boolean(fieldErrors.email)}
                 aria-describedby={fieldErrors.email ? 'email-error' : undefined}
-                className="h-16 w-full rounded-[18px] border border-[#F0DFE1] bg-white px-5 text-left outline-none transition-all duration-300 placeholder:text-[#725758]/60 focus:border-[#B07A8D] focus:ring-2 focus:ring-[#E7B5BB]/24"
+                className="h-16 w-full rounded-[18px] border border-chokola-nude bg-chokola-cream px-5 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/78 focus:border-chokola-mauve focus:ring-2 focus:ring-chokola-blush/24"
                 placeholder="example@email.com"
               />
-              {fieldErrors.email && <p id="email-error" className="mt-2 text-sm text-red-700">{fieldErrors.email}</p>}
+              {fieldErrors.email && <p id="email-error" className="mt-2 text-sm text-chokola-chocolate">{fieldErrors.email}</p>}
             </div>
             <div>
-              <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-[#3B2424]">Contact Number <span className="text-red-600">*</span></label>
-              <div className="flex h-16 overflow-hidden rounded-[18px] border border-[#F0DFE1] bg-white transition-all duration-300 focus-within:border-[#B07A8D] focus-within:ring-2 focus-within:ring-[#E7B5BB]/24">
-                <span className="flex shrink-0 items-center border-r border-[#F0DFE1] bg-[#FFF8F3] px-5 text-sm font-bold text-[#4A2E2B]" aria-hidden="true">
+              <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-chokola-chocolate">Contact Number <span className="text-chokola-chocolate">*</span></label>
+              <div className="flex h-16 overflow-hidden rounded-[18px] border border-chokola-nude bg-chokola-cream transition-all duration-300 focus-within:border-chokola-mauve focus-within:ring-2 focus-within:ring-chokola-blush/24">
+                <span className="flex shrink-0 items-center border-r border-chokola-nude bg-chokola-nude/35 px-5 text-sm font-bold text-chokola-chocolate" aria-hidden="true">
                   +1
                 </span>
                 <input
@@ -963,15 +967,15 @@ function ContactSection() {
                   maxLength={12}
                   aria-invalid={Boolean(fieldErrors.phone)}
                   aria-describedby={fieldErrors.phone ? 'phone-error' : undefined}
-                  className="min-w-0 flex-1 bg-transparent px-5 py-4 text-left outline-none placeholder:text-[#725758]/60"
+                  className="min-w-0 flex-1 bg-transparent px-5 py-4 text-left text-chokola-chocolate outline-none placeholder:text-chokola-chocolate/78"
                   placeholder="234 567 8900"
                 />
               </div>
-              {fieldErrors.phone && <p id="phone-error" className="mt-2 text-sm text-red-700">{fieldErrors.phone}</p>}
+              {fieldErrors.phone && <p id="phone-error" className="mt-2 text-sm text-chokola-chocolate">{fieldErrors.phone}</p>}
             </div>
           </div>
           <div className="mt-7">
-            <label htmlFor="message" className="mb-2 block text-sm font-semibold text-[#3B2424]">Your Message <span className="text-red-600">*</span></label>
+            <label htmlFor="message" className="mb-2 block text-sm font-semibold text-chokola-chocolate">Your Message <span className="text-chokola-chocolate">*</span></label>
             <div className="relative">
               <textarea
                 id="message"
@@ -981,11 +985,11 @@ function ContactSection() {
                 maxLength={MESSAGE_MAX_LENGTH}
                 aria-invalid={Boolean(fieldErrors.message)}
                 aria-describedby={fieldErrors.message ? 'message-error' : undefined}
-                className="min-h-[240px] w-full resize-y rounded-[18px] border border-[#F0DFE1] bg-white px-5 py-4 text-left outline-none transition-all duration-300 placeholder:text-[#725758]/60 focus:border-[#B07A8D] focus:ring-2 focus:ring-[#E7B5BB]/24"
+                className="min-h-[240px] w-full resize-y rounded-[18px] border border-chokola-nude bg-chokola-cream px-5 py-4 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/78 focus:border-chokola-mauve focus:ring-2 focus:ring-chokola-blush/24"
                 placeholder="Your Message"
               />
             </div>
-            {fieldErrors.message && <p id="message-error" className="mt-2 text-sm text-red-700">{fieldErrors.message}</p>}
+            {fieldErrors.message && <p id="message-error" className="mt-2 text-sm text-chokola-chocolate">{fieldErrors.message}</p>}
           </div>
 
           {status.message && (
@@ -997,7 +1001,7 @@ function ContactSection() {
           <button
             type="submit"
             disabled={isSubmitting || !isFormValid}
-            className="mx-auto mt-8 flex min-h-14 w-full max-w-[220px] items-center justify-center rounded-full bg-[#E7B5BB] px-8 text-sm font-bold text-[#4A2E2B] transition-colors duration-300 hover:bg-[#B07A8D] hover:text-[#FFF5F0] disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-[#E7B5BB] disabled:hover:text-[#4A2E2B]"
+            className="mx-auto mt-8 flex min-h-14 w-full max-w-[220px] items-center justify-center rounded-full bg-chokola-blush px-8 text-sm font-bold text-chokola-chocolate transition-colors duration-300 hover:bg-chokola-chocolate hover:text-chokola-cream disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-chokola-blush disabled:hover:text-chokola-chocolate"
           >
             {isSubmitting ? 'Sending...' : 'Send Message'}
           </button>
@@ -1009,7 +1013,7 @@ function ContactSection() {
 
 function Footer() {
   return (
-    <footer className="rounded-t-[32px] bg-[linear-gradient(135deg,#FFF5F0_0%,#F3E7EA_50%,#DCCDD1_100%)] px-6 py-14 text-[#6B5654] lg:px-10 lg:py-16">
+    <footer className="footer-surface rounded-t-[32px] px-6 py-14 text-chokola-chocolate/80 lg:px-10 lg:py-16">
       <div className="mx-auto grid max-w-7xl items-start gap-10 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.75fr_1fr_0.8fr] lg:gap-12">
         <div>
           <div className="relative h-20 w-[210px]">
@@ -1021,7 +1025,7 @@ function Footer() {
               className="object-contain object-left"
             />
           </div>
-          <p className="mt-3 max-w-xs text-sm leading-6 text-[#6B5654]">
+          <p className="mt-3 max-w-xs text-sm leading-6 text-chokola-chocolate/80">
             Premium desserts crafted daily for sweet moments and unforgettable experiences.
           </p>
 
@@ -1038,7 +1042,7 @@ function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#B07A8D]/28 text-[#B07A8D] transition-colors duration-300 hover:border-[#B07A8D] hover:bg-[#B07A8D] hover:text-white focus-visible:bg-[#B07A8D] focus-visible:text-white"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-chokola-mauve/45 text-chokola-chocolate transition-colors duration-300 hover:border-chokola-chocolate hover:bg-chokola-chocolate hover:text-chokola-cream focus-visible:bg-chokola-chocolate focus-visible:text-chokola-cream"
               >
                 <Icon name={social.icon} size={17} />
               </a>
@@ -1047,50 +1051,50 @@ function Footer() {
         </div>
 
         <div>
-          <h2 className="text-sm font-semibold text-[#4A2E2B]">Navigation</h2>
-          <div className="mt-5 space-y-3 text-sm text-[#6B5654]">
+          <h2 className="text-sm font-semibold text-chokola-chocolate">Navigation</h2>
+          <div className="mt-5 space-y-3 text-sm text-chokola-chocolate/80">
             {FOOTER_LINKS.map((link) => (
               <p key={link.href}>
-                <a href={link.href} className="transition-colors duration-300 hover:text-[#C9A86A] focus-visible:text-[#C9A86A]">{link.label}</a>
+                <a href={link.href} className="transition-colors duration-300 hover:text-chokola-chocolate focus-visible:text-chokola-chocolate">{link.label}</a>
               </p>
             ))}
           </div>
         </div>
 
         <div>
-          <h2 className="text-sm font-semibold text-[#4A2E2B]">Contact</h2>
-          <address className="mt-5 space-y-4 text-sm text-[#6B5654] not-italic">
-            <a href="tel:+1234567890" className="flex items-center gap-3 transition-colors duration-300 hover:text-[#C9A86A]">
-              <Icon name="phone" className="shrink-0 text-[#B07A8D]" size={17} />
+          <h2 className="text-sm font-semibold text-chokola-chocolate">Contact</h2>
+          <address className="mt-5 space-y-4 text-sm text-chokola-chocolate/80 not-italic">
+            <a href="tel:+1234567890" className="flex items-center gap-3 transition-colors duration-300 hover:text-chokola-chocolate">
+              <Icon name="phone" className="shrink-0 text-chokola-mauve" size={17} />
               +1 234 567 890
             </a>
-            <a href="mailto:hello@chokola.com" className="flex items-center gap-3 transition-colors duration-300 hover:text-[#C9A86A]">
-              <Icon name="mail" className="shrink-0 text-[#B07A8D]" size={17} />
+            <a href="mailto:hello@chokola.com" className="flex items-center gap-3 transition-colors duration-300 hover:text-chokola-chocolate">
+              <Icon name="mail" className="shrink-0 text-chokola-mauve" size={17} />
               hello@chokola.com
             </a>
             <p className="flex items-center gap-3">
-              <Icon name="mapPin" className="shrink-0 text-[#B07A8D]" size={17} />
+              <Icon name="mapPin" className="shrink-0 text-chokola-mauve" size={17} />
               Cairo, Egypt
             </p>
           </address>
         </div>
 
         <div>
-          <h2 className="text-sm font-semibold text-[#4A2E2B]">Opening Hours</h2>
-          <div className="mt-5 space-y-3 text-sm leading-6 text-[#6B5654]">
+          <h2 className="text-sm font-semibold text-chokola-chocolate">Opening Hours</h2>
+          <div className="mt-5 space-y-3 text-sm leading-6 text-chokola-chocolate/80">
             <div>
-              <p className="font-semibold text-[#4A2E2B]">Daily</p>
+              <p className="font-semibold text-chokola-chocolate">Daily</p>
               <p>{'10 AM \u2013 12 AM'}</p>
             </div>
             <div>
-              <p className="font-semibold text-[#4A2E2B]">Friday</p>
+              <p className="font-semibold text-chokola-chocolate">Friday</p>
               <p>{'2 PM \u2013 12 AM'}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mx-auto mt-10 flex max-w-7xl flex-col items-center justify-center gap-2 border-t border-[#4A2E2B]/12 pt-5 text-center text-xs text-[#6B5654]/80 sm:flex-row sm:gap-6">
+      <div className="mx-auto mt-10 flex max-w-7xl flex-col items-center justify-center gap-2 border-t border-chokola-chocolate/12 pt-5 text-center text-xs text-chokola-chocolate/80 sm:flex-row sm:gap-6">
         <p>&copy; 2026 Chokola Dessert Lounge. All rights reserved.</p>
         <p>Crafted with love in Cairo, Egypt.</p>
       </div>
@@ -1176,7 +1180,7 @@ export default function ChokolaLandingPage() {
   }, [mobileMenuOpen]);
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#FFFFFF] text-[#3B2424]">
+    <main className="min-h-screen overflow-hidden bg-chokola-cream text-chokola-chocolate">
       <Hero
         mobileMenuOpen={mobileMenuOpen}
         onToggleMenu={toggleMobileMenu}
