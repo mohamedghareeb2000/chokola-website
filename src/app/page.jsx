@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 
 const BRAND = {
   name: 'Chokola',
@@ -269,19 +269,26 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
       transition={{ duration: 0.28, ease: 'easeOut' }}
       className={`fixed inset-x-0 top-0 z-50 px-4 transition-all duration-300 sm:px-6 lg:px-10 ${
         isScrolled
-          ? 'border-b border-chokola-blush/24 bg-chokola-cream/92 backdrop-blur-xl'
-          : 'border-b border-transparent bg-chokola-cream/52 backdrop-blur-sm'
+          ? 'bg-chokola-cream/95 shadow-[0_10px_24px_rgb(var(--rgb-chocolate-brown)_/_0.06)] backdrop-blur-xl'
+          : 'bg-transparent'
       }`}
       aria-label="Main navigation"
     >
       <div
-        className="relative mx-auto flex min-h-[4.75rem] w-full max-w-[1520px] items-center justify-between gap-4 py-2 transition-all duration-300 lg:min-h-[5rem] lg:py-2.5"
+        className="relative mx-auto flex min-h-[4.55rem] w-full max-w-[1520px] items-center justify-between gap-4 py-2 transition-all duration-300 lg:min-h-[4.85rem] lg:py-2"
       >
-        <a href="#home" onClick={onCloseMenu} aria-label="Go to Chokola homepage" className="relative z-10">
+        <a
+          href="#home"
+          onClick={onCloseMenu}
+          aria-label="Go to Chokola homepage"
+          className={`relative z-10 rounded-[18px] px-2 py-1 transition-colors duration-300 ${
+            isScrolled ? 'bg-transparent' : 'bg-chokola-cream/95'
+          }`}
+        >
           <Logo />
         </a>
 
-        <div className="relative z-10 hidden flex-1 items-center justify-center gap-3 text-[16.5px] font-semibold text-chokola-chocolate lg:flex">
+        <div className={`relative z-10 hidden flex-1 items-center justify-center gap-2 text-[15.5px] font-semibold lg:flex ${isScrolled ? 'text-chokola-chocolate' : 'text-chokola-cream'}`}>
           {NAV_LINKS.map((link) => {
             const isActive = activeSection === link.href.slice(1);
 
@@ -289,13 +296,17 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
               <a
                 key={link.href}
                 href={link.href}
-                className="group relative rounded-full px-4 py-2.5 text-chokola-chocolate transition-all duration-300 hover:bg-chokola-blush/12 focus-visible:bg-chokola-blush/12"
+                className={`group relative rounded-full px-4 py-2.5 transition-all duration-300 ${
+                  isScrolled
+                    ? 'text-chokola-chocolate hover:bg-chokola-blush/10 focus-visible:bg-chokola-blush/10'
+                    : 'text-chokola-cream hover:bg-chokola-cream/10 focus-visible:bg-chokola-cream/10'
+                }`}
                 aria-current={isActive ? 'page' : undefined}
               >
                 {isActive && (
                   <motion.span
                     layoutId="navbar-active-underline"
-                    className="absolute bottom-1.5 left-4 right-4 h-[2px] rounded-full bg-chokola-blush/85"
+                    className={`absolute bottom-1.5 left-1/2 h-[2px] w-5 -translate-x-1/2 rounded-full ${isScrolled ? 'bg-chokola-mauve' : 'bg-chokola-gold'}`}
                     transition={{ duration: 0.28, ease: 'easeOut' }}
                     aria-hidden="true"
                   />
@@ -309,14 +320,22 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
         <div className="relative z-10 ml-auto flex items-center gap-3">
           <a
             href="#contact"
-            className="hidden min-h-11 items-center rounded-full bg-chokola-blush px-6 text-sm font-semibold leading-none text-chokola-chocolate transition-colors duration-300 hover:bg-chokola-chocolate hover:text-chokola-cream sm:inline-flex"
+            className={`hidden min-h-11 items-center rounded-full px-6 text-sm font-semibold leading-none transition-colors duration-300 sm:inline-flex ${
+              isScrolled
+                ? 'bg-chokola-blush text-chokola-chocolate hover:bg-chokola-chocolate hover:text-chokola-cream'
+                : 'bg-chokola-cream text-chokola-chocolate hover:bg-chokola-blush focus-visible:bg-chokola-blush'
+            }`}
           >
             Contact Us
           </a>
           <button
             type="button"
             onClick={onToggleMenu}
-            className="grid h-11 w-11 place-items-center rounded-full border border-chokola-blush/45 bg-chokola-cream/78 text-chokola-chocolate transition-all duration-300 hover:bg-chokola-blush/16 lg:hidden"
+            className={`grid h-11 w-11 place-items-center rounded-full border transition-all duration-300 lg:hidden ${
+              isScrolled
+                ? 'border-chokola-blush/40 bg-chokola-cream/80 text-chokola-chocolate hover:bg-chokola-blush/20'
+                : 'border-chokola-cream/20 bg-chokola-cream/10 text-chokola-cream hover:bg-chokola-cream/20'
+            }`}
             aria-controls="mobile-menu"
             aria-expanded={mobileMenuOpen}
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
@@ -332,15 +351,23 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
           initial={{ opacity: 0, y: -12, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.25 }}
-          className="mx-auto max-w-[1520px] border-t border-chokola-blush/18 bg-chokola-cream/94 py-3 backdrop-blur-xl lg:hidden"
+          className={`mx-auto max-w-[1520px] py-3 backdrop-blur-xl lg:hidden ${
+            isScrolled
+              ? 'bg-chokola-cream/95'
+              : 'bg-chokola-chocolate/95'
+          }`}
         >
-          <div className="grid gap-2 text-sm font-semibold text-chokola-chocolate">
+          <div className={`grid gap-2 text-sm font-semibold ${isScrolled ? 'text-chokola-chocolate' : 'text-chokola-cream'}`}>
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={onCloseMenu}
-                className={`rounded-full px-4 py-3 text-chokola-chocolate transition-all duration-300 hover:bg-chokola-blush/12 focus-visible:bg-chokola-blush/12 ${activeSection === link.href.slice(1) ? 'bg-chokola-blush/12 font-semibold' : ''}`}
+                className={`rounded-full px-4 py-3 transition-all duration-300 ${
+                  isScrolled
+                    ? `text-chokola-chocolate hover:bg-chokola-blush/10 focus-visible:bg-chokola-blush/10 ${activeSection === link.href.slice(1) ? 'bg-chokola-blush/10 font-semibold' : ''}`
+                    : `text-chokola-cream hover:bg-chokola-cream/10 focus-visible:bg-chokola-cream/10 ${activeSection === link.href.slice(1) ? 'bg-chokola-cream/10 font-semibold' : ''}`
+                }`}
                 aria-current={activeSection === link.href.slice(1) ? 'page' : undefined}
               >
                 {link.label}
@@ -354,10 +381,12 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
 }
 
 function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSection }) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <section
       id="home"
-      className="relative min-h-screen overflow-hidden bg-chokola-cream px-4 pb-16 pt-[130px] sm:px-6 sm:pt-[136px] lg:px-10 lg:pt-[138px]"
+      className="relative min-h-screen overflow-hidden bg-chokola-chocolate px-4 pb-[4.5rem] pt-[122px] text-chokola-cream sm:px-6 sm:pt-[128px] lg:px-10 lg:pb-20 lg:pt-[126px]"
       aria-labelledby="hero-title"
     >
       <Navbar
@@ -368,85 +397,103 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
         activeSection={activeSection}
       />
       <div className="hero-atmosphere pointer-events-none absolute inset-0" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-chokola-cream sm:h-28" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto grid min-h-[calc(100vh-210px)] w-full max-w-[1520px] items-center gap-14 lg:grid-cols-[0.45fr_0.55fr] lg:gap-12 xl:gap-14">
-        <div className="max-w-[700px] lg:-mt-8">
-          <p className="mb-5 text-xs font-bold uppercase tracking-[0.28em] text-chokola-chocolate">
+      <div className="relative z-10 mx-auto grid min-h-[calc(100vh-190px)] w-full max-w-[1520px] items-center gap-6 sm:gap-8 lg:grid-cols-[0.48fr_0.52fr] lg:gap-10 xl:gap-14">
+        <div className="max-w-[720px] lg:-mt-5">
+          <p className="mb-4 text-xs font-bold tracking-[0.2em] text-chokola-gold">
             Since 2021 • Crafted Fresh Daily
           </p>
           <h1
             id="hero-title"
-            className="max-w-[720px] font-serif leading-[0.96] text-chokola-chocolate"
+            className="max-w-[760px] font-serif leading-[0.9] text-chokola-cream"
           >
-            <span className="block text-[2.75rem] font-bold sm:text-[3.35rem] md:text-[3.95rem] lg:text-[4.15rem] xl:text-[4.65rem] lg:whitespace-nowrap">
-              Premium <span className="text-chokola-mauve">Desserts</span>
+            <span className="block text-[2.85rem] font-bold sm:text-[3.55rem] md:text-[4.15rem] lg:text-[4.35rem] xl:text-[4.95rem]">
+              Dessert,
             </span>
-            <span className="mt-1 block text-[2.35rem] font-medium text-chokola-chocolate/92 sm:text-[2.9rem] md:text-[3.35rem] lg:text-[3.45rem] xl:text-[3.95rem] lg:whitespace-nowrap">Crafted With Love</span>
+            <span className="mt-2 block text-[2.55rem] font-semibold text-chokola-blush sm:text-[3.12rem] md:text-[3.7rem] lg:text-[3.86rem] xl:text-[4.45rem]">
+              after dark.
+            </span>
           </h1>
 
-          <p className="mt-6 max-w-[560px] text-base leading-7 text-chokola-chocolate/78 sm:text-lg sm:leading-8">
-            Elegant desserts made with premium ingredients to elevate every celebration.
+          <p className="mt-6 max-w-[590px] text-base leading-8 text-chokola-cream/80 sm:text-lg sm:leading-9">
+            Premium desserts staged in warm chocolate light, crafted fresh daily for celebrations, late cravings, and lounge moments worth lingering over.
           </p>
 
-          <div className="mt-9 flex flex-wrap gap-5" aria-label="Hero calls to action">
+          <div className="mt-8 flex flex-wrap gap-4" aria-label="Hero calls to action">
             <a
               href="#menu"
-              className="inline-flex min-h-14 items-center justify-center rounded-full bg-chokola-blush px-9 text-sm font-bold leading-none text-chokola-chocolate transition-all duration-300 hover:-translate-y-1 hover:bg-chokola-chocolate hover:text-chokola-cream focus-visible:bg-chokola-chocolate focus-visible:text-chokola-cream"
+              className="inline-flex min-h-14 min-w-[160px] items-center justify-center rounded-full border border-chokola-cream bg-chokola-cream px-7 text-sm font-bold leading-none text-chokola-chocolate transition-all duration-300 hover:-translate-y-0.5 hover:bg-chokola-blush focus-visible:bg-chokola-blush sm:min-w-[168px] sm:px-8"
             >
               Explore Menu
             </a>
             <a
               href="#branch"
-              className="inline-flex min-h-14 items-center justify-center rounded-full border border-chokola-blush/70 bg-chokola-cream/35 px-9 text-sm font-semibold leading-none text-chokola-chocolate transition-all duration-300 hover:-translate-y-0.5 hover:border-chokola-mauve/75 hover:bg-chokola-cream/70"
+              className="inline-flex min-h-14 min-w-[160px] items-center justify-center rounded-full border border-chokola-cream/35 bg-chokola-cream/10 px-7 text-sm font-bold leading-none text-chokola-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-chokola-cream hover:text-chokola-chocolate focus-visible:bg-chokola-cream focus-visible:text-chokola-chocolate sm:min-w-[168px] sm:px-8"
             >
               Visit Branch
             </a>
           </div>
 
-          <div className="mt-8 flex max-w-[560px] flex-wrap items-start gap-x-9 gap-y-5" aria-label="Chokola highlights">
-            <div>
-              <p className="font-serif text-2xl font-semibold leading-none text-chokola-chocolate">20+</p>
-              <p className="mt-1.5 text-xs font-medium leading-none text-chokola-chocolate/78">Desserts</p>
+          <div className="mt-7 flex max-w-[620px] flex-wrap items-center gap-x-2 gap-y-3 border-t border-chokola-cream/16 pt-5 text-sm text-chokola-cream/72 sm:gap-x-6" aria-label="Chokola highlights">
+            <div className="flex items-baseline gap-2 whitespace-nowrap">
+              <p className="font-serif text-[1.35rem] font-semibold leading-none text-chokola-cream">20+</p>
+              <p className="font-medium leading-none">Desserts</p>
             </div>
-            <div>
-              <p className="font-serif text-2xl font-semibold leading-none text-chokola-chocolate">4.9★</p>
-              <p className="mt-1.5 text-xs font-medium leading-none text-chokola-chocolate/78">Rating</p>
+            <span className="hidden h-1 w-1 rounded-full bg-chokola-gold/70 sm:block" aria-hidden="true" />
+            <div className="flex items-baseline gap-2 whitespace-nowrap">
+              <p className="font-serif text-[1.35rem] font-semibold leading-none text-chokola-cream">4.9★</p>
+              <p className="font-medium leading-none">
+                <span className="sm:hidden">Rating</span>
+                <span className="hidden sm:inline">Guest rating</span>
+              </p>
             </div>
-            <div>
-              <p className="font-serif text-2xl font-semibold leading-none text-chokola-chocolate">Daily</p>
-              <p className="mt-1.5 text-xs font-medium leading-none text-chokola-chocolate/78">Fresh Made</p>
+            <span className="hidden h-1 w-1 rounded-full bg-chokola-gold/70 sm:block" aria-hidden="true" />
+            <div className="flex items-baseline gap-2 whitespace-nowrap">
+              <p className="font-serif text-[1.35rem] font-semibold leading-none text-chokola-cream">Daily</p>
+              <p className="font-medium leading-none">
+                <span className="sm:hidden">Fresh</span>
+                <span className="hidden sm:inline">Fresh made</span>
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="relative flex min-h-[460px] items-center justify-center lg:min-h-[720px] lg:justify-end">
-          <div className="hero-gold-glow absolute left-[48%] top-1/2 h-[78%] w-[82%] -translate-x-1/2 -translate-y-1/2 blur-3xl" aria-hidden="true" />
-          <div className="hero-blush-glow absolute left-[58%] top-[48%] h-[82%] w-[88%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl" aria-hidden="true" />
+        <div className="relative flex min-h-[320px] items-center justify-center sm:min-h-[380px] lg:min-h-[650px] lg:translate-x-3 lg:justify-end xl:translate-x-8">
+          <div className="hero-gold-glow absolute left-[54%] top-[46%] h-[72%] w-[82%] -translate-x-1/2 -translate-y-1/2 blur-3xl" aria-hidden="true" />
+          <div className="hero-blush-glow absolute left-[62%] top-[42%] h-[70%] w-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl" aria-hidden="true" />
+          <div className="hero-dessert-plate absolute bottom-[18%] left-[57%] h-[20%] w-[68%] -translate-x-1/2 rounded-full blur-sm" aria-hidden="true" />
           <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-            <span className="absolute right-[20%] top-[22%] h-1.5 w-1.5 rounded-full bg-chokola-chocolate/18 blur-[0.5px]" />
-            <span className="absolute right-[9%] top-[36%] h-2 w-2 rounded-full bg-chokola-mauve/14 blur-[0.5px]" />
-            <span className="absolute right-[31%] top-[58%] h-1 w-1 rounded-full bg-chokola-gold/38" />
-            <span className="absolute right-[16%] bottom-[25%] h-1.5 w-1.5 rounded-full bg-chokola-chocolate/14 blur-[0.5px]" />
-            <span className="absolute right-[43%] top-[33%] h-1 w-1 rounded-full bg-chokola-mauve/18" />
+            <span className="absolute right-[20%] top-[22%] h-1.5 w-1.5 rounded-full bg-chokola-cream/20 blur-[0.5px]" />
+            <span className="absolute right-[9%] top-[36%] h-2 w-2 rounded-full bg-chokola-blush/20 blur-[0.5px]" />
+            <span className="absolute right-[31%] top-[58%] h-1 w-1 rounded-full bg-chokola-gold/50" />
+            <span className="absolute right-[16%] bottom-[25%] h-1.5 w-1.5 rounded-full bg-chokola-cream/20 blur-[0.5px]" />
+            <span className="absolute right-[43%] top-[33%] h-1 w-1 rounded-full bg-chokola-mauve/20" />
           </div>
-          <Image
-            src="/chocolate-sensations-hero.png"
-            alt="Chocolate dessert stack with dripping chocolate sauce and chocolate pieces"
-            width={2000}
-            height={1779}
-            priority
-            sizes="(max-width: 768px) 96vw, (max-width: 1024px) 720px, 880px"
-            className="relative z-10 h-auto w-[min(96vw,620px)] max-w-none translate-y-8 object-contain lg:mr-[-4vw] lg:w-[clamp(600px,48vw,880px)]"
-          />
+          <motion.div
+            animate={prefersReducedMotion ? undefined : { y: [0, -8, 0] }}
+            transition={prefersReducedMotion ? undefined : { duration: 7.5, repeat: Infinity, ease: 'easeInOut' }}
+            className="relative z-10"
+          >
+            <Image
+              src="/chocolate-sensations-hero.png"
+              alt="Chocolate dessert stack with dripping chocolate sauce and chocolate pieces"
+              width={2000}
+              height={1779}
+              priority
+              sizes="(max-width: 768px) 96vw, (max-width: 1024px) 720px, 880px"
+              className="h-auto w-[min(86vw,500px)] max-w-none translate-y-0 object-contain drop-shadow-[0_28px_34px_rgb(var(--rgb-chocolate-brown)_/_0.34)] sm:w-[min(88vw,540px)] lg:mr-[-3vw] lg:w-[clamp(540px,43vw,780px)] xl:mr-[-4vw] xl:w-[clamp(590px,45vw,830px)]"
+            />
+          </motion.div>
         </div>
       </div>
       <a
         href="#about"
-        className="absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-chokola-chocolate/78 transition-colors duration-300 hover:text-chokola-chocolate md:inline-flex"
+        className="absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-chokola-cream/75 transition-colors duration-300 hover:text-chokola-cream md:inline-flex"
       >
         <motion.span
-          animate={{ y: [0, 4, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          animate={prefersReducedMotion ? undefined : { y: [0, 4, 0] }}
+          transition={prefersReducedMotion ? undefined : { duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
           aria-hidden="true"
         >
           ↓
