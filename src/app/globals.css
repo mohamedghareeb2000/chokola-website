@@ -90,6 +90,23 @@ a {
   text-decoration: none;
 }
 
+.nav-text {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-text-active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 24px;
+  height: 2px;
+  background: #C9A86A;
+  border-radius: 999px;
+  transform: translateX(-50%);
+}
+
 button,
 input,
 textarea {
@@ -124,20 +141,29 @@ textarea {
 
 .hero-atmosphere {
   background:
-    radial-gradient(circle at 78% 42%, rgb(var(--rgb-blush-pink) / 0.28), transparent 34%),
-    radial-gradient(circle at 28% 72%, rgb(var(--rgb-nude-beige) / 0.34), transparent 30%);
+    radial-gradient(circle at 76% 36%, rgb(var(--rgb-blush-pink) / 0.22), transparent 30%),
+    radial-gradient(circle at 58% 82%, rgb(var(--rgb-soft-gold) / 0.12), transparent 28%),
+    radial-gradient(circle at 18% 22%, rgb(var(--rgb-dusty-mauve) / 0.16), transparent 34%),
+    var(--color-chocolate-brown);
 }
 
 .hero-gold-glow {
-  background: radial-gradient(circle, rgb(var(--rgb-soft-gold) / 0.22) 0%, rgb(var(--rgb-soft-gold) / 0.10) 34%, transparent 70%);
+  background: radial-gradient(circle, rgb(var(--rgb-soft-gold) / 0.26) 0%, rgb(var(--rgb-soft-gold) / 0.11) 34%, transparent 70%);
 }
 
 .hero-blush-glow {
-  background: radial-gradient(circle, rgb(var(--rgb-warm-cream) / 0.74) 0%, rgb(var(--rgb-blush-pink) / 0.18) 38%, transparent 72%);
+  background: radial-gradient(circle, rgb(var(--rgb-warm-cream) / 0.28) 0%, rgb(var(--rgb-blush-pink) / 0.18) 36%, transparent 72%);
+}
+
+.hero-dessert-plate {
+  background: radial-gradient(ellipse at center, rgb(var(--rgb-warm-cream) / 0.26) 0%, rgb(var(--rgb-soft-gold) / 0.10) 42%, transparent 72%);
 }
 
 .about-surface {
-  background: linear-gradient(180deg, var(--color-warm-cream) 0%, rgb(var(--rgb-blush-pink) / 0.24) 100%);
+  background:
+    radial-gradient(circle at 8% 0%, rgb(var(--rgb-chocolate-brown) / 0.10), transparent 28%),
+    radial-gradient(circle at 92% 14%, rgb(var(--rgb-blush-pink) / 0.20), transparent 24%),
+    linear-gradient(180deg, var(--color-warm-cream) 0%, rgb(var(--rgb-nude-beige) / 0.62) 58%, var(--color-warm-cream) 100%);
 }
 
 .branch-surface {
@@ -145,7 +171,10 @@ textarea {
 }
 
 .footer-surface {
-  background: linear-gradient(135deg, var(--color-warm-cream) 0%, rgb(var(--rgb-blush-pink) / 0.38) 50%, var(--color-nude-beige) 100%);
+  background:
+    radial-gradient(circle at 18% 8%, rgb(var(--rgb-blush-pink) / 0.16), transparent 28%),
+    radial-gradient(circle at 82% 18%, rgb(var(--rgb-soft-gold) / 0.12), transparent 24%),
+    linear-gradient(135deg, #472c29 0%, var(--color-chocolate-brown) 58%, #3c2422 100%);
 }
 
 .text-balance {

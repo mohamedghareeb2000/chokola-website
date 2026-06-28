@@ -1,8 +1,8 @@
 ﻿'use client';
 
 import Image from 'next/image';
-import React, { memo, useCallback, useEffect, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { memo, useCallback, useEffect, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 
 const BRAND = {
   name: 'Chokola',
@@ -16,48 +16,69 @@ const BRAND = {
   muted: '#4A2E2B',
 };
 
-const MENU_ITEMS = [
+const MENU_CATEGORIES = [
   {
-    title: 'Signature Cakes',
-    desc: 'Soft layered cakes finished with elegant cream, chocolate details, and fresh fruit notes.',
-    price: 'From $18',
-    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80',
-    alt: 'Elegant chocolate cake with layered cream',
+    id: 'crepes-waffles',
+    name: 'Crepes & Waffles',
+    image: '/about-waffles-plate.jpg',
+    alt: 'Crepe and waffle dessert with chocolate and fresh toppings',
+    products: [
+      { name: 'Classic Crepe', description: 'Crepe served with delicious Nutella filling', price: '$7.99' },
+      { name: 'Oreo Lovers', description: 'Oreo pieces combined with fresh banana and chocolate flavors', price: '$9.99' },
+      { name: 'House Special', description: 'Strawberry, banana, and Lotus Biscoff topped with sweet sauces', price: '$10.99' },
+      { name: 'Kinder Bueno', description: 'Kinder Bueno, Kinder Stick, and white chocolate drizzle', price: '$10.99' },
+      { name: 'Dubai Crepe', description: 'Kunafa filling with milk chocolate, pistachio butter, and crushed pistachio', price: '$14.99' },
+    ],
   },
   {
-    title: 'Chocolate Desserts',
-    desc: 'Deep cocoa, silky textures, and rich premium chocolate for indulgent dessert moments.',
-    price: 'From $7',
-    image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=900&q=80',
-    alt: 'Rich chocolate brownie dessert served close up',
+    id: 'waffle-sticks',
+    name: 'Waffle Sticks',
+    image: '/about-waffle-chocolate-wide.png',
+    alt: 'Waffle sticks topped with chocolate and sweet sauces',
+    products: [
+      { name: 'Lotus Waffle Sticks', description: 'Lotus butter, white chocolate, and crushed Lotus cookies', price: '$8.49' },
+      { name: 'Chocolate Waffle Sticks', description: 'Waffle sticks dipped in milk chocolate with white chocolate drizzle', price: '$6.99' },
+      { name: 'Pistachio Waffle Sticks', description: 'Pistachio butter with white chocolate and crushed pistachio', price: '$8.49' },
+      { name: 'Oreo Waffle Sticks', description: 'Milk chocolate, white chocolate, and crushed Oreos', price: '$7.99' },
+      { name: 'Strawberry Cheesecake Waffle Sticks', description: 'Strawberry sauce, cheesecake bites, and white chocolate', price: '$8.49' },
+    ],
   },
   {
-    title: 'Strawberry Specials',
-    desc: 'Fresh strawberry flavors paired with soft cream, chocolate glaze, and delicate finishes.',
-    price: 'From $9',
-    image: 'https://images.unsplash.com/photo-1488477304112-4944851de03d?auto=format&fit=crop&w=900&q=80',
-    alt: 'Strawberry dessert with cream and chocolate sauce',
+    id: 'shakes',
+    name: 'Shakes',
+    image: '/about-pink-milkshake.jpg',
+    alt: 'Creamy dessert milkshake with sweet toppings',
+    products: [
+      { name: 'Oreo Shake', description: 'Creamy milkshake blended with Oreo cookies', price: '$8.99' },
+      { name: 'Kinder Shake', description: 'Rich Kinder chocolate flavored milkshake', price: '$8.99' },
+      { name: 'Lotus Shake', description: 'Lotus butter blended with creamy vanilla shake', price: '$9.99' },
+      { name: 'Ferrero Shake', description: 'Chocolate hazelnut milkshake with Ferrero flavor', price: '$9.99' },
+      { name: 'Dubai Shake', description: 'Kunafa, pistachio, and chocolate inspired milkshake', price: '$11.99' },
+    ],
   },
   {
-    title: 'Fresh Pastries',
-    desc: 'Golden, flaky pastries baked fresh daily with a light texture and refined sweetness.',
-    price: 'From $5',
-    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=900&q=80',
-    alt: 'Fresh golden pastries on a bakery table',
+    id: 'cups',
+    name: 'Cups',
+    image: '/about-ice-cream-cup.jpg',
+    alt: 'Layered dessert cup with chocolate, cream, and fresh toppings',
+    products: [
+      { name: 'Strawberry Cup', description: 'Strawberry layers with cream and fresh strawberries', price: '$8.99' },
+      { name: 'Dubai Chocolate Cup', description: 'Kunafa, pistachio butter, milk chocolate, and crushed pistachio', price: '$10.99' },
+      { name: 'Triple Chocolate Cup', description: 'Strawberry topped with white, dark, and milk chocolate', price: '$9.99' },
+    ],
   },
   {
-    title: 'Cookies & Bites',
-    desc: 'Small sweet bites with buttery textures, soft centers, and playful dessert flavors.',
-    price: 'From $4',
-    image: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=900&q=80',
-    alt: 'Chocolate chip cookies stacked together',
-  },
-  {
-    title: 'Cold Desserts',
-    desc: 'Chilled dessert cups, creamy layers, fruit accents, and smooth refreshing textures.',
-    price: 'From $6',
-    image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=900&q=80',
-    alt: 'Cold creamy dessert cup with fruit topping',
+    id: 'cheesecake',
+    name: 'Cheesecake',
+    image: '/about-cheesecake-chocolate.jpg',
+    alt: 'Chocolate-drizzled cheesecake slice served on a plate',
+    products: [
+      { name: 'Chocolate Cheesecake', description: 'Milk chocolate cheesecake with white chocolate drizzle', price: '$8.99' },
+      { name: 'Strawberry Cheesecake', description: 'Strawberry sauce topped with white chocolate drizzle', price: '$8.99' },
+      { name: 'Oreo Cheesecake', description: 'Cheesecake with crushed Oreos and chocolate toppings', price: '$9.99' },
+      { name: 'Lotus Cheesecake', description: 'Lotus butter cheesecake with crushed Lotus cookies', price: '$9.99' },
+      { name: 'Pistachio Cheesecake', description: 'Pistachio butter cheesecake with crushed pistachio', price: '$9.99' },
+    ],
   },
 ];
 
@@ -226,6 +247,15 @@ function Icon({ name, size = 20, className = '' }) {
       </>
     ),
     check: <path d="M20 6L9 17l-5-5" />,
+    cupcake: (
+      <>
+        <path d="M7 10h10" />
+        <path d="M8 10l1.2 10h5.6L16 10" />
+        <path d="M9 7.5a3 3 0 0 1 6 0" />
+        <path d="M12 4.5V3" />
+        <path d="M9 14h6" />
+      </>
+    ),
     messageCircle: <path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5z" />,
     menu: (
       <>
@@ -247,15 +277,14 @@ function Icon({ name, size = 20, className = '' }) {
 
 const Logo = memo(function Logo() {
   return (
-    <div className="relative flex w-[108px] shrink-0 items-center bg-transparent sm:w-[125px] lg:w-[145px]">
+    <div className="relative flex aspect-[982/435] w-[108px] shrink-0 items-center bg-transparent sm:w-[125px] lg:w-[145px]">
       <Image
-        src="/chokola-logo-cropped.png"
+        src="/chokola-logo-main-cropped.png"
         alt="Chokola Dessert Lounge logo"
-        width={713}
-        height={296}
+        fill
         priority
         sizes="(max-width: 640px) 108px, (max-width: 1024px) 125px, 145px"
-        className="h-auto w-full object-contain"
+        className="object-contain object-center"
       />
     </div>
   );
@@ -269,7 +298,7 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
       transition={{ duration: 0.28, ease: 'easeOut' }}
       className={`fixed inset-x-0 top-0 z-50 px-4 transition-all duration-300 sm:px-6 lg:px-10 ${
         isScrolled
-          ? 'bg-chokola-cream/95 shadow-[0_10px_24px_rgb(var(--rgb-chocolate-brown)_/_0.06)] backdrop-blur-xl'
+          ? 'bg-[#472c29] shadow-[0_10px_24px_rgb(0_0_0_/_0.16)]'
           : 'bg-transparent'
       }`}
       aria-label="Main navigation"
@@ -281,14 +310,12 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
           href="#home"
           onClick={onCloseMenu}
           aria-label="Go to Chokola homepage"
-          className={`relative z-10 rounded-[18px] px-2 py-1 transition-colors duration-300 ${
-            isScrolled ? 'bg-transparent' : 'bg-chokola-cream/95'
-          }`}
+          className="relative z-10 rounded-[18px] px-2 py-1"
         >
           <Logo />
         </a>
 
-        <div className={`relative z-10 hidden flex-1 items-center justify-center gap-2 text-[15.5px] font-semibold lg:flex ${isScrolled ? 'text-chokola-chocolate' : 'text-chokola-cream'}`}>
+        <div className="relative z-10 hidden flex-1 items-center justify-center gap-2 text-[15.5px] font-semibold text-chokola-cream lg:flex">
           {NAV_LINKS.map((link) => {
             const isActive = activeSection === link.href.slice(1);
 
@@ -298,20 +325,14 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
                 href={link.href}
                 className={`group relative rounded-full px-4 py-2.5 transition-all duration-300 ${
                   isScrolled
-                    ? 'text-chokola-chocolate hover:bg-chokola-blush/10 focus-visible:bg-chokola-blush/10'
-                    : 'text-chokola-cream hover:bg-chokola-cream/10 focus-visible:bg-chokola-cream/10'
+                    ? 'text-chokola-cream hover:bg-chokola-cream/10 focus-visible:bg-chokola-cream/10'
+                    : 'text-chokola-cream hover:bg-chokola-gold/20 focus-visible:bg-chokola-gold/20'
                 }`}
                 aria-current={isActive ? 'page' : undefined}
               >
-                {isActive && (
-                  <motion.span
-                    layoutId="navbar-active-underline"
-                    className={`absolute bottom-1.5 left-1/2 h-[2px] w-5 -translate-x-1/2 rounded-full ${isScrolled ? 'bg-chokola-mauve' : 'bg-chokola-gold'}`}
-                    transition={{ duration: 0.28, ease: 'easeOut' }}
-                    aria-hidden="true"
-                  />
-                )}
-                <span className={`relative z-10 ${isActive ? 'font-semibold' : ''}`}>{link.label}</span>
+                <span className={`nav-text z-10 ${isActive ? 'nav-text-active font-semibold' : ''}`}>
+                  {link.label}
+                </span>
               </a>
             );
           })}
@@ -320,11 +341,7 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
         <div className="relative z-10 ml-auto flex items-center gap-3">
           <a
             href="#contact"
-            className={`hidden min-h-11 items-center rounded-full px-6 text-sm font-semibold leading-none transition-colors duration-300 sm:inline-flex ${
-              isScrolled
-                ? 'bg-chokola-blush text-chokola-chocolate hover:bg-chokola-chocolate hover:text-chokola-cream'
-                : 'bg-chokola-cream text-chokola-chocolate hover:bg-chokola-blush focus-visible:bg-chokola-blush'
-            }`}
+            className="hidden min-h-11 items-center rounded-full bg-[#FFF5F0] px-6 text-sm font-semibold leading-none text-[#472c29] transition-colors duration-300 hover:bg-[#C9A86A] hover:text-[#472c29] focus-visible:bg-[#C9A86A] focus-visible:text-[#472c29] sm:inline-flex"
           >
             Contact Us
           </a>
@@ -333,7 +350,7 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
             onClick={onToggleMenu}
             className={`grid h-11 w-11 place-items-center rounded-full border transition-all duration-300 lg:hidden ${
               isScrolled
-                ? 'border-chokola-blush/40 bg-chokola-cream/80 text-chokola-chocolate hover:bg-chokola-blush/20'
+                ? 'border-chokola-cream/20 bg-chokola-cream/10 text-chokola-cream hover:bg-chokola-cream/20'
                 : 'border-chokola-cream/20 bg-chokola-cream/10 text-chokola-cream hover:bg-chokola-cream/20'
             }`}
             aria-controls="mobile-menu"
@@ -353,26 +370,32 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
           transition={{ duration: 0.25 }}
           className={`mx-auto max-w-[1520px] py-3 backdrop-blur-xl lg:hidden ${
             isScrolled
-              ? 'bg-chokola-cream/95'
+              ? 'bg-[#472c29]'
               : 'bg-chokola-chocolate/95'
           }`}
         >
-          <div className={`grid gap-2 text-sm font-semibold ${isScrolled ? 'text-chokola-chocolate' : 'text-chokola-cream'}`}>
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={onCloseMenu}
-                className={`rounded-full px-4 py-3 transition-all duration-300 ${
-                  isScrolled
-                    ? `text-chokola-chocolate hover:bg-chokola-blush/10 focus-visible:bg-chokola-blush/10 ${activeSection === link.href.slice(1) ? 'bg-chokola-blush/10 font-semibold' : ''}`
-                    : `text-chokola-cream hover:bg-chokola-cream/10 focus-visible:bg-chokola-cream/10 ${activeSection === link.href.slice(1) ? 'bg-chokola-cream/10 font-semibold' : ''}`
-                }`}
-                aria-current={activeSection === link.href.slice(1) ? 'page' : undefined}
-              >
-                {link.label}
-              </a>
-            ))}
+          <div className="grid gap-2 text-sm font-semibold text-chokola-cream">
+            {NAV_LINKS.map((link) => {
+              const isActive = activeSection === link.href.slice(1);
+
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={onCloseMenu}
+                  className={`rounded-full px-4 py-3 transition-all duration-300 ${
+                    isScrolled
+                      ? 'text-chokola-cream hover:bg-chokola-cream/10 focus-visible:bg-chokola-cream/10'
+                      : 'text-chokola-cream hover:bg-chokola-gold/20 focus-visible:bg-chokola-gold/20'
+                  } ${isActive ? 'font-semibold' : ''}`}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  <span className={`nav-text ${isActive ? 'nav-text-active' : ''}`}>
+                    {link.label}
+                  </span>
+                </a>
+              );
+            })}
           </div>
         </motion.div>
       )}
@@ -423,7 +446,7 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
           <div className="mt-8 flex flex-wrap gap-4" aria-label="Hero calls to action">
             <a
               href="#menu"
-              className="inline-flex min-h-14 min-w-[160px] items-center justify-center rounded-full border border-chokola-cream bg-chokola-cream px-7 text-sm font-bold leading-none text-chokola-chocolate transition-all duration-300 hover:-translate-y-0.5 hover:bg-chokola-blush focus-visible:bg-chokola-blush sm:min-w-[168px] sm:px-8"
+              className="inline-flex min-h-14 min-w-[160px] items-center justify-center rounded-full border border-chokola-cream bg-chokola-cream px-7 text-sm font-bold leading-none text-chokola-chocolate transition-all duration-300 hover:-translate-y-0.5 hover:bg-chokola-gold focus-visible:bg-chokola-gold sm:min-w-[168px] sm:px-8"
             >
               Explore Menu
             </a>
@@ -435,31 +458,26 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
             </a>
           </div>
 
-          <div className="mt-7 flex max-w-[620px] flex-wrap items-center gap-x-2 gap-y-3 border-t border-chokola-cream/16 pt-5 text-sm text-chokola-cream/72 sm:gap-x-6" aria-label="Chokola highlights">
-            <div className="flex items-baseline gap-2 whitespace-nowrap">
-              <p className="font-serif text-[1.35rem] font-semibold leading-none text-chokola-cream">20+</p>
-              <p className="font-medium leading-none">Desserts</p>
+          <div className="mt-7 grid max-w-[560px] grid-cols-1 gap-3 border-t border-chokola-cream/16 pt-5 text-chokola-cream/72 sm:grid-cols-3" aria-label="Chokola highlights">
+            <div className="rounded-2xl bg-chokola-cream/7 px-4 py-3">
+              <p className="text-xs font-semibold leading-5 text-chokola-cream/70">Dessert selection</p>
+              <div className="mt-2 flex items-center gap-2 text-chokola-cream">
+                <Icon name="cupcake" size={18} className="text-chokola-gold" />
+                <p className="font-serif text-2xl font-semibold leading-none">20+</p>
+              </div>
             </div>
-            <span className="hidden h-1 w-1 rounded-full bg-chokola-gold/70 sm:block" aria-hidden="true" />
-            <div className="flex items-baseline gap-2 whitespace-nowrap">
-              <p className="font-serif text-[1.35rem] font-semibold leading-none text-chokola-cream">4.9★</p>
-              <p className="font-medium leading-none">
-                <span className="sm:hidden">Rating</span>
-                <span className="hidden sm:inline">Guest rating</span>
-              </p>
+            <div className="rounded-2xl bg-chokola-cream/7 px-4 py-3">
+              <p className="text-xs font-semibold leading-5 text-chokola-cream/70">Guest experience</p>
+              <p className="mt-2 font-serif text-2xl font-semibold leading-none text-chokola-cream">4.9<span className="ml-1 text-chokola-gold">★</span></p>
             </div>
-            <span className="hidden h-1 w-1 rounded-full bg-chokola-gold/70 sm:block" aria-hidden="true" />
-            <div className="flex items-baseline gap-2 whitespace-nowrap">
-              <p className="font-serif text-[1.35rem] font-semibold leading-none text-chokola-cream">Daily</p>
-              <p className="font-medium leading-none">
-                <span className="sm:hidden">Fresh</span>
-                <span className="hidden sm:inline">Fresh made</span>
-              </p>
+            <div className="rounded-2xl bg-chokola-cream/7 px-4 py-3">
+              <p className="text-xs font-semibold leading-5 text-chokola-cream/70">Kitchen rhythm</p>
+              <p className="mt-2 font-serif text-2xl font-semibold leading-none text-chokola-cream">Daily</p>
             </div>
           </div>
         </div>
 
-        <div className="relative flex min-h-[320px] items-center justify-center sm:min-h-[380px] lg:min-h-[650px] lg:translate-x-3 lg:justify-end xl:translate-x-8">
+        <div className="relative flex h-[320px] items-center justify-center sm:h-[380px] lg:h-[650px] lg:translate-x-3 lg:justify-end xl:translate-x-8">
           <div className="hero-gold-glow absolute left-[54%] top-[46%] h-[72%] w-[82%] -translate-x-1/2 -translate-y-1/2 blur-3xl" aria-hidden="true" />
           <div className="hero-blush-glow absolute left-[62%] top-[42%] h-[70%] w-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl" aria-hidden="true" />
           <div className="hero-dessert-plate absolute bottom-[18%] left-[57%] h-[20%] w-[68%] -translate-x-1/2 rounded-full blur-sm" aria-hidden="true" />
@@ -473,16 +491,15 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
           <motion.div
             animate={prefersReducedMotion ? undefined : { y: [0, -8, 0] }}
             transition={prefersReducedMotion ? undefined : { duration: 7.5, repeat: Infinity, ease: 'easeInOut' }}
-            className="relative z-10"
+            className="absolute inset-x-[-10vw] bottom-[-2%] top-0 z-10 sm:inset-x-[-8vw] lg:inset-x-[-9vw] xl:inset-x-[-10vw]"
           >
             <Image
-              src="/chocolate-sensations-hero.png"
-              alt="Chocolate dessert stack with dripping chocolate sauce and chocolate pieces"
-              width={2000}
-              height={1779}
+              src="/open-waffle-hero-centered.png"
+              alt="Chocolate and cream waffle dessert with chocolate pieces"
+              fill
               priority
-              sizes="(max-width: 768px) 96vw, (max-width: 1024px) 720px, 880px"
-              className="h-auto w-[min(86vw,500px)] max-w-none translate-y-0 object-contain drop-shadow-[0_28px_34px_rgb(var(--rgb-chocolate-brown)_/_0.34)] sm:w-[min(88vw,540px)] lg:mr-[-3vw] lg:w-[clamp(540px,43vw,780px)] xl:mr-[-4vw] xl:w-[clamp(590px,45vw,830px)]"
+              sizes="(max-width: 768px) 96vw, (max-width: 1024px) 720px, 900px"
+              className="scale-[1.08] object-contain object-bottom drop-shadow-[0_28px_34px_rgb(var(--rgb-chocolate-brown)_/_0.34)]"
             />
           </motion.div>
         </div>
@@ -504,124 +521,135 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
   );
 }
 
-function MenuCard({ item }) {
+function MenuFeature({ category }) {
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-[30px] border border-chokola-nude/80 bg-chokola-cream">
-      <div className="relative aspect-[5/6] w-full overflow-hidden">
-        <Image
-          src={item.image}
-          alt={item.alt}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
-          className="object-cover saturate-[0.88] contrast-[0.97] sepia-[0.06]"
-        />
+    <motion.figure
+      key={category.id}
+      variants={fadeUp}
+      initial="hidden"
+      animate="visible"
+      className="group relative h-[340px] overflow-hidden rounded-[28px] bg-chokola-chocolate sm:h-[420px] lg:h-[calc(100vh-300px)] lg:min-h-[400px] lg:max-h-[500px]"
+    >
+      <Image
+        src={category.image}
+        alt={category.alt}
+        fill
+        priority={false}
+        sizes="(max-width: 1023px) 100vw, 48vw"
+        className="object-cover object-[50%_52%] saturate-[0.96] contrast-[1.04] transition-transform duration-700 group-hover:scale-[1.035]"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-chokola-chocolate/82 via-chokola-chocolate/20 to-transparent" aria-hidden="true" />
+      <div className="absolute left-5 top-5 rounded-full bg-chokola-cream/94 px-4 py-2 text-xs font-bold text-chokola-chocolate sm:left-6 sm:top-6">
+        {category.name}
       </div>
+      <figcaption className="absolute inset-x-0 bottom-0 p-5 text-chokola-cream sm:p-7 lg:p-8">
+        <p className="text-sm font-semibold text-chokola-cream/78">Selected category</p>
+        <h3 className="mt-3 max-w-[520px] font-serif text-3xl font-semibold leading-[1.08] text-chokola-cream sm:text-4xl">
+          {category.name}
+        </h3>
+        <p className="mt-3 max-w-[430px] text-sm font-medium leading-7 text-chokola-cream/84">
+          {category.products.length} Chokola favorites from the lounge menu.
+        </p>
+      </figcaption>
+    </motion.figure>
+  );
+}
 
-      <div className="flex min-h-[155px] flex-1 flex-col border-t border-chokola-nude/70 px-6 py-4">
-        <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-chokola-chocolate">{item.label}</p>
-        <h3 className="mt-1.5 font-serif text-2xl font-semibold leading-tight text-chokola-chocolate">{item.title}</h3>
-        <p className="mt-2 text-sm leading-6 text-chokola-chocolate/78">{item.description}</p>
-        <p className="mt-auto pt-3 text-xs leading-5 text-chokola-chocolate/78">Crafted fresh daily</p>
-      </div>
-    </article>
+function MenuProductRow({ product }) {
+  return (
+    <motion.li variants={fadeUp} className="border-t border-chokola-chocolate/12 first:border-t-0">
+      <article className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-5 py-3 sm:py-3.5">
+        <div className="min-w-0">
+          <h3 className="text-base font-semibold leading-tight text-chokola-chocolate sm:text-lg">
+            {product.name}
+          </h3>
+          <p className="mt-1 truncate text-xs font-medium leading-5 text-chokola-chocolate/58 sm:text-[13px]">
+            {product.description}
+          </p>
+        </div>
+        <p className="pt-0.5 text-sm font-bold text-chokola-chocolate sm:text-base">
+          {product.price}
+        </p>
+      </article>
+    </motion.li>
   );
 }
 
 function MenuSection() {
-  const [showAllDesserts, setShowAllDesserts] = useState(false);
-  const menuCards = [
-    {
-      title: 'Waffles',
-      description: 'Warm golden waffles layered with rich chocolate and premium toppings.',
-      label: 'Signature',
-      image: '/about-waffles-plate.jpg',
-      alt: 'Golden waffles served with ice cream and chocolate',
-    },
-    {
-      title: 'Crepes',
-      description: 'Thin handcrafted crepes made fresh daily with delicious fillings.',
-      label: 'Handcrafted',
-      image: '/about-dessert-prep.jpg',
-      alt: 'Chef finishing a handcrafted dessert',
-    },
-    {
-      title: 'Chocolate',
-      description: 'Rich chocolate creations crafted for sharing and unforgettable moments.',
-      label: 'Premium',
-      image: '/hero-chocolate-brownie-stack.jpg',
-      alt: 'Rich layered chocolate dessert',
-    },
-    {
-      title: 'Pancakes',
-      description: 'Soft pancakes finished with smooth sauces and carefully chosen toppings.',
-      label: 'Fresh Daily',
-      image: '/about-waffle-dessert-wide.jpg',
-      alt: 'Fresh dessert stack with cream and fruit',
-    },
-    {
-      title: 'Ice Cream',
-      description: 'Creamy ice cream with elegant toppings and refreshing flavors.',
-      label: 'Chilled',
-      image: '/about-ice-cream-cup.jpg',
-      alt: 'Chocolate and vanilla ice cream in a dessert cup',
-    },
-    {
-      title: 'Sweet Cups',
-      description: 'Small sweet moments crafted with premium ingredients and beautiful presentation.',
-      label: 'Best Seller',
-      image: '/about-pink-milkshake.jpg',
-      alt: 'Pink dessert drink presented in a glass',
-    },
-  ];
+  const [activeCategoryId, setActiveCategoryId] = useState(MENU_CATEGORIES[0].id);
+  const activeCategory = MENU_CATEGORIES.find((category) => category.id === activeCategoryId) || MENU_CATEGORIES[0];
+  const visibleProducts = activeCategory.products.slice(0, 5);
 
   return (
-    <section id="menu" className="bg-chokola-cream px-6 py-12 lg:px-10" aria-labelledby="menu-title">
-      <div className="mx-auto max-w-7xl">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-base font-bold uppercase tracking-[0.3em] text-chokola-chocolate">Menu</p>
-          <h2 id="menu-title" className="mt-2 font-serif text-4xl font-semibold leading-[1.08] text-chokola-chocolate sm:text-5xl lg:text-[3.5rem]">
-            Signature Desserts
-          </h2>
-          <p className="mx-auto mt-2 max-w-3xl text-sm leading-7 text-chokola-chocolate/78 sm:text-base sm:leading-8">
-            Warm waffles, rich chocolate creations, handcrafted cakes, premium brownies, ice cream, and sweet cups made fresh daily using carefully selected ingredients and crafted for sharing every sweet moment.
-          </p>
+    <section id="menu" className="[scroll-margin-top:-48px] bg-chokola-cream px-4 pb-24 pt-4 sm:px-6 sm:pb-28 sm:pt-6 lg:px-10 lg:pb-32 lg:pt-6" aria-labelledby="menu-title">
+      <div className="mx-auto w-full max-w-[1320px]">
+        <div className="grid min-w-0 gap-5 lg:grid-cols-[0.44fr_0.56fr] lg:items-end lg:gap-12">
+          <div className="max-w-[610px]">
+            <h2 id="menu-title" className="font-sans text-4xl font-bold leading-[1.04] text-chokola-chocolate sm:text-5xl lg:text-[3.65rem]">
+              Our Menu
+            </h2>
+            <p className="mt-4 text-base font-semibold leading-none text-chokola-chocolate sm:text-lg">
+              Dessert Favorites
+            </p>
+          </div>
+
+          <div className="max-w-[650px] lg:justify-self-end">
+            <p className="text-base leading-8 text-chokola-chocolate/76 lg:max-w-[560px]">
+              Choose a dessert family to preview a focused set of Chokola lounge favorites.
+            </p>
+          </div>
         </div>
 
-        <div className="mx-auto mt-8 grid max-w-[920px] grid-cols-1 gap-7 sm:mt-10 sm:grid-cols-2 lg:max-w-[860px] lg:grid-cols-3 lg:gap-6">
-          {menuCards.slice(0, 3).map((item) => (
-            <MenuCard key={item.title} item={item} />
-          ))}
-        </div>
+        <div className="mt-9 grid min-w-0 gap-7 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start lg:gap-10">
+          <MenuFeature category={activeCategory} />
 
-        <AnimatePresence initial={false}>
-          {showAllDesserts && (
-            <motion.div
-              id="more-desserts"
-              key="more-desserts"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="mx-auto mt-7 grid max-w-[920px] grid-cols-1 gap-7 overflow-hidden sm:grid-cols-2 lg:max-w-[860px] lg:grid-cols-3 lg:gap-6"
-            >
-              {menuCards.slice(3).map((item) => (
-                <MenuCard key={item.title} item={item} />
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+          <div className="min-h-full min-w-0 rounded-[28px] bg-chokola-nude/62 p-5 sm:p-7 lg:h-[calc(100vh-300px)] lg:min-h-[400px] lg:max-h-[500px] lg:p-7">
+            <div className="flex h-full flex-col">
+              <div
+                className="grid grid-cols-2 gap-2 border-b border-chokola-chocolate/14 pb-5 sm:grid-cols-3 lg:grid-cols-5"
+                role="tablist"
+                aria-label="Dessert menu categories"
+              >
+                {MENU_CATEGORIES.map((category) => {
+                  const isActive = category.id === activeCategory.id;
 
-        <div className="mt-6 px-2 text-center">
-          <button
-            type="button"
-            aria-expanded={showAllDesserts}
-            aria-controls="more-desserts"
-            onClick={() => setShowAllDesserts((current) => !current)}
-            className="mx-auto flex w-full min-w-0 max-w-[320px] items-center justify-center gap-2 rounded-full bg-chokola-blush px-6 py-3.5 text-sm font-bold leading-none text-chokola-chocolate transition-colors duration-300 hover:bg-chokola-chocolate hover:text-chokola-cream focus-visible:bg-chokola-chocolate focus-visible:text-chokola-cream sm:w-fit sm:min-w-[220px] sm:max-w-none sm:px-8 lg:px-[34px] lg:py-4"
-          >
-            <span>{showAllDesserts ? 'Show Less' : 'View More Desserts'}</span>
-            <span aria-hidden="true">{showAllDesserts ? '\u2191' : '\u2193'}</span>
-          </button>
+                  return (
+                    <button
+                      key={category.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={isActive}
+                      aria-controls="menu-products-panel"
+                      id={`menu-tab-${category.id}`}
+                      onClick={() => setActiveCategoryId(category.id)}
+                      className={`min-h-12 rounded-full px-2 text-[12px] font-bold leading-none transition-colors duration-300 xl:min-h-14 xl:px-3 xl:text-sm ${
+                        isActive
+                          ? 'bg-chokola-chocolate text-chokola-cream'
+                          : 'bg-chokola-cream text-chokola-chocolate hover:bg-chokola-chocolate hover:text-chokola-cream focus-visible:bg-chokola-chocolate focus-visible:text-chokola-cream'
+                      }`}
+                    >
+                      {category.name}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <motion.ul
+                key={activeCategory.id}
+                variants={stagger}
+                initial="hidden"
+                animate="visible"
+                id="menu-products-panel"
+                role="tabpanel"
+                aria-labelledby={`menu-tab-${activeCategory.id}`}
+                className="mt-5 flex flex-1 flex-col justify-between"
+              >
+                {visibleProducts.map((product) => (
+                  <MenuProductRow key={product.name} product={product} />
+                ))}
+              </motion.ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -671,63 +699,82 @@ function AboutWaveBottomRight() {
 
 function AboutSection() {
   return (
-    <section id="about" className="about-surface relative isolate overflow-hidden px-6 py-28 sm:py-32 lg:px-10" aria-labelledby="about-title">
-      <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-[minmax(0,0.48fr)_minmax(0,0.52fr)] lg:gap-14 xl:gap-[4.5rem]">
-        <div className="grid gap-5 sm:grid-cols-[1.55fr_0.85fr] sm:grid-rows-[340px_230px] lg:gap-6 lg:grid-rows-[390px_245px]" aria-label="About section editorial bento image layout">
-          <div className="relative min-h-[280px] overflow-hidden rounded-[2rem] sm:min-h-0 lg:rounded-[2.25rem]">
-            <Image
-              src="/about-dessert-prep.jpg"
-              alt="Chef adding chocolate to a premium plated dessert"
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 62vw, 38vw"
-              className="object-cover object-[50%_48%]"
-            />
+    <section id="about" className="about-surface relative isolate overflow-hidden px-4 pb-10 pt-20 sm:px-6 sm:pb-12 sm:pt-24 lg:px-10 lg:pb-14 lg:pt-28" aria-labelledby="about-title">
+      <div className="pointer-events-none absolute left-0 top-0 h-40 w-full bg-gradient-to-b from-chokola-chocolate/8 to-transparent" aria-hidden="true" />
+      <div className="pointer-events-none absolute right-[-12%] top-20 h-[26rem] w-[26rem] rounded-full bg-chokola-blush/18 blur-3xl" aria-hidden="true" />
+
+      <div className="relative mx-auto grid max-w-[1380px] items-center gap-12 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] lg:gap-14 xl:gap-20">
+        <div className="max-w-[610px]">
+          <p className="text-sm font-semibold text-chokola-mauve">Dessert lounge craft</p>
+          <h2 id="about-title" className="mt-4 max-w-[560px] font-sans text-4xl font-bold leading-[1.04] text-chokola-chocolate sm:text-5xl lg:text-[3.65rem]">
+            About Us
+          </h2>
+
+          <div className="mt-7 space-y-4 text-[15px] leading-8 text-chokola-chocolate/78 sm:text-base sm:leading-8">
+            <p>
+              Chokola brings together warm waffles, rich chocolate, creamy ice cream, sweet cups, and handcrafted desserts made for sharing, celebrating, and creating memorable moments with family and friends.
+            </p>
+            <p>
+              Inspired by modern dessert culture, we focus on premium ingredients, fresh daily preparation, and elegant presentation to create a warm and welcoming dessert lounge experience for every guest.
+            </p>
+            <p>
+              From signature waffles and chocolate creations to sweet cups and seasonal treats, every detail at Chokola is designed to turn simple moments into unforgettable memories filled with sweetness.
+            </p>
           </div>
-          <div className="relative min-h-[320px] overflow-hidden rounded-[2rem] sm:min-h-0 lg:rounded-[2.25rem]">
-            <Image
-              src="/about-waffles-plate.jpg"
-              alt="Tall waffle dessert with ice cream and chocolate topping"
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 36vw, 18vw"
-              className="object-cover object-[52%_58%]"
-            />
-          </div>
-          <div className="relative min-h-[210px] overflow-hidden rounded-[2rem] sm:min-h-0 lg:rounded-[2.25rem]">
-            <Image
-              src="/about-cheesecake-chocolate.jpg"
-              alt="Chocolate-drizzled cheesecake slice on a plate"
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 62vw, 38vw"
-              className="object-cover object-[50%_52%]"
-            />
-          </div>
-          <div className="relative min-h-[210px] overflow-hidden rounded-[2rem] sm:min-h-0 lg:rounded-[2.25rem]">
-            <Image
-              src="/about-ice-cream-cup.jpg"
-              alt="Small cup of chocolate and vanilla ice cream"
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 36vw, 18vw"
-              className="object-cover object-[50%_45%]"
-            />
+
+          <div className="mt-9 border-y border-chokola-chocolate/12 py-5">
+            <dl className="grid gap-4 text-sm sm:grid-cols-3">
+              <div>
+                <dt className="font-semibold text-chokola-chocolate">Premium</dt>
+                <dd className="mt-1 text-chokola-chocolate/68">Ingredients</dd>
+              </div>
+              <div>
+                <dt className="font-semibold text-chokola-chocolate">Fresh daily</dt>
+                <dd className="mt-1 text-chokola-chocolate/68">Preparation</dd>
+              </div>
+              <div>
+                <dt className="font-semibold text-chokola-chocolate">Elegant</dt>
+                <dd className="mt-1 text-chokola-chocolate/68">Presentation</dd>
+              </div>
+            </dl>
           </div>
         </div>
 
-        <div className="relative flex min-h-[520px] items-start pt-2 sm:min-h-[594px] lg:min-h-[659px] lg:pt-3">
-          <div className="max-w-[540px]">
-            <h2 id="about-title" className="font-sans text-3xl font-bold leading-tight text-chokola-chocolate sm:text-[2.15rem]">
-              About Us
-            </h2>
-            <div className="mt-4 space-y-3 text-[13px] leading-6 text-chokola-chocolate/78 sm:text-sm sm:leading-6">
-              <p>
-                Chokola brings together warm waffles, rich chocolate, creamy ice cream, sweet cups, and handcrafted desserts made for sharing, celebrating, and creating memorable moments with family and friends.
-              </p>
-              <p>
-                Inspired by modern dessert culture, we focus on premium ingredients, fresh daily preparation, and elegant presentation to create a warm and welcoming dessert lounge experience for every guest.
-              </p>
-              <p>
-                From signature waffles and chocolate creations to sweet cups and seasonal treats, every detail at Chokola is designed to turn simple moments into unforgettable memories filled with sweetness.
-              </p>
+        <div className="relative min-h-[620px] lg:min-h-[680px]" aria-label="Chokola dessert lounge atmosphere">
+          <div className="absolute inset-x-4 bottom-4 top-10 rounded-[28px] bg-chokola-chocolate" aria-hidden="true" />
+          <div className="absolute right-0 top-0 h-[76%] w-full overflow-hidden rounded-[28px] bg-chokola-chocolate sm:w-[88%]">
+            <Image
+              src="/about-chef-dessert.jpg"
+              alt="Chef finishing a plated dessert under warm lounge lighting"
+              fill
+              sizes="(max-width: 1024px) 92vw, 52vw"
+              className="object-cover object-[48%_52%] saturate-[0.94] contrast-[1.03]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-chokola-chocolate/72 via-chokola-chocolate/16 to-transparent" aria-hidden="true" />
+            <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 text-chokola-cream sm:bottom-7 sm:left-7 sm:right-7">
+              <p className="max-w-[16rem] text-sm font-medium leading-6 text-chokola-cream/86">Prepared with the same warm, indulgent care guests feel in the lounge.</p>
+              <span className="hidden h-2 w-2 shrink-0 rounded-full bg-chokola-gold sm:block" aria-hidden="true" />
             </div>
+          </div>
+
+          <figure className="absolute bottom-0 left-0 w-[58%] min-w-[230px] overflow-hidden rounded-[24px] bg-chokola-nude p-2">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[18px]">
+              <Image
+                src="/about-cheesecake-chocolate.jpg"
+                alt="Chocolate-drizzled cheesecake slice served on a plate"
+                fill
+                sizes="(max-width: 640px) 58vw, (max-width: 1024px) 42vw, 24vw"
+                className="object-cover object-[50%_52%]"
+              />
+            </div>
+            <figcaption className="px-2 pb-1 pt-3 text-xs font-semibold leading-5 text-chokola-chocolate">
+              Rich chocolate details, soft cream textures, and plated desserts made to linger over.
+            </figcaption>
+          </figure>
+
+          <div className="absolute bottom-[18%] right-[8%] hidden max-w-[210px] bg-chokola-cream px-5 py-4 text-sm leading-6 text-chokola-chocolate/76 lg:block">
+            <p className="font-semibold text-chokola-chocolate">Warm, social, crafted.</p>
+            <p className="mt-1">A lounge experience, not just a dessert counter.</p>
           </div>
         </div>
       </div>
@@ -768,28 +815,34 @@ function BranchSection() {
   }, []);
 
   return (
-    <section id="branch" className="branch-surface px-6 py-24 lg:px-10 lg:py-28" aria-labelledby="branch-title">
-      <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
-        <div className="relative min-h-[420px] overflow-hidden rounded-[30px] sm:min-h-[560px] lg:min-h-[680px]">
+    <section id="branch" className="relative isolate overflow-hidden bg-chokola-nude px-6 py-24 text-chokola-chocolate lg:px-10 lg:py-28" aria-labelledby="branch-title">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_18%,rgba(74,46,43,0.10),transparent_28%),radial-gradient(circle_at_88%_18%,rgba(201,168,106,0.18),transparent_24%),linear-gradient(180deg,#EAD9C8_0%,#FFF5F0_100%)]" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-chokola-cream to-transparent" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-chokola-cream" aria-hidden="true" />
+
+      <div className="relative mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
+        <div className="group relative min-h-[420px] overflow-hidden rounded-[30px] bg-chokola-chocolate shadow-[0_24px_70px_rgb(var(--rgb-chocolate-brown)_/_0.18)] sm:min-h-[560px] lg:min-h-[680px]">
             <Image
               src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1400&q=85"
               alt="Warm Chokola dessert lounge storefront and entrance"
               fill
               sizes="(max-width: 1024px) 100vw, 54vw"
-              className="object-cover"
+              className="object-cover saturate-[0.94] contrast-[1.04] transition-transform duration-700 group-hover:scale-[1.035]"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-chokola-chocolate/42 via-chokola-chocolate/4 to-transparent" aria-hidden="true" />
+            <div className="absolute inset-0 ring-1 ring-inset ring-chokola-chocolate/12" aria-hidden="true" />
         </div>
 
         <div className="max-w-[500px] lg:py-8">
-          <p className="text-sm font-bold uppercase tracking-[0.28em] text-chokola-chocolate">Our Branch</p>
-          <h2 id="branch-title" className="mt-4 font-serif text-4xl font-semibold leading-tight text-chokola-chocolate sm:text-5xl">
+          <p className="font-serif text-4xl font-semibold leading-[1.04] text-chokola-chocolate sm:text-5xl lg:text-[3.5rem]">Our Branch</p>
+          <h2 id="branch-title" className="mt-3 font-serif text-3xl font-semibold leading-[1.08] text-chokola-chocolate/88 sm:text-4xl lg:text-[2.65rem]">
             {branch.name}
           </h2>
           <p className="mt-6 max-w-md text-base leading-8 text-chokola-chocolate/78">
             A cozy destination crafted for sweet moments and unforgettable dessert experiences.
           </p>
 
-          <span className={`mt-7 inline-flex min-h-10 items-center gap-2.5 rounded-full px-4 text-sm font-bold ${isOpen ? 'bg-chokola-nude/60 text-chokola-chocolate' : 'bg-chokola-blush/35 text-chokola-chocolate'}`}>
+          <span className={`mt-8 inline-flex min-h-10 items-center gap-2.5 rounded-full border px-4 text-sm font-bold ${isOpen ? 'border-chokola-chocolate/10 bg-chokola-cream/70 text-chokola-chocolate' : 'border-chokola-blush/40 bg-chokola-blush/24 text-chokola-chocolate'}`}>
             <span className={`h-2.5 w-2.5 rounded-full ${isOpen ? 'bg-chokola-mauve' : 'bg-chokola-chocolate'}`} aria-hidden="true" />
             {branchStatus}
           </span>
@@ -811,7 +864,7 @@ function BranchSection() {
 
           <div className="mt-8 flex flex-wrap gap-2.5">
             {branch.amenities.map((item) => (
-              <span key={item} className="rounded-full border border-chokola-nude/70 bg-chokola-cream px-4 py-2.5 text-xs font-semibold text-chokola-chocolate/78">
+              <span key={item} className="rounded-full border border-chokola-chocolate/10 bg-chokola-cream/64 px-4 py-2.5 text-xs font-semibold text-chokola-chocolate/78">
                 {item}
               </span>
             ))}
@@ -822,7 +875,7 @@ function BranchSection() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Open Chokola Dessert Lounge directions in Google Maps"
-            className="mt-9 inline-flex min-h-14 items-center justify-center rounded-full bg-chokola-blush px-8 text-sm font-bold leading-none text-chokola-chocolate transition-colors duration-300 hover:bg-chokola-chocolate hover:text-chokola-cream focus-visible:bg-chokola-chocolate focus-visible:text-chokola-cream"
+            className="mt-9 inline-flex min-h-14 items-center justify-center rounded-full bg-chokola-chocolate px-8 text-sm font-bold leading-none text-chokola-cream transition-colors duration-300 hover:bg-chokola-gold hover:text-chokola-chocolate focus-visible:bg-chokola-gold focus-visible:text-chokola-chocolate"
           >
             Get Directions
             <Icon name="arrowRight" className="ml-2" size={17} />
@@ -903,69 +956,61 @@ function ContactSection() {
   }
 
   const statusClass = status.type === 'success'
-    ? 'text-chokola-chocolate bg-chokola-nude/60 border-chokola-mauve/35'
+    ? 'text-chokola-chocolate bg-chokola-gold/20 border-chokola-gold/45'
     : status.type === 'error'
       ? 'text-chokola-chocolate bg-chokola-blush/35 border-chokola-mauve/45'
-      : 'text-chokola-chocolate bg-chokola-blush/20 border-chokola-mauve/20';
+      : 'text-chokola-chocolate bg-chokola-cream border-chokola-nude';
 
   return (
-    <section id="contact" className="bg-chokola-cream px-6 py-24 lg:px-10" aria-labelledby="contact-title">
-      <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-        <div className="max-w-[590px]">
-          <p className="mb-3 text-sm font-bold uppercase tracking-[0.28em] text-chokola-chocolate">Contact Us</p>
-          <h2 id="contact-title" className="font-serif text-4xl font-semibold leading-tight text-chokola-chocolate md:text-5xl">
-            Have a Question?
-            <span className="block">We Would Love to Hear From You.</span>
+    <section id="contact" className="relative isolate overflow-hidden bg-chokola-nude px-6 py-20 text-chokola-chocolate lg:px-10 lg:py-24" aria-labelledby="contact-title">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_18%,rgba(74,46,43,0.10),transparent_28%),radial-gradient(circle_at_88%_18%,rgba(201,168,106,0.18),transparent_24%),linear-gradient(180deg,#EAD9C8_0%,#FFF5F0_100%)]" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-chokola-cream to-transparent" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-chokola-cream" aria-hidden="true" />
+
+      <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-16">
+        <div className="max-w-[560px]">
+          <p className="mb-4 text-sm font-semibold text-chokola-mauve">Contact Us</p>
+          <h2 id="contact-title" className="font-serif text-4xl font-semibold leading-[1.04] text-chokola-chocolate sm:text-5xl lg:text-[3.55rem]">
+            Let&apos;s Make
+            <span className="block">It Sweet.</span>
           </h2>
-          <p className="mt-5 max-w-lg leading-8 text-chokola-chocolate/78">
-            Reach us for branch information, menu details, collaborations, event bookings, or general inquiries.
+          <p className="mt-5 max-w-xl text-base leading-8 text-chokola-chocolate/76">
+            Reach us for menu questions, branch details, celebrations, collaborations, or anything sweet you would like to plan with Chokola.
           </p>
 
-          <address className="mt-8 grid gap-3 not-italic sm:grid-cols-3 lg:grid-cols-1">
-            <a href="tel:+1234567890" className="flex items-center gap-4 rounded-[24px] border border-chokola-nude bg-chokola-cream p-5 text-chokola-chocolate">
-              <Icon name="phone" className="shrink-0 text-chokola-mauve" size={20} />
+          <address className="mt-9 grid gap-3 not-italic">
+            <a href="tel:+1234567890" className="group flex items-center gap-4 rounded-[16px] border border-chokola-nude/90 bg-chokola-cream/62 p-4 text-chokola-chocolate transition-colors duration-300 hover:border-chokola-gold hover:bg-chokola-cream">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-chokola-gold/16 text-chokola-chocolate transition-colors duration-300 group-hover:bg-chokola-gold">
+                <Icon name="phone" size={19} />
+              </span>
               <span>
-                <span className="block text-sm font-semibold">Call Us</span>
-                <span className="mt-1 block text-sm text-chokola-chocolate/78">+1 234 567 890</span>
+                <span className="block text-sm font-semibold text-chokola-chocolate">Call Us</span>
+                <span className="mt-1 block text-sm text-chokola-chocolate/72">+1 234 567 890</span>
               </span>
             </a>
-            <a href="mailto:hello@chokola.com" className="flex items-center gap-4 rounded-[24px] border border-chokola-nude bg-chokola-cream p-5 text-chokola-chocolate">
-              <Icon name="mail" className="shrink-0 text-chokola-mauve" size={20} />
+            <a href="mailto:hello@chokola.com" className="group flex items-center gap-4 rounded-[16px] border border-chokola-nude/90 bg-chokola-cream/62 p-4 text-chokola-chocolate transition-colors duration-300 hover:border-chokola-gold hover:bg-chokola-cream">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-chokola-gold/16 text-chokola-chocolate transition-colors duration-300 group-hover:bg-chokola-gold">
+                <Icon name="mail" size={19} />
+              </span>
               <span>
-                <span className="block text-sm font-semibold">Email Us</span>
-                <span className="mt-1 block text-sm text-chokola-chocolate/78">hello@chokola.com</span>
+                <span className="block text-sm font-semibold text-chokola-chocolate">Email Us</span>
+                <span className="mt-1 block text-sm text-chokola-chocolate/72">hello@chokola.com</span>
               </span>
             </a>
-            <div className="flex items-center gap-4 rounded-[24px] border border-chokola-nude bg-chokola-cream p-5 text-chokola-chocolate">
-              <Icon name="mapPin" className="shrink-0 text-chokola-mauve" size={20} />
+            <div className="flex items-center gap-4 rounded-[16px] border border-chokola-nude/90 bg-chokola-cream/62 p-4 text-chokola-chocolate">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-chokola-gold/16 text-chokola-chocolate">
+                <Icon name="mapPin" size={19} />
+              </span>
               <span>
-                <span className="block text-sm font-semibold">Location</span>
-                <span className="mt-1 block text-sm text-chokola-chocolate/78">Cairo, Egypt</span>
+                <span className="block text-sm font-semibold text-chokola-chocolate">Location</span>
+                <span className="mt-1 block text-sm text-chokola-chocolate/72">Cairo, Egypt</span>
               </span>
             </div>
           </address>
-
-          <div className="mt-8">
-            <h3 className="text-sm font-semibold text-chokola-chocolate">Follow Us</h3>
-            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3 text-sm text-chokola-chocolate/78">
-              <a href="https://instagram.com/chokola" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-chokola-chocolate">
-                <Icon name="instagram" size={17} /> Instagram
-              </a>
-              <a href="https://facebook.com/chokola" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-chokola-chocolate">
-                <Icon name="facebook" size={17} /> Facebook
-              </a>
-              <a href="https://tiktok.com/@chokola" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-chokola-chocolate">
-                <Icon name="music2" size={17} /> TikTok
-              </a>
-              <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-chokola-chocolate">
-                <Icon name="messageCircle" size={17} /> WhatsApp
-              </a>
-            </div>
-          </div>
         </div>
 
-        <form onSubmit={handleContactSubmit} noValidate className="w-full max-w-[500px] justify-self-end rounded-[32px] border border-chokola-nude bg-chokola-cream p-6 md:p-8">
-          <div className="space-y-7">
+        <form onSubmit={handleContactSubmit} noValidate className="w-full max-w-[620px] justify-self-end rounded-[24px] border border-chokola-gold/28 bg-chokola-cream p-5 shadow-[0_24px_70px_rgb(var(--rgb-chocolate-brown)_/_0.10)] md:p-7">
+          <div className="grid gap-5 sm:grid-cols-2">
             <div>
               <label htmlFor="name" className="mb-2 block text-sm font-semibold text-chokola-chocolate">Name <span className="text-chokola-chocolate">*</span></label>
               <input
@@ -976,7 +1021,7 @@ function ContactSection() {
                 autoComplete="name"
                 aria-invalid={Boolean(fieldErrors.name)}
                 aria-describedby={fieldErrors.name ? 'name-error' : undefined}
-                className="h-16 w-full rounded-[18px] border border-chokola-nude bg-chokola-cream px-5 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/78 focus:border-chokola-mauve focus:ring-2 focus:ring-chokola-blush/24"
+                className="h-14 w-full rounded-[14px] border border-chokola-nude bg-white/55 px-5 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/46 focus:border-chokola-gold focus:ring-2 focus:ring-chokola-gold/20"
                 placeholder="Your Name"
               />
               {fieldErrors.name && <p id="name-error" className="mt-2 text-sm text-chokola-chocolate">{fieldErrors.name}</p>}
@@ -992,15 +1037,15 @@ function ContactSection() {
                 autoComplete="email"
                 aria-invalid={Boolean(fieldErrors.email)}
                 aria-describedby={fieldErrors.email ? 'email-error' : undefined}
-                className="h-16 w-full rounded-[18px] border border-chokola-nude bg-chokola-cream px-5 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/78 focus:border-chokola-mauve focus:ring-2 focus:ring-chokola-blush/24"
+                className="h-14 w-full rounded-[14px] border border-chokola-nude bg-white/55 px-5 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/46 focus:border-chokola-gold focus:ring-2 focus:ring-chokola-gold/20"
                 placeholder="example@email.com"
               />
               {fieldErrors.email && <p id="email-error" className="mt-2 text-sm text-chokola-chocolate">{fieldErrors.email}</p>}
             </div>
-            <div>
+            <div className="sm:col-span-2">
               <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-chokola-chocolate">Contact Number <span className="text-chokola-chocolate">*</span></label>
-              <div className="flex h-16 overflow-hidden rounded-[18px] border border-chokola-nude bg-chokola-cream transition-all duration-300 focus-within:border-chokola-mauve focus-within:ring-2 focus-within:ring-chokola-blush/24">
-                <span className="flex shrink-0 items-center border-r border-chokola-nude bg-chokola-nude/35 px-5 text-sm font-bold text-chokola-chocolate" aria-hidden="true">
+              <div className="flex h-14 overflow-hidden rounded-[14px] border border-chokola-nude bg-white/55 transition-all duration-300 focus-within:border-chokola-gold focus-within:ring-2 focus-within:ring-chokola-gold/20">
+                <span className="flex shrink-0 items-center border-r border-chokola-nude bg-chokola-nude/45 px-5 text-sm font-bold text-chokola-chocolate" aria-hidden="true">
                   +1
                 </span>
                 <input
@@ -1014,7 +1059,7 @@ function ContactSection() {
                   maxLength={12}
                   aria-invalid={Boolean(fieldErrors.phone)}
                   aria-describedby={fieldErrors.phone ? 'phone-error' : undefined}
-                  className="min-w-0 flex-1 bg-transparent px-5 py-4 text-left text-chokola-chocolate outline-none placeholder:text-chokola-chocolate/78"
+                  className="min-w-0 flex-1 bg-transparent px-5 py-4 text-left text-chokola-chocolate outline-none placeholder:text-chokola-chocolate/46"
                   placeholder="234 567 8900"
                 />
               </div>
@@ -1032,7 +1077,7 @@ function ContactSection() {
                 maxLength={MESSAGE_MAX_LENGTH}
                 aria-invalid={Boolean(fieldErrors.message)}
                 aria-describedby={fieldErrors.message ? 'message-error' : undefined}
-                className="min-h-[240px] w-full resize-y rounded-[18px] border border-chokola-nude bg-chokola-cream px-5 py-4 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/78 focus:border-chokola-mauve focus:ring-2 focus:ring-chokola-blush/24"
+                className="min-h-[190px] w-full resize-y rounded-[14px] border border-chokola-nude bg-white/55 px-5 py-4 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/46 focus:border-chokola-gold focus:ring-2 focus:ring-chokola-gold/20"
                 placeholder="Your Message"
               />
             </div>
@@ -1048,7 +1093,7 @@ function ContactSection() {
           <button
             type="submit"
             disabled={isSubmitting || !isFormValid}
-            className="mx-auto mt-8 flex min-h-14 w-full max-w-[220px] items-center justify-center rounded-full bg-chokola-blush px-8 text-sm font-bold text-chokola-chocolate transition-colors duration-300 hover:bg-chokola-chocolate hover:text-chokola-cream disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-chokola-blush disabled:hover:text-chokola-chocolate"
+            className="mx-auto mt-8 flex min-h-14 w-full max-w-[220px] items-center justify-center rounded-full bg-chokola-chocolate px-8 text-sm font-bold leading-none text-chokola-cream transition-colors duration-300 hover:bg-chokola-gold hover:text-chokola-chocolate disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-chokola-chocolate disabled:hover:text-chokola-cream"
           >
             {isSubmitting ? 'Sending...' : 'Send Message'}
           </button>
@@ -1060,19 +1105,19 @@ function ContactSection() {
 
 function Footer() {
   return (
-    <footer className="footer-surface rounded-t-[32px] px-6 py-14 text-chokola-chocolate/80 lg:px-10 lg:py-16">
+    <footer className="footer-surface rounded-t-[32px] px-6 py-14 text-chokola-cream lg:px-10 lg:py-16">
       <div className="mx-auto grid max-w-7xl items-start gap-10 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.75fr_1fr_0.8fr] lg:gap-12">
         <div>
           <div className="relative h-20 w-[210px]">
             <Image
-              src="/chokola-logo-cropped.png"
+              src="/chokola-logo-main-cropped.png"
               alt="Chokola Dessert Lounge logo"
               fill
               sizes="210px"
-              className="object-contain object-left"
+              className="object-contain object-center"
             />
           </div>
-          <p className="mt-3 max-w-xs text-sm leading-6 text-chokola-chocolate/80">
+          <p className="mt-3 max-w-xs text-base leading-8 text-chokola-cream/82">
             Premium desserts crafted daily for sweet moments and unforgettable experiences.
           </p>
 
@@ -1089,7 +1134,7 @@ function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-chokola-mauve/45 text-chokola-chocolate transition-colors duration-300 hover:border-chokola-chocolate hover:bg-chokola-chocolate hover:text-chokola-cream focus-visible:bg-chokola-chocolate focus-visible:text-chokola-cream"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-chokola-cream/30 bg-chokola-cream/8 text-chokola-cream transition-colors duration-300 hover:border-chokola-gold hover:bg-chokola-gold hover:text-chokola-chocolate focus-visible:bg-chokola-gold focus-visible:text-chokola-chocolate"
               >
                 <Icon name={social.icon} size={17} />
               </a>
@@ -1098,60 +1143,61 @@ function Footer() {
         </div>
 
         <div>
-          <h2 className="text-sm font-semibold text-chokola-chocolate">Navigation</h2>
-          <div className="mt-5 space-y-3 text-sm text-chokola-chocolate/80">
+          <h2 className="text-xs font-semibold text-chokola-cream">Navigation</h2>
+          <div className="mt-5 space-y-3 text-sm text-chokola-cream/82">
             {FOOTER_LINKS.map((link) => (
               <p key={link.href}>
-                <a href={link.href} className="transition-colors duration-300 hover:text-chokola-chocolate focus-visible:text-chokola-chocolate">{link.label}</a>
+                <a href={link.href} className="transition-colors duration-300 hover:text-chokola-cream focus-visible:text-chokola-cream">{link.label}</a>
               </p>
             ))}
           </div>
         </div>
 
         <div>
-          <h2 className="text-sm font-semibold text-chokola-chocolate">Contact</h2>
-          <address className="mt-5 space-y-4 text-sm text-chokola-chocolate/80 not-italic">
-            <a href="tel:+1234567890" className="flex items-center gap-3 transition-colors duration-300 hover:text-chokola-chocolate">
-              <Icon name="phone" className="shrink-0 text-chokola-mauve" size={17} />
+          <h2 className="text-xs font-semibold text-chokola-cream">Contact</h2>
+          <address className="mt-5 space-y-4 text-sm text-chokola-cream/82 not-italic">
+            <a href="tel:+1234567890" className="flex items-center gap-3 transition-colors duration-300 hover:text-chokola-cream">
+              <Icon name="phone" className="shrink-0 text-chokola-cream" size={17} />
               +1 234 567 890
             </a>
-            <a href="mailto:hello@chokola.com" className="flex items-center gap-3 transition-colors duration-300 hover:text-chokola-chocolate">
-              <Icon name="mail" className="shrink-0 text-chokola-mauve" size={17} />
+            <a href="mailto:hello@chokola.com" className="flex items-center gap-3 transition-colors duration-300 hover:text-chokola-cream">
+              <Icon name="mail" className="shrink-0 text-chokola-cream" size={17} />
               hello@chokola.com
             </a>
             <p className="flex items-center gap-3">
-              <Icon name="mapPin" className="shrink-0 text-chokola-mauve" size={17} />
+              <Icon name="mapPin" className="shrink-0 text-chokola-cream" size={17} />
               Cairo, Egypt
             </p>
           </address>
         </div>
 
         <div>
-          <h2 className="text-sm font-semibold text-chokola-chocolate">Opening Hours</h2>
-          <div className="mt-5 space-y-3 text-sm leading-6 text-chokola-chocolate/80">
+          <h2 className="text-xs font-semibold text-chokola-cream">Opening Hours</h2>
+          <div className="mt-5 space-y-3 text-sm leading-6 text-chokola-cream/82">
             <div>
-              <p className="font-semibold text-chokola-chocolate">Daily</p>
+              <p className="font-semibold text-chokola-cream">Daily</p>
               <p>{'10 AM \u2013 12 AM'}</p>
             </div>
             <div>
-              <p className="font-semibold text-chokola-chocolate">Friday</p>
+              <p className="font-semibold text-chokola-cream">Friday</p>
               <p>{'2 PM \u2013 12 AM'}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mx-auto mt-10 flex max-w-7xl flex-col items-center justify-center gap-2 border-t border-chokola-chocolate/12 pt-5 text-center text-xs text-chokola-chocolate/80 sm:flex-row sm:gap-6">
+      <div className="mx-auto mt-10 flex max-w-7xl flex-col items-center justify-center gap-2 border-t border-chokola-cream/22 pt-5 text-center text-xs text-chokola-cream/70 sm:flex-row sm:gap-6">
         <p>&copy; 2026 Chokola Dessert Lounge. All rights reserved.</p>
-        <p>Crafted with love in Cairo, Egypt.</p>
       </div>
     </footer>
   );
 }
 
 const selfCheck = {
-  hasSixMenuItems: MENU_ITEMS.length === 6,
-  hasNoOrderingLabels: !JSON.stringify({ menuItems: MENU_ITEMS, navLinks: NAV_LINKS }).toLowerCase().match(/cart|checkout|order now|add to cart|payment|delivery/),
+  hasFiveMenuCategories: MENU_CATEGORIES.length === 5,
+  hasMenuCategoryDetails: MENU_CATEGORIES.every((category) => Boolean(category.id && category.name && category.image && category.alt && category.products.length)),
+  hasMenuProductDetails: MENU_CATEGORIES.every((category) => category.products.every((product) => Boolean(product.name && product.description && product.price))),
+  hasNoOrderingLabels: !JSON.stringify({ menuCategories: MENU_CATEGORIES, navLinks: NAV_LINKS }).toLowerCase().match(/cart|checkout|order now|add to cart|payment|delivery/),
   hasRequiredSections: ['#home', '#menu', '#about', '#branch'].every((href) => NAV_LINKS.some((link) => link.href === href)),
   hasHeroSlides: HERO_SLIDES.length === 4,
   hasHeroSlideImages: HERO_SLIDES.every((slide) => Boolean(slide.image && slide.name && slide.price && slide.alt)),
@@ -1161,7 +1207,9 @@ const selfCheck = {
 };
 
 if (typeof console !== 'undefined') {
-  console.assert(selfCheck.hasSixMenuItems, 'Expected exactly six menu categories.');
+  console.assert(selfCheck.hasFiveMenuCategories, 'Expected exactly five menu categories.');
+  console.assert(selfCheck.hasMenuCategoryDetails, 'Expected every menu category to include complete display details.');
+  console.assert(selfCheck.hasMenuProductDetails, 'Expected every menu product to include a name, description, and price.');
   console.assert(selfCheck.hasNoOrderingLabels, 'Landing page should not include ordering or ecommerce labels.');
   console.assert(selfCheck.hasRequiredSections, 'Expected all required sitemap links to exist.');
   console.assert(selfCheck.hasHeroSlides, 'Expected four animated hero slides.');
@@ -1194,7 +1242,7 @@ export default function ChokolaLandingPage() {
         }
       });
 
-      setIsScrolled(scrollPosition > 24);
+      setIsScrolled(scrollPosition > 0);
       setActiveSection(currentSection);
       ticking = false;
     }
