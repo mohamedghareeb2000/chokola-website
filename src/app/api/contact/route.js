@@ -1,8 +1,19 @@
 import { NextResponse } from 'next/server';
 
 const MESSAGE_MAX_LENGTH = 500;
-const PHONE_DIGIT_LENGTH = 10;
+const TEXT_FIELD_MAX_LENGTH = 50;
+const PHONE_MIN_DIGITS = 7;
+const PHONE_MAX_DIGITS = 12;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const US_COUNTRY_CODE = '+1';
+const CONTACT_REASON_OPTIONS = [
+  'Menu question',
+  'Branch visit',
+  'Celebration or event',
+  'Collaboration',
+  'Feedback',
+  'Other',
+];
 
 function normalize(value) {
   return typeof value === 'string' ? value.trim() : '';
@@ -13,16 +24,26 @@ function validateContactPayload(payload) {
   const name = normalize(payload?.name);
   const phone = normalize(payload?.phone).replace(/\D/g, '');
   const email = normalize(payload?.email);
+  const reason = normalize(payload?.reason);
   const message = normalize(payload?.message);
 
-  if (!name) fieldErrors.name = 'Please enter your name.';
+  if (!name) {
+    fieldErrors.name = 'Please enter your name.';
+  } else if (name.length > TEXT_FIELD_MAX_LENGTH) {
+    fieldErrors.name = 'Name cannot exceed 50 characters.';
+  }
   if (!email) {
     fieldErrors.email = 'Please enter your email address.';
+  } else if (email.length > TEXT_FIELD_MAX_LENGTH) {
+    fieldErrors.email = 'Email cannot exceed 50 characters.';
   } else if (!EMAIL_PATTERN.test(email)) {
     fieldErrors.email = 'Please enter a valid email address.';
   }
-  if (!phone || phone.length !== PHONE_DIGIT_LENGTH) {
-    fieldErrors.phone = 'Please enter a valid US phone number.';
+  if (!phone || phone.length < PHONE_MIN_DIGITS || phone.length > PHONE_MAX_DIGITS) {
+    fieldErrors.phone = 'Please enter a valid contact number.';
+  }
+  if (!reason || !CONTACT_REASON_OPTIONS.includes(reason)) {
+    fieldErrors.reason = 'Please choose a reason for contact.';
   }
   if (!message) {
     fieldErrors.message = 'Please write your message.';
@@ -30,13 +51,10 @@ function validateContactPayload(payload) {
     fieldErrors.message = 'Message cannot exceed 500 characters.';
   }
 
-  if (name.length > 120) fieldErrors.name = 'Name is too long.';
-  if (email.length > 160) fieldErrors.email = 'Email address is too long.';
-
   return {
     isValid: Object.keys(fieldErrors).length === 0,
     fieldErrors,
-    data: { name, phone: `+1 ${phone}`, email, message },
+    data: { name, phone: `${US_COUNTRY_CODE} ${phone}`, email, reason, message },
   };
 }
 
@@ -72,6 +90,7 @@ export async function POST(request) {
       name: validation.data.name,
       phone: validation.data.phone,
       email: validation.data.email,
+      reason: validation.data.reason,
       messageLength: validation.data.message.length,
       receivedAt: new Date().toISOString(),
       hasEmailProviderConfigured: Boolean(process.env.CONTACT_EMAIL_API_KEY),

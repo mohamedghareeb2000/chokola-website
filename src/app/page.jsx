@@ -130,18 +130,30 @@ const FORM_INITIAL_STATE = {
   name: '',
   phone: '',
   email: '',
+  reason: '',
   message: '',
 };
 
+const TEXT_FIELD_MAX_LENGTH = 50;
 const MESSAGE_MAX_LENGTH = 500;
-const PHONE_DIGIT_LENGTH = 10;
+const PHONE_MIN_DIGITS = 7;
+const PHONE_MAX_DIGITS = 12;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const US_COUNTRY_CODE = '+1';
+const CONTACT_REASON_OPTIONS = [
+  'Menu question',
+  'Branch visit',
+  'Celebration or event',
+  'Collaboration',
+  'Feedback',
+  'Other',
+];
 
-function formatUSPhoneDigits(value) {
-  const digits = value.replace(/\D/g, '').slice(0, PHONE_DIGIT_LENGTH);
-  const parts = [digits.slice(0, 3), digits.slice(3, 6), digits.slice(6, 10)].filter(Boolean);
-
-  return parts.join(' ');
+function formatContactPhoneDigits(value) {
+  return value
+    .replace(/\D/g, '')
+    .slice(0, PHONE_MAX_DIGITS)
+    .replace(/(\d{3})(?=\d)/g, '$1 ');
 }
 
 function getContactFieldErrors(formState) {
@@ -149,16 +161,26 @@ function getContactFieldErrors(formState) {
   const name = formState.name.trim();
   const phone = formState.phone.replace(/\D/g, '');
   const email = formState.email.trim();
+  const reason = formState.reason.trim();
   const message = formState.message.trim();
 
-  if (!name) errors.name = 'Please enter your name.';
+  if (!name) {
+    errors.name = 'Please enter your name.';
+  } else if (name.length > TEXT_FIELD_MAX_LENGTH) {
+    errors.name = 'Name cannot exceed 50 characters.';
+  }
   if (!email) {
     errors.email = 'Please enter your email address.';
+  } else if (email.length > TEXT_FIELD_MAX_LENGTH) {
+    errors.email = 'Email cannot exceed 50 characters.';
   } else if (!EMAIL_PATTERN.test(email)) {
     errors.email = 'Please enter a valid email address.';
   }
-  if (!phone || phone.length !== PHONE_DIGIT_LENGTH) {
-    errors.phone = 'Please enter a valid US phone number.';
+  if (!phone || phone.length < PHONE_MIN_DIGITS) {
+    errors.phone = 'Please enter a valid contact number.';
+  }
+  if (!reason || !CONTACT_REASON_OPTIONS.includes(reason)) {
+    errors.reason = 'Please choose a reason for contact.';
   }
   if (!message) {
     errors.message = 'Please write your message.';
@@ -239,6 +261,12 @@ function Icon({ name, size = 20, className = '' }) {
       </>
     ),
     facebook: <path d="M14 8h3V4h-3c-3 0-5 2-5 5v3H6v4h3v6h4v-6h3l1-4h-4V9c0-.7.3-1 1-1z" />,
+    x: (
+      <>
+        <path d="M4 4l16 16" />
+        <path d="M20 4L4 20" />
+      </>
+    ),
     music2: (
       <>
         <circle cx="8" cy="18" r="3" />
@@ -323,7 +351,7 @@ function Navbar({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeS
               <a
                 key={link.href}
                 href={link.href}
-                className={`group relative rounded-full px-4 py-2.5 transition-all duration-300 ${
+                className={`group relative inline-flex min-h-11 items-center rounded-full px-4 py-2.5 transition-all duration-300 ${
                   isScrolled
                     ? 'text-chokola-cream hover:bg-chokola-cream/10 focus-visible:bg-chokola-cream/10'
                     : 'text-chokola-cream hover:bg-chokola-gold/20 focus-visible:bg-chokola-gold/20'
@@ -448,7 +476,7 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
               href="#menu"
               className="inline-flex min-h-14 min-w-[160px] items-center justify-center rounded-full border border-chokola-cream bg-chokola-cream px-7 text-sm font-bold leading-none text-chokola-chocolate transition-all duration-300 hover:-translate-y-0.5 hover:bg-chokola-gold focus-visible:bg-chokola-gold sm:min-w-[168px] sm:px-8"
             >
-              Explore Menu
+              View Menu
             </a>
             <a
               href="#branch"
@@ -506,7 +534,7 @@ function Hero({ mobileMenuOpen, onToggleMenu, onCloseMenu, isScrolled, activeSec
       </div>
       <a
         href="#about"
-        className="absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-chokola-cream/75 transition-colors duration-300 hover:text-chokola-cream md:inline-flex"
+        className="absolute bottom-6 left-1/2 z-20 hidden min-h-11 -translate-x-1/2 items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-chokola-cream/75 transition-colors duration-300 hover:text-chokola-cream md:inline-flex"
       >
         <motion.span
           animate={prefersReducedMotion ? undefined : { y: [0, 4, 0] }}
@@ -583,18 +611,16 @@ function MenuSection() {
   return (
     <section id="menu" className="[scroll-margin-top:-48px] bg-chokola-cream px-4 pb-24 pt-4 sm:px-6 sm:pb-28 sm:pt-6 lg:px-10 lg:pb-32 lg:pt-6" aria-labelledby="menu-title">
       <div className="mx-auto w-full max-w-[1320px]">
-        <div className="grid min-w-0 gap-5 lg:grid-cols-[0.44fr_0.56fr] lg:items-end lg:gap-12">
-          <div className="max-w-[610px]">
-            <h2 id="menu-title" className="font-sans text-4xl font-bold leading-[1.04] text-chokola-chocolate sm:text-5xl lg:text-[3.65rem]">
-              Our Menu
-            </h2>
-            <p className="mt-4 text-base font-semibold leading-none text-chokola-chocolate sm:text-lg">
+        <div className="min-w-0">
+          <h2 id="menu-title" className="text-center font-sans text-4xl font-bold leading-[1.04] text-chokola-chocolate sm:text-5xl lg:text-[3.65rem]">
+            Our Menu
+          </h2>
+
+          <div className="mt-7 max-w-[650px]">
+            <p className="text-base font-semibold leading-none text-chokola-chocolate sm:text-lg">
               Dessert Favorites
             </p>
-          </div>
-
-          <div className="max-w-[650px] lg:justify-self-end">
-            <p className="text-base leading-8 text-chokola-chocolate/76 lg:max-w-[560px]">
+            <p className="mt-3 text-base leading-8 text-chokola-chocolate/76 lg:max-w-[560px]">
               Choose a dessert family to preview a focused set of Chokola lounge favorites.
             </p>
           </div>
@@ -705,8 +731,7 @@ function AboutSection() {
 
       <div className="relative mx-auto grid max-w-[1380px] items-center gap-12 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] lg:gap-14 xl:gap-20">
         <div className="max-w-[610px]">
-          <p className="text-sm font-semibold text-chokola-mauve">Dessert lounge craft</p>
-          <h2 id="about-title" className="mt-4 max-w-[560px] font-sans text-4xl font-bold leading-[1.04] text-chokola-chocolate sm:text-5xl lg:text-[3.65rem]">
+          <h2 id="about-title" className="max-w-[560px] font-sans text-4xl font-bold leading-[1.04] text-chokola-chocolate sm:text-5xl lg:text-[3.65rem]">
             About Us
           </h2>
 
@@ -834,8 +859,8 @@ function BranchSection() {
         </div>
 
         <div className="max-w-[500px] lg:py-8">
-          <p className="font-serif text-4xl font-semibold leading-[1.04] text-chokola-chocolate sm:text-5xl lg:text-[3.5rem]">Our Branch</p>
-          <h2 id="branch-title" className="mt-3 font-serif text-3xl font-semibold leading-[1.08] text-chokola-chocolate/88 sm:text-4xl lg:text-[2.65rem]">
+          <p className="font-serif text-4xl font-semibold leading-[1.04] text-chokola-chocolate sm:text-5xl lg:text-[3.65rem]">Our Branch</p>
+          <h2 id="branch-title" className="mt-3 font-serif text-2xl font-semibold leading-[1.12] text-chokola-chocolate/88 sm:text-3xl lg:text-[2.15rem]">
             {branch.name}
           </h2>
           <p className="mt-6 max-w-md text-base leading-8 text-chokola-chocolate/78">
@@ -898,8 +923,12 @@ function ContactSection() {
     const { name, value } = event.target;
     let nextValue = value;
 
+    if (name === 'name' || name === 'email') {
+      nextValue = value.slice(0, TEXT_FIELD_MAX_LENGTH);
+    }
+
     if (name === 'phone') {
-      nextValue = value.replace(/\D/g, '').slice(0, PHONE_DIGIT_LENGTH);
+      nextValue = value.replace(/\D/g, '').slice(0, PHONE_MAX_DIGITS);
     }
 
     if (name === 'message') {
@@ -967,41 +996,52 @@ function ContactSection() {
       <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-chokola-cream to-transparent" aria-hidden="true" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-chokola-cream" aria-hidden="true" />
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-16">
-        <div className="max-w-[560px]">
-          <p className="mb-4 text-sm font-semibold text-chokola-mauve">Contact Us</p>
-          <h2 id="contact-title" className="font-serif text-4xl font-semibold leading-[1.04] text-chokola-chocolate sm:text-5xl lg:text-[3.55rem]">
+      <div className="relative mx-auto grid w-full min-w-0 max-w-7xl items-center gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-16">
+        <div className="w-full min-w-0 max-w-full sm:max-w-[560px]">
+          <h2 id="contact-title" className="font-serif text-4xl font-semibold leading-[1.04] text-chokola-chocolate sm:text-5xl lg:text-[3.65rem]">
+            Contact Us
+          </h2>
+          <p className="mt-4 font-serif text-2xl font-semibold leading-[1.12] text-chokola-chocolate/88 sm:text-3xl lg:text-[2.45rem]">
             Let&apos;s Make
             <span className="block">It Sweet.</span>
-          </h2>
+          </p>
           <p className="mt-5 max-w-xl text-base leading-8 text-chokola-chocolate/76">
             Reach us for menu questions, branch details, celebrations, collaborations, or anything sweet you would like to plan with Chokola.
           </p>
 
-          <address className="mt-9 grid gap-3 not-italic">
-            <a href="tel:+1234567890" className="group flex items-center gap-4 rounded-[16px] border border-chokola-nude/90 bg-chokola-cream/62 p-4 text-chokola-chocolate transition-colors duration-300 hover:border-chokola-gold hover:bg-chokola-cream">
+          <address className="mt-9 grid min-w-0 gap-3 not-italic">
+            <a href="tel:+1234567890" className="group flex min-w-0 items-center gap-4 rounded-[16px] border border-chokola-nude/90 bg-chokola-cream/62 p-4 text-chokola-chocolate transition-colors duration-300 hover:border-chokola-gold hover:bg-chokola-cream">
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-chokola-gold/16 text-chokola-chocolate transition-colors duration-300 group-hover:bg-chokola-gold">
                 <Icon name="phone" size={19} />
               </span>
-              <span>
+              <span className="min-w-0">
                 <span className="block text-sm font-semibold text-chokola-chocolate">Call Us</span>
                 <span className="mt-1 block text-sm text-chokola-chocolate/72">+1 234 567 890</span>
               </span>
             </a>
-            <a href="mailto:hello@chokola.com" className="group flex items-center gap-4 rounded-[16px] border border-chokola-nude/90 bg-chokola-cream/62 p-4 text-chokola-chocolate transition-colors duration-300 hover:border-chokola-gold hover:bg-chokola-cream">
+            <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="group flex min-w-0 items-center gap-4 rounded-[16px] border border-chokola-nude/90 bg-chokola-cream/62 p-4 text-chokola-chocolate transition-colors duration-300 hover:border-chokola-gold hover:bg-chokola-cream">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-chokola-gold/16 text-chokola-chocolate transition-colors duration-300 group-hover:bg-chokola-gold">
+                <Icon name="messageCircle" size={19} />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-sm font-semibold text-chokola-chocolate">WhatsApp</span>
+                <span className="mt-1 block text-sm text-chokola-chocolate/72">+1 234 567 890</span>
+              </span>
+            </a>
+            <a href="mailto:hello@chokola.com" className="group flex min-w-0 items-center gap-4 rounded-[16px] border border-chokola-nude/90 bg-chokola-cream/62 p-4 text-chokola-chocolate transition-colors duration-300 hover:border-chokola-gold hover:bg-chokola-cream">
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-chokola-gold/16 text-chokola-chocolate transition-colors duration-300 group-hover:bg-chokola-gold">
                 <Icon name="mail" size={19} />
               </span>
-              <span>
+              <span className="min-w-0">
                 <span className="block text-sm font-semibold text-chokola-chocolate">Email Us</span>
                 <span className="mt-1 block text-sm text-chokola-chocolate/72">hello@chokola.com</span>
               </span>
             </a>
-            <div className="flex items-center gap-4 rounded-[16px] border border-chokola-nude/90 bg-chokola-cream/62 p-4 text-chokola-chocolate">
+            <div className="flex min-w-0 items-center gap-4 rounded-[16px] border border-chokola-nude/90 bg-chokola-cream/62 p-4 text-chokola-chocolate">
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-chokola-gold/16 text-chokola-chocolate">
                 <Icon name="mapPin" size={19} />
               </span>
-              <span>
+              <span className="min-w-0">
                 <span className="block text-sm font-semibold text-chokola-chocolate">Location</span>
                 <span className="mt-1 block text-sm text-chokola-chocolate/72">Cairo, Egypt</span>
               </span>
@@ -1009,8 +1049,8 @@ function ContactSection() {
           </address>
         </div>
 
-        <form onSubmit={handleContactSubmit} noValidate className="w-full max-w-[620px] justify-self-end rounded-[24px] border border-chokola-gold/28 bg-chokola-cream p-5 shadow-[0_24px_70px_rgb(var(--rgb-chocolate-brown)_/_0.10)] md:p-7">
-          <div className="grid gap-5 sm:grid-cols-2">
+        <form onSubmit={handleContactSubmit} noValidate className="w-full min-w-0 max-w-full justify-self-stretch rounded-[24px] border border-chokola-gold/24 bg-chokola-cream/95 p-5 sm:max-w-[620px] lg:justify-self-end md:p-7">
+          <div className="grid min-w-0 gap-5 sm:grid-cols-2">
             <div>
               <label htmlFor="name" className="mb-2 block text-sm font-semibold text-chokola-chocolate">Name <span className="text-chokola-chocolate">*</span></label>
               <input
@@ -1019,9 +1059,10 @@ function ContactSection() {
                 value={formState.name}
                 onChange={handleChange}
                 autoComplete="name"
+                maxLength={TEXT_FIELD_MAX_LENGTH}
                 aria-invalid={Boolean(fieldErrors.name)}
                 aria-describedby={fieldErrors.name ? 'name-error' : undefined}
-                className="h-14 w-full rounded-[14px] border border-chokola-nude bg-white/55 px-5 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/46 focus:border-chokola-gold focus:ring-2 focus:ring-chokola-gold/20"
+                className="h-14 w-full rounded-[18px] border border-chokola-nude/80 bg-white/70 px-5 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/46 focus:border-chokola-gold focus:bg-white focus:ring-2 focus:ring-chokola-gold/20"
                 placeholder="Your Name"
               />
               {fieldErrors.name && <p id="name-error" className="mt-2 text-sm text-chokola-chocolate">{fieldErrors.name}</p>}
@@ -1035,35 +1076,54 @@ function ContactSection() {
                 value={formState.email}
                 onChange={handleChange}
                 autoComplete="email"
+                maxLength={TEXT_FIELD_MAX_LENGTH}
                 aria-invalid={Boolean(fieldErrors.email)}
                 aria-describedby={fieldErrors.email ? 'email-error' : undefined}
-                className="h-14 w-full rounded-[14px] border border-chokola-nude bg-white/55 px-5 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/46 focus:border-chokola-gold focus:ring-2 focus:ring-chokola-gold/20"
+                className="h-14 w-full rounded-[18px] border border-chokola-nude/80 bg-white/70 px-5 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/46 focus:border-chokola-gold focus:bg-white focus:ring-2 focus:ring-chokola-gold/20"
                 placeholder="example@email.com"
               />
               {fieldErrors.email && <p id="email-error" className="mt-2 text-sm text-chokola-chocolate">{fieldErrors.email}</p>}
             </div>
             <div className="sm:col-span-2">
               <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-chokola-chocolate">Contact Number <span className="text-chokola-chocolate">*</span></label>
-              <div className="flex h-14 overflow-hidden rounded-[14px] border border-chokola-nude bg-white/55 transition-all duration-300 focus-within:border-chokola-gold focus-within:ring-2 focus-within:ring-chokola-gold/20">
-                <span className="flex shrink-0 items-center border-r border-chokola-nude bg-chokola-nude/45 px-5 text-sm font-bold text-chokola-chocolate" aria-hidden="true">
-                  +1
+              <div className="flex min-h-14 items-center rounded-[18px] border border-chokola-nude/80 bg-white/70 px-2 transition-all duration-300 focus-within:border-chokola-gold focus-within:bg-white focus-within:ring-2 focus-within:ring-chokola-gold/20">
+                <span className="flex h-10 shrink-0 items-center rounded-full border border-chokola-nude/80 bg-chokola-cream/70 px-4 text-sm font-bold text-chokola-chocolate" aria-label="United States country code">
+                  US {US_COUNTRY_CODE}
                 </span>
                 <input
                   id="phone"
                   name="phone"
-                  value={formatUSPhoneDigits(formState.phone)}
+                  value={formatContactPhoneDigits(formState.phone)}
                   onChange={handleChange}
-                  autoComplete="tel-national"
+                  autoComplete="tel"
                   inputMode="numeric"
                   pattern="[0-9 ]*"
-                  maxLength={12}
+                  maxLength={15}
                   aria-invalid={Boolean(fieldErrors.phone)}
                   aria-describedby={fieldErrors.phone ? 'phone-error' : undefined}
-                  className="min-w-0 flex-1 bg-transparent px-5 py-4 text-left text-chokola-chocolate outline-none placeholder:text-chokola-chocolate/46"
-                  placeholder="234 567 8900"
+                  className="min-w-0 flex-1 bg-transparent px-4 py-4 text-left text-chokola-chocolate outline-none placeholder:text-chokola-chocolate/46"
+                  placeholder="Phone number"
                 />
               </div>
               {fieldErrors.phone && <p id="phone-error" className="mt-2 text-sm text-chokola-chocolate">{fieldErrors.phone}</p>}
+            </div>
+            <div className="sm:col-span-2">
+              <label htmlFor="reason" className="mb-2 block text-sm font-semibold text-chokola-chocolate">Reason for Contact <span className="text-chokola-chocolate">*</span></label>
+              <select
+                id="reason"
+                name="reason"
+                value={formState.reason}
+                onChange={handleChange}
+                aria-invalid={Boolean(fieldErrors.reason)}
+                aria-describedby={fieldErrors.reason ? 'reason-error' : undefined}
+                className="h-14 w-full rounded-[18px] border border-chokola-nude/80 bg-white/70 px-5 text-left text-chokola-chocolate outline-none transition-all duration-300 focus:border-chokola-gold focus:bg-white focus:ring-2 focus:ring-chokola-gold/20"
+              >
+                <option value="">Choose a reason</option>
+                {CONTACT_REASON_OPTIONS.map((reason) => (
+                  <option key={reason} value={reason}>{reason}</option>
+                ))}
+              </select>
+              {fieldErrors.reason && <p id="reason-error" className="mt-2 text-sm text-chokola-chocolate">{fieldErrors.reason}</p>}
             </div>
           </div>
           <div className="mt-7">
@@ -1077,7 +1137,7 @@ function ContactSection() {
                 maxLength={MESSAGE_MAX_LENGTH}
                 aria-invalid={Boolean(fieldErrors.message)}
                 aria-describedby={fieldErrors.message ? 'message-error' : undefined}
-                className="min-h-[190px] w-full resize-y rounded-[14px] border border-chokola-nude bg-white/55 px-5 py-4 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/46 focus:border-chokola-gold focus:ring-2 focus:ring-chokola-gold/20"
+                className="min-h-[190px] w-full resize-y rounded-[18px] border border-chokola-nude/80 bg-white/70 px-5 py-4 text-left text-chokola-chocolate outline-none transition-all duration-300 placeholder:text-chokola-chocolate/46 focus:border-chokola-gold focus:bg-white focus:ring-2 focus:ring-chokola-gold/20"
                 placeholder="Your Message"
               />
             </div>
@@ -1125,6 +1185,7 @@ function Footer() {
             {[
               { label: 'Instagram', href: 'https://instagram.com/chokola', icon: 'instagram' },
               { label: 'Facebook', href: 'https://facebook.com/chokola', icon: 'facebook' },
+              { label: 'Twitter', href: 'https://x.com/chokola', icon: 'x' },
               { label: 'TikTok', href: 'https://tiktok.com/@chokola', icon: 'music2' },
               { label: 'WhatsApp', href: 'https://wa.me/1234567890', icon: 'messageCircle' },
             ].map((social) => (
@@ -1134,7 +1195,7 @@ function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-chokola-cream/30 bg-chokola-cream/8 text-chokola-cream transition-colors duration-300 hover:border-chokola-gold hover:bg-chokola-gold hover:text-chokola-chocolate focus-visible:bg-chokola-gold focus-visible:text-chokola-chocolate"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-chokola-cream/30 bg-chokola-cream/8 text-chokola-cream transition-colors duration-300 hover:text-chokola-gold focus-visible:text-chokola-gold"
               >
                 <Icon name={social.icon} size={17} />
               </a>
@@ -1147,7 +1208,7 @@ function Footer() {
           <div className="mt-5 space-y-3 text-sm text-chokola-cream/82">
             {FOOTER_LINKS.map((link) => (
               <p key={link.href}>
-                <a href={link.href} className="transition-colors duration-300 hover:text-chokola-cream focus-visible:text-chokola-cream">{link.label}</a>
+                <a href={link.href} className="inline-flex min-h-11 min-w-11 items-center transition-colors duration-300 hover:text-chokola-gold focus-visible:text-chokola-gold">{link.label}</a>
               </p>
             ))}
           </div>
@@ -1156,12 +1217,12 @@ function Footer() {
         <div>
           <h2 className="text-xs font-semibold text-chokola-cream">Contact</h2>
           <address className="mt-5 space-y-4 text-sm text-chokola-cream/82 not-italic">
-            <a href="tel:+1234567890" className="flex items-center gap-3 transition-colors duration-300 hover:text-chokola-cream">
-              <Icon name="phone" className="shrink-0 text-chokola-cream" size={17} />
+            <a href="tel:+1234567890" className="group flex min-h-11 w-fit items-center gap-3 transition-colors duration-300 hover:text-chokola-gold focus-visible:text-chokola-gold">
+              <Icon name="phone" className="shrink-0 text-chokola-cream transition-colors duration-300 group-hover:text-chokola-gold group-focus-visible:text-chokola-gold" size={17} />
               +1 234 567 890
             </a>
-            <a href="mailto:hello@chokola.com" className="flex items-center gap-3 transition-colors duration-300 hover:text-chokola-cream">
-              <Icon name="mail" className="shrink-0 text-chokola-cream" size={17} />
+            <a href="mailto:hello@chokola.com" className="group flex min-h-11 w-fit items-center gap-3 transition-colors duration-300 hover:text-chokola-gold focus-visible:text-chokola-gold">
+              <Icon name="mail" className="shrink-0 text-chokola-cream transition-colors duration-300 group-hover:text-chokola-gold group-focus-visible:text-chokola-gold" size={17} />
               hello@chokola.com
             </a>
             <p className="flex items-center gap-3">
