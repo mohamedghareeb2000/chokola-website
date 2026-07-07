@@ -6,13 +6,19 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "seed:sanity": "node scripts/seedSanity.js",
     "start": "next start"
   },
   "dependencies": {
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^5.31.1",
     "framer-motion": "12.40.0",
     "next": "16.2.7",
+    "next-sanity": "^13.1.1",
     "react": "19.2.7",
-    "react-dom": "19.2.7"
+    "react-dom": "19.2.7",
+    "sanity": "^5.31.1",
+    "styled-components": "^6.4.3"
   },
   "devDependencies": {
     "autoprefixer": "10.4.22",
