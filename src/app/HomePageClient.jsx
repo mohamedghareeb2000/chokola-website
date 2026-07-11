@@ -101,6 +101,9 @@ function Icon({ name, size = 20, className = '' }) {
         <path d="M13 5l7 7-7 7" />
       </>
     ),
+    chevronDown: (
+      <path d="M6 9l6 6 6-6" />
+    ),
     mapPin: (
       <>
         <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z" />
@@ -970,20 +973,25 @@ function ContactSection({ content = DEFAULT_SITE_CONTENT.contact }) {
             </div>
             <div className="sm:col-span-2">
               <label htmlFor="reason" className="mb-2 block text-sm font-semibold text-chokola-chocolate">{formContent.reasonLabel} <span className="text-chokola-chocolate">*</span></label>
-              <select
-                id="reason"
-                name="reason"
-                value={formState.reason}
-                onChange={handleChange}
-                aria-invalid={Boolean(fieldErrors.reason)}
-                aria-describedby={fieldErrors.reason ? 'reason-error' : undefined}
-                className="h-14 w-full rounded-[18px] border border-chokola-nude/80 bg-white/70 px-5 text-left text-chokola-chocolate outline-none transition-all duration-300 focus:border-chokola-gold focus:bg-white focus:ring-2 focus:ring-chokola-gold/20"
-              >
-                <option value="">{formContent.reasonPlaceholder}</option>
-                {reasonOptions.map((reason) => (
-                  <option key={reason} value={reason}>{reason}</option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  id="reason"
+                  name="reason"
+                  value={formState.reason}
+                  onChange={handleChange}
+                  aria-invalid={Boolean(fieldErrors.reason)}
+                  aria-describedby={fieldErrors.reason ? 'reason-error' : undefined}
+                  className="h-14 w-full appearance-none rounded-[18px] border border-chokola-nude/80 bg-white/70 px-5 pr-14 text-left text-chokola-chocolate outline-none transition-all duration-300 focus:border-chokola-gold focus:bg-white focus:ring-2 focus:ring-chokola-gold/20"
+                >
+                  <option value="">{formContent.reasonPlaceholder}</option>
+                  {reasonOptions.map((reason) => (
+                    <option key={reason} value={reason}>{reason}</option>
+                  ))}
+                </select>
+                <span className="pointer-events-none absolute right-5 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center text-chokola-chocolate" aria-hidden="true">
+                  <Icon name="chevronDown" size={18} />
+                </span>
+              </div>
               {fieldErrors.reason && <p id="reason-error" className="mt-2 text-sm text-chokola-chocolate">{fieldErrors.reason}</p>}
             </div>
           </div>
