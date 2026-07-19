@@ -13,6 +13,8 @@ export const DEFAULT_SITE_CONTENT = {
     muted: '#4A2E2B',
   },
   navigation: {
+    logo: '/chokola-logo-main-cropped.png',
+    logoAlt: 'Chokola Dessert Lounge logo',
     links: [
       {label: 'Home', href: '#home'},
       {label: 'About Us', href: '#about'},
@@ -168,6 +170,8 @@ export const DEFAULT_SITE_CONTENT = {
     },
   },
   footer: {
+    logo: '/chokola-logo-main-cropped.png',
+    logoAlt: 'Chokola Dessert Lounge logo',
     description: 'Late-night cravings, weekend treats, and sweet celebrations handcrafted fresh at Chokola.',
     navigationTitle: 'Navigation',
     contactTitle: 'Contact',

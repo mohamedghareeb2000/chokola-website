@@ -1,27 +1,20 @@
-import {readFileSync} from 'node:fs'
-import {resolve} from 'node:path'
+import {createReadStream, existsSync, readFileSync} from 'node:fs'
+import {basename, resolve} from 'node:path'
 import {createClient} from 'next-sanity'
 
 import {MENU_PRODUCTS} from '../src/data/menuProducts.js'
 import {DEFAULT_SITE_CONTENT} from '../src/data/siteContent.js'
 
-const DOCUMENT_TYPE = 'menuProduct'
-const HOME_PAGE_DOCUMENT_TYPE = 'homePage'
-const HOME_PAGE_DOCUMENT_ID = 'homePage'
-const ARRAY_ITEM_TYPES = {
-  'navigation.links': 'linkItem',
-  'hero.highlights': 'heroHighlight',
-  'hero.slides': 'heroSlide',
-  'menu.categories': 'menuCategoryMeta',
-  'about.highlights': 'aboutHighlight',
-  'contact.cards': 'contactCard',
-  'footer.socialLinks': 'socialLink',
-  'footer.contactItems': 'contactCard',
-  'footer.hours': 'footerHours',
-}
+const SITE_SETTINGS_DOCUMENT_ID = 'siteSettings'
+const DEVELOPMENT_DATASET = 'development'
 
 function loadEnvFile(filePath) {
   const envPath = resolve(process.cwd(), filePath)
+
+  if (!existsSync(envPath)) {
+    return
+  }
+
   const contents = readFileSync(envPath, 'utf8')
 
   for (const line of contents.split(/\r?\n/)) {
@@ -55,67 +48,45 @@ function normalizeKeyPart(value) {
     .replace(/^-+|-+$/g, '')
 }
 
-function productKey(product) {
-  return [product.category, product.title].map(normalizeKeyPart).join('__')
+function toArrayKey(value, fallback) {
+  return normalizeKeyPart(value || fallback)
 }
 
-function legacyProductKey(product) {
-  return `${product.category}::${product.title}`.toLowerCase()
+function publicPath(filePath) {
+  return resolve(process.cwd(), 'public', filePath.replace(/^\//, ''))
 }
 
-function toSanityFields(product) {
-  return {
-    sourceKey: productKey(product),
-    title: product.title,
-    description: product.description,
-    price: product.price,
-    category: product.category,
-    featured: Boolean(product.featured),
-    order: product.order,
-  }
+function priceNumber(value) {
+  const parsed = Number.parseFloat(String(value || '').replace(/[^0-9.]/g, ''))
+  return Number.isFinite(parsed) ? parsed : 0
 }
 
-function toArrayKey(item, index) {
-  if (item && typeof item === 'object') {
-    return normalizeKeyPart(item.id || item.label || item.name || item.term || item.value || index)
-  }
-
-  return normalizeKeyPart(item || index)
+function productsForCategory(categoryName) {
+  return MENU_PRODUCTS
+    .filter((product) => product.category === categoryName)
+    .sort((a, b) => (a.order || 0) - (b.order || 0))
+    .map((product, index) => ({
+      _key: toArrayKey(product.title, index),
+      _type: 'menuCategoryProduct',
+      productName: product.title,
+      shortDescription: product.description,
+      price: priceNumber(product.price),
+      order: product.order || index + 1,
+      active: true,
+    }))
 }
 
-function prepareSanityValue(value, path = []) {
-  if (Array.isArray(value)) {
-    const itemType = ARRAY_ITEM_TYPES[path.join('.')]
-
-    return value.map((item, index) => {
-      const preparedItem = prepareSanityValue(item, path)
-
-      if (!itemType || !preparedItem || typeof preparedItem !== 'object') {
-        return preparedItem
-      }
-
-      return {
-        _key: toArrayKey(item, index),
-        _type: itemType,
-        ...preparedItem,
-      }
-    })
-  }
-
-  if (value && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.entries(value).map(([key, itemValue]) => [key, prepareSanityValue(itemValue, [...path, key])]),
-    )
-  }
-
-  return value
+function platformForSocial(label) {
+  if (label === 'Twitter') return 'X'
+  return label
 }
 
 loadEnvFile('.env.local')
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || DEVELOPMENT_DATASET
 const token = process.env.SANITY_API_WRITE_TOKEN
+const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2026-07-06'
 
 if (!projectId || !dataset || !token) {
   throw new Error(
@@ -123,78 +94,239 @@ if (!projectId || !dataset || !token) {
   )
 }
 
+if (dataset !== DEVELOPMENT_DATASET) {
+  throw new Error(`Refusing to seed "${dataset}". Set NEXT_PUBLIC_SANITY_DATASET=${DEVELOPMENT_DATASET}.`)
+}
+
 const client = createClient({
   projectId,
   dataset,
   token,
-  apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2026-07-06',
+  apiVersion,
   useCdn: false,
 })
 
-async function seedMenuProducts() {
-  const existingProducts = await client.fetch(/* groq */ `
-    *[_type == $type] {
-      _id,
-      sourceKey,
-      title,
-      category
-    }
-  `, {type: DOCUMENT_TYPE})
+const uploadedImages = new Map()
 
-  const existingBySourceKey = new Map()
-  const existingByLegacyKey = new Map()
+async function imageField(filePath) {
+  if (!filePath) return undefined
 
-  for (const existingProduct of existingProducts) {
-    if (existingProduct.sourceKey) {
-      existingBySourceKey.set(existingProduct.sourceKey, existingProduct)
-    }
+  const localPath = publicPath(filePath)
 
-    existingByLegacyKey.set(legacyProductKey(existingProduct), existingProduct)
+  if (!existsSync(localPath)) {
+    return undefined
   }
 
-  let transaction = client.transaction()
+  if (uploadedImages.has(localPath)) {
+    return uploadedImages.get(localPath)
+  }
+
+  const filename = basename(localPath)
+  const existingAsset = await client.fetch(
+    /* groq */ `*[_type == "sanity.imageAsset" && originalFilename == $filename][0]{_id}`,
+    {filename},
+  )
+  const asset =
+    existingAsset ||
+    (await client.assets.upload('image', createReadStream(localPath), {
+      filename,
+      source: {
+        name: 'local-seed',
+        id: `chokola-${filename}`,
+      },
+    }))
+  const field = {
+    _type: 'image',
+    asset: {
+      _type: 'reference',
+      _ref: asset._id,
+    },
+  }
+
+  uploadedImages.set(localPath, field)
+  return field
+}
+
+async function siteSettingsDocument() {
+  const {navigation, hero, about, menu, branch, contact, footer} = DEFAULT_SITE_CONTENT
+  const phoneCard = contact.cards.find((card) => card.icon === 'phone') || contact.cards[0]
+  const whatsappCard = contact.cards.find((card) => card.icon === 'messageCircle') || contact.cards[1]
+  const locationCard = contact.cards.find((card) => card.icon === 'mapPin') || contact.cards[2]
+  const footerPhone = footer.contactItems.find((item) => item.icon === 'phone') || footer.contactItems[0]
+  const footerAddress = footer.contactItems.find((item) => item.icon === 'mapPin') || footer.contactItems[1]
+
+  return {
+    _id: SITE_SETTINGS_DOCUMENT_ID,
+    _type: 'siteSettings',
+    logo: await imageField(navigation.logo),
+    logoAlt: navigation.logoAlt,
+    navigationItems: navigation.links.map((item, index) => ({
+      _key: toArrayKey(item.label, index),
+      _type: 'navigationItem',
+      label: item.label,
+      link: item.href,
+      order: index + 1,
+      active: true,
+    })),
+    contactButtonLabel: navigation.contactCta.label,
+    contactButtonLink: navigation.contactCta.href,
+    subtitle: hero.eyebrow,
+    titleLineOne: hero.titleLine1,
+    titleLineTwo: hero.titleLine2,
+    description: hero.description,
+    heroImage: await imageField(hero.image),
+    heroImageAlt: hero.imageAlt,
+    primaryCta: {
+      _type: 'ctaLink',
+      label: hero.primaryCta.label,
+      link: hero.primaryCta.href,
+    },
+    secondaryCta: {
+      _type: 'ctaLink',
+      label: hero.secondaryCta.label,
+      link: hero.secondaryCta.href,
+    },
+    heroStatistics: hero.highlights.map((item, index) => ({
+      _key: toArrayKey(item.label, index),
+      _type: 'heroStatistic',
+      label: item.label,
+      value: item.value,
+      type: item.icon === 'star' ? 'rating' : item.icon === 'none' ? 'badge' : 'number',
+      order: index + 1,
+      active: true,
+    })),
+    aboutTitle: about.title,
+    aboutDescription: about.paragraphs.join('\n\n'),
+    largeImage: await imageField(about.mainImage),
+    largeImageAlt: about.mainImageAlt,
+    smallImage: await imageField(about.secondaryImage),
+    smallImageAlt: about.secondaryImageAlt,
+    smallImageCaption: about.secondaryImageCaption,
+    aboutFeatures: about.highlights.map((item, index) => ({
+      _key: toArrayKey(item.term, index),
+      _type: 'aboutFeature',
+      title: item.term,
+      description: item.detail,
+      order: index + 1,
+      active: true,
+    })),
+    menuTitle: menu.title,
+    menuSubtitle: menu.eyebrow,
+    menuDescription: menu.description,
+    branchImage: await imageField(branch.image),
+    branchImageAlt: branch.imageAlt,
+    branchTitle: branch.eyebrow,
+    branchSubtitle: branch.name,
+    branchDescription: branch.description,
+    statusText: branch.openLabel,
+    address: branch.address,
+    locationDescription: branch.hoursLabel,
+    phoneDisplay: branch.phone,
+    phoneLink: phoneCard?.href || `tel:${branch.phone.replace(/\D/g, '')}`,
+    directionsButtonLabel: branch.directionsLabel,
+    directionsUrl: branch.mapsUrl,
+    branchFeatures: branch.amenities.map((label, index) => ({
+      _key: toArrayKey(label, index),
+      _type: 'branchFeature',
+      label,
+      order: index + 1,
+      active: true,
+    })),
+    contactTitle: contact.title,
+    subtitleLineOne: contact.statementLine1,
+    subtitleLineTwo: contact.statementLine2,
+    contactDescription: contact.description,
+    contactPhoneDisplay: phoneCard?.value || branch.phone,
+    contactPhoneLink: phoneCard?.href || `tel:${branch.phone.replace(/\D/g, '')}`,
+    whatsappDisplay: whatsappCard?.value || branch.phone,
+    whatsappLink: whatsappCard?.href || `https://wa.me/${branch.phone.replace(/\D/g, '')}`,
+    contactAddress: locationCard?.value || branch.address,
+    contactReasons: contact.form.reasonOptions.map((label, index) => ({
+      _key: toArrayKey(label, index),
+      _type: 'contactReason',
+      label,
+      order: index + 1,
+      active: true,
+    })),
+    footerLogo: await imageField(footer.logo),
+    footerLogoAlt: footer.logoAlt,
+    useNavigationLogo: true,
+    footerDescription: footer.description,
+    footerPhoneDisplay: footerPhone?.value || branch.phone,
+    footerPhoneLink: footerPhone?.href || `tel:${branch.phone.replace(/\D/g, '')}`,
+    footerAddress: footerAddress?.value || branch.address,
+    copyrightText: footer.copyright,
+    socialLinks: footer.socialLinks.map((item, index) => ({
+      _key: toArrayKey(item.label, index),
+      _type: 'socialLink',
+      platform: platformForSocial(item.label),
+      url: item.href,
+      order: index + 1,
+      active: true,
+    })),
+    footerInformationBlocks: footer.hours.map((item, index) => ({
+      _key: toArrayKey(item.label, index),
+      _type: 'footerInformationBlock',
+      title: item.label,
+      description: item.value,
+      order: index + 1,
+      active: true,
+    })),
+  }
+}
+
+async function seedSiteSettings() {
+  await client.createOrReplace(await siteSettingsDocument())
+  console.log('Seeded development Site Settings singleton.')
+}
+
+async function seedMenuCategories() {
+  const existingCategories = await client.fetch(/* groq */ `
+    *[_type == "menuCategory"] {
+      _id,
+      "slug": slug.current
+    }
+  `)
+  const existingBySlug = new Map(existingCategories.map((category) => [category.slug, category]))
+
   let createdCount = 0
   let updatedCount = 0
 
-  for (const product of MENU_PRODUCTS) {
-    const document = toSanityFields(product)
-    const existingProduct =
-      existingBySourceKey.get(document.sourceKey) || existingByLegacyKey.get(legacyProductKey(product))
+  for (const [index, category] of DEFAULT_SITE_CONTENT.menu.categories.entries()) {
+    const document = {
+      _type: 'menuCategory',
+      categoryName: category.name,
+      slug: {
+        _type: 'slug',
+        current: category.id,
+      },
+      categoryImage: await imageField(category.image),
+      categoryImageAlt: category.alt,
+      imageDescription: category.description,
+      order: index + 1,
+      active: true,
+      products: productsForCategory(category.name),
+    }
+    const existing = existingBySlug.get(category.id)
 
-    if (existingProduct?._id) {
-      transaction = transaction.patch(existingProduct._id, (patch) => patch.set(document))
+    if (existing?._id) {
+      await client.patch(existing._id).set(document).commit()
       updatedCount += 1
     } else {
-      transaction = transaction.create({
-        _type: DOCUMENT_TYPE,
-        ...document,
-      })
+      await client.create(document)
       createdCount += 1
     }
   }
 
-  await transaction.commit()
-
-  console.log(`Seeded Sanity menu products. Created: ${createdCount}. Updated: ${updatedCount}.`)
-}
-
-async function seedHomePageContent() {
-  await client.createOrReplace({
-    _id: HOME_PAGE_DOCUMENT_ID,
-    _type: HOME_PAGE_DOCUMENT_TYPE,
-    title: 'Homepage Content',
-    ...prepareSanityValue(DEFAULT_SITE_CONTENT),
-  })
-
-  console.log('Seeded Sanity homepage content.')
+  console.log(`Seeded development Menu Categories. Created: ${createdCount}. Updated: ${updatedCount}.`)
 }
 
 async function seedSanityContent() {
-  await seedHomePageContent()
-  await seedMenuProducts()
+  await seedSiteSettings()
+  await seedMenuCategories()
 }
 
 seedSanityContent().catch((error) => {
-  console.error(`Failed to seed Sanity content: ${error.message}`)
+  console.error(`Failed to seed Sanity development content: ${error.message}`)
   process.exit(1)
 })

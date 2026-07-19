@@ -1,27 +1,28 @@
+import {menuCategory, menuCategoryProduct} from './menuCategory.jsx'
 import {
-  aboutHighlight,
-  contactCard,
-  footerHours,
-  heroHighlight,
-  heroSlide,
-  homePage,
-  linkItem,
-  menuCategoryMeta,
+  aboutFeature,
+  branchFeature,
+  contactReason,
+  ctaLink,
+  footerInformationBlock,
+  heroStatistic,
+  navigationItem,
+  siteSettings,
   socialLink,
-} from './homePage'
-import {menuProduct} from './menuProduct'
+} from './siteSettings.jsx'
 
 export const schema = {
   types: [
-    homePage,
-    linkItem,
-    heroHighlight,
-    heroSlide,
-    menuCategoryMeta,
-    aboutHighlight,
-    contactCard,
+    siteSettings,
+    navigationItem,
+    ctaLink,
+    heroStatistic,
+    aboutFeature,
+    branchFeature,
+    contactReason,
     socialLink,
-    footerHours,
-    menuProduct,
+    footerInformationBlock,
+    menuCategory,
+    menuCategoryProduct,
   ],
 }

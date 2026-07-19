@@ -1,0 +1,767 @@
+import {Icon} from '@sanity/icons'
+import {defineArrayMember, defineField, defineType} from 'sanity'
+
+const SettingsIcon = (props) => <Icon symbol="cog" {...props} />
+
+export const navigationItem = defineType({
+  name: 'navigationItem',
+  title: 'Navigation Item',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'label',
+      title: 'Label',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'link',
+      title: 'Link',
+      type: 'string',
+      description: 'Use a section link such as #menu or a full URL.',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'order',
+      title: 'Order',
+      type: 'number',
+      validation: (rule) => rule.required().integer().min(0),
+    }),
+    defineField({
+      name: 'active',
+      title: 'Active',
+      type: 'boolean',
+      initialValue: true,
+      validation: (rule) => rule.required(),
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'label',
+      subtitle: 'link',
+    },
+  },
+})
+
+export const ctaLink = defineType({
+  name: 'ctaLink',
+  title: 'CTA Link',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'label',
+      title: 'Label',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'link',
+      title: 'Link',
+      type: 'string',
+      description: 'Use a section link such as #contact or a full URL.',
+      validation: (rule) => rule.required(),
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'label',
+      subtitle: 'link',
+    },
+  },
+})
+
+export const heroStatistic = defineType({
+  name: 'heroStatistic',
+  title: 'Hero Statistic',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'label',
+      title: 'Label',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'value',
+      title: 'Value',
+      type: 'string',
+      description: 'Displayed exactly as entered, for example 30+, 4.9, or Fresh.',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'type',
+      title: 'Type',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Number', value: 'number'},
+          {title: 'Rating', value: 'rating'},
+          {title: 'Badge', value: 'badge'},
+        ],
+        layout: 'radio',
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'order',
+      title: 'Order',
+      type: 'number',
+      validation: (rule) => rule.required().integer().min(0),
+    }),
+    defineField({
+      name: 'active',
+      title: 'Active',
+      type: 'boolean',
+      initialValue: true,
+      validation: (rule) => rule.required(),
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'label',
+      subtitle: 'value',
+    },
+  },
+})
+
+export const aboutFeature = defineType({
+  name: 'aboutFeature',
+  title: 'About Feature',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      rows: 3,
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'order',
+      title: 'Order',
+      type: 'number',
+      validation: (rule) => rule.required().integer().min(0),
+    }),
+    defineField({
+      name: 'active',
+      title: 'Active',
+      type: 'boolean',
+      initialValue: true,
+      validation: (rule) => rule.required(),
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'description',
+    },
+  },
+})
+
+export const branchFeature = defineType({
+  name: 'branchFeature',
+  title: 'Branch Feature',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'label',
+      title: 'Label',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'order',
+      title: 'Order',
+      type: 'number',
+      validation: (rule) => rule.required().integer().min(0),
+    }),
+    defineField({
+      name: 'active',
+      title: 'Active',
+      type: 'boolean',
+      initialValue: true,
+      validation: (rule) => rule.required(),
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'label',
+    },
+  },
+})
+
+export const contactReason = defineType({
+  name: 'contactReason',
+  title: 'Contact Reason',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'label',
+      title: 'Label',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'order',
+      title: 'Order',
+      type: 'number',
+      validation: (rule) => rule.required().integer().min(0),
+    }),
+    defineField({
+      name: 'active',
+      title: 'Active',
+      type: 'boolean',
+      initialValue: true,
+      validation: (rule) => rule.required(),
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'label',
+    },
+  },
+})
+
+export const socialLink = defineType({
+  name: 'socialLink',
+  title: 'Social Link',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'platform',
+      title: 'Platform',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Instagram', value: 'Instagram'},
+          {title: 'Facebook', value: 'Facebook'},
+          {title: 'X', value: 'X'},
+          {title: 'TikTok', value: 'TikTok'},
+          {title: 'WhatsApp', value: 'WhatsApp'},
+        ],
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'url',
+      title: 'URL',
+      type: 'url',
+      validation: (rule) => rule.required().uri({scheme: ['http', 'https']}),
+    }),
+    defineField({
+      name: 'order',
+      title: 'Order',
+      type: 'number',
+      validation: (rule) => rule.required().integer().min(0),
+    }),
+    defineField({
+      name: 'active',
+      title: 'Active',
+      type: 'boolean',
+      initialValue: true,
+      validation: (rule) => rule.required(),
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'platform',
+      subtitle: 'url',
+    },
+  },
+})
+
+export const footerInformationBlock = defineType({
+  name: 'footerInformationBlock',
+  title: 'Footer Information Block',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      rows: 3,
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'order',
+      title: 'Order',
+      type: 'number',
+      validation: (rule) => rule.required().integer().min(0),
+    }),
+    defineField({
+      name: 'active',
+      title: 'Active',
+      type: 'boolean',
+      initialValue: true,
+      validation: (rule) => rule.required(),
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'description',
+    },
+  },
+})
+
+export const siteSettings = defineType({
+  name: 'siteSettings',
+  title: 'Site Settings',
+  type: 'document',
+  icon: SettingsIcon,
+  groups: [
+    {name: 'navigation', title: 'Navigation'},
+    {name: 'hero', title: 'Hero'},
+    {name: 'about', title: 'About'},
+    {name: 'menu', title: 'Menu Section'},
+    {name: 'branch', title: 'Branch'},
+    {name: 'contact', title: 'Contact'},
+    {name: 'footer', title: 'Footer'},
+  ],
+  fields: [
+    defineField({
+      name: 'logo',
+      title: 'Logo',
+      type: 'image',
+      group: 'navigation',
+      options: {hotspot: true},
+      description: 'Primary logo used in the navigation.',
+    }),
+    defineField({
+      name: 'logoAlt',
+      title: 'Logo Alt Text',
+      type: 'string',
+      group: 'navigation',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'navigationItems',
+      title: 'Navigation Items',
+      type: 'array',
+      group: 'navigation',
+      of: [defineArrayMember({type: 'navigationItem'})],
+      validation: (rule) => rule.required().min(1).unique(),
+    }),
+    defineField({
+      name: 'contactButtonLabel',
+      title: 'Contact Button Label',
+      type: 'string',
+      group: 'navigation',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'contactButtonLink',
+      title: 'Contact Button Link',
+      type: 'string',
+      group: 'navigation',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'subtitle',
+      title: 'Subtitle',
+      type: 'string',
+      group: 'hero',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'titleLineOne',
+      title: 'Title Line One',
+      type: 'string',
+      group: 'hero',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'titleLineTwo',
+      title: 'Title Line Two',
+      type: 'string',
+      group: 'hero',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      rows: 4,
+      group: 'hero',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'heroImage',
+      title: 'Hero Image',
+      type: 'image',
+      group: 'hero',
+      options: {hotspot: true},
+    }),
+    defineField({
+      name: 'heroImageAlt',
+      title: 'Hero Image Alt Text',
+      type: 'string',
+      group: 'hero',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'primaryCta',
+      title: 'Primary CTA',
+      type: 'ctaLink',
+      group: 'hero',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'secondaryCta',
+      title: 'Secondary CTA',
+      type: 'ctaLink',
+      group: 'hero',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'heroStatistics',
+      title: 'Hero Statistics',
+      type: 'array',
+      group: 'hero',
+      of: [defineArrayMember({type: 'heroStatistic'})],
+      validation: (rule) => rule.max(3).unique(),
+    }),
+    defineField({
+      name: 'aboutTitle',
+      title: 'Title',
+      type: 'string',
+      group: 'about',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'aboutDescription',
+      title: 'Description',
+      type: 'text',
+      rows: 6,
+      group: 'about',
+      description: 'Separate paragraphs with a blank line.',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'largeImage',
+      title: 'Large Image',
+      type: 'image',
+      group: 'about',
+      options: {hotspot: true},
+    }),
+    defineField({
+      name: 'largeImageAlt',
+      title: 'Large Image Alt Text',
+      type: 'string',
+      group: 'about',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'smallImage',
+      title: 'Small Image',
+      type: 'image',
+      group: 'about',
+      options: {hotspot: true},
+    }),
+    defineField({
+      name: 'smallImageAlt',
+      title: 'Small Image Alt Text',
+      type: 'string',
+      group: 'about',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'smallImageCaption',
+      title: 'Small Image Caption',
+      type: 'text',
+      rows: 3,
+      group: 'about',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'aboutFeatures',
+      title: 'About Features',
+      type: 'array',
+      group: 'about',
+      of: [defineArrayMember({type: 'aboutFeature'})],
+      validation: (rule) => rule.max(3).unique(),
+    }),
+    defineField({
+      name: 'menuTitle',
+      title: 'Title',
+      type: 'string',
+      group: 'menu',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'menuSubtitle',
+      title: 'Subtitle',
+      type: 'string',
+      group: 'menu',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'menuDescription',
+      title: 'Description',
+      type: 'text',
+      rows: 4,
+      group: 'menu',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'branchImage',
+      title: 'Image',
+      type: 'image',
+      group: 'branch',
+      options: {hotspot: true},
+    }),
+    defineField({
+      name: 'branchImageAlt',
+      title: 'Image Alt Text',
+      type: 'string',
+      group: 'branch',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'branchTitle',
+      title: 'Title',
+      type: 'string',
+      group: 'branch',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'branchSubtitle',
+      title: 'Subtitle',
+      type: 'string',
+      group: 'branch',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'branchDescription',
+      title: 'Description',
+      type: 'text',
+      rows: 4,
+      group: 'branch',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'statusText',
+      title: 'Status Text',
+      type: 'string',
+      group: 'branch',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'address',
+      title: 'Address',
+      type: 'string',
+      group: 'branch',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'locationDescription',
+      title: 'Location Description',
+      type: 'string',
+      group: 'branch',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'phoneDisplay',
+      title: 'Phone Display',
+      type: 'string',
+      group: 'branch',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'phoneLink',
+      title: 'Phone Link',
+      type: 'string',
+      group: 'branch',
+      description: 'Use a tel: link.',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'directionsButtonLabel',
+      title: 'Directions Button Label',
+      type: 'string',
+      group: 'branch',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'directionsUrl',
+      title: 'Directions URL',
+      type: 'url',
+      group: 'branch',
+      validation: (rule) => rule.required().uri({scheme: ['http', 'https']}),
+    }),
+    defineField({
+      name: 'branchFeatures',
+      title: 'Branch Features',
+      type: 'array',
+      group: 'branch',
+      of: [defineArrayMember({type: 'branchFeature'})],
+      validation: (rule) => rule.max(4).unique(),
+    }),
+    defineField({
+      name: 'contactTitle',
+      title: 'Title',
+      type: 'string',
+      group: 'contact',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'subtitleLineOne',
+      title: 'Subtitle Line One',
+      type: 'string',
+      group: 'contact',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'subtitleLineTwo',
+      title: 'Subtitle Line Two',
+      type: 'string',
+      group: 'contact',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'contactDescription',
+      title: 'Description',
+      type: 'text',
+      rows: 4,
+      group: 'contact',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'contactPhoneDisplay',
+      title: 'Phone Display',
+      type: 'string',
+      group: 'contact',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'contactPhoneLink',
+      title: 'Phone Link',
+      type: 'string',
+      group: 'contact',
+      description: 'Use a tel: link.',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'whatsappDisplay',
+      title: 'WhatsApp Display',
+      type: 'string',
+      group: 'contact',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'whatsappLink',
+      title: 'WhatsApp Link',
+      type: 'url',
+      group: 'contact',
+      validation: (rule) => rule.required().uri({scheme: ['http', 'https']}),
+    }),
+    defineField({
+      name: 'contactAddress',
+      title: 'Address',
+      type: 'string',
+      group: 'contact',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'contactReasons',
+      title: 'Contact Reasons',
+      type: 'array',
+      group: 'contact',
+      of: [defineArrayMember({type: 'contactReason'})],
+      validation: (rule) => rule.unique(),
+    }),
+    defineField({
+      name: 'footerLogo',
+      title: 'Logo',
+      type: 'image',
+      group: 'footer',
+      options: {hotspot: true},
+    }),
+    defineField({
+      name: 'footerLogoAlt',
+      title: 'Logo Alt Text',
+      type: 'string',
+      group: 'footer',
+    }),
+    defineField({
+      name: 'useNavigationLogo',
+      title: 'Use Navigation Logo',
+      type: 'boolean',
+      group: 'footer',
+      initialValue: true,
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'footerDescription',
+      title: 'Description',
+      type: 'text',
+      rows: 4,
+      group: 'footer',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'footerPhoneDisplay',
+      title: 'Phone Display',
+      type: 'string',
+      group: 'footer',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'footerPhoneLink',
+      title: 'Phone Link',
+      type: 'string',
+      group: 'footer',
+      description: 'Use a tel: link.',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'footerAddress',
+      title: 'Address',
+      type: 'string',
+      group: 'footer',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'copyrightText',
+      title: 'Copyright Text',
+      type: 'string',
+      group: 'footer',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'socialLinks',
+      title: 'Social Links',
+      type: 'array',
+      group: 'footer',
+      of: [defineArrayMember({type: 'socialLink'})],
+      validation: (rule) => rule.max(5).unique(),
+    }),
+    defineField({
+      name: 'footerInformationBlocks',
+      title: 'Footer Information Blocks',
+      type: 'array',
+      group: 'footer',
+      of: [defineArrayMember({type: 'footerInformationBlock'})],
+      validation: (rule) => rule.max(2).unique(),
+    }),
+  ],
+  preview: {
+    prepare() {
+      return {
+        title: 'Site Settings',
+      }
+    },
+  },
+})

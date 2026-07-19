@@ -179,12 +179,15 @@ function Icon({ name, size = 20, className = '' }) {
   return <svg {...common}>{paths[name] || paths.sparkles}</svg>;
 }
 
-const Logo = memo(function Logo() {
+const Logo = memo(function Logo({
+  src = DEFAULT_SITE_CONTENT.navigation.logo,
+  alt = DEFAULT_SITE_CONTENT.navigation.logoAlt,
+}) {
   return (
     <div className="relative flex aspect-[982/435] w-[108px] shrink-0 items-center bg-transparent sm:w-[125px] lg:w-[145px]">
       <Image
-        src="/chokola-logo-main-cropped.png"
-        alt="Chokola Dessert Lounge logo"
+        src={src}
+        alt={alt}
         fill
         priority
         sizes="(max-width: 640px) 108px, (max-width: 1024px) 125px, 145px"
@@ -202,6 +205,8 @@ function Navbar({
   activeSection,
   navLinks = DEFAULT_SITE_CONTENT.navigation.links,
   navCta = DEFAULT_SITE_CONTENT.navigation.contactCta,
+  navLogo = DEFAULT_SITE_CONTENT.navigation.logo,
+  navLogoAlt = DEFAULT_SITE_CONTENT.navigation.logoAlt,
 }) {
   return (
     <motion.nav
@@ -224,7 +229,7 @@ function Navbar({
           aria-label="Go to Chokola homepage"
           className="relative z-10 rounded-[18px] px-2 py-1"
         >
-          <Logo />
+          <Logo src={navLogo} alt={navLogoAlt} />
         </a>
 
         <div className="relative z-10 hidden flex-1 items-center justify-center gap-2 text-[15.5px] font-semibold text-chokola-cream lg:flex">
@@ -340,6 +345,8 @@ function Hero({
         activeSection={activeSection}
         navLinks={navigation.links}
         navCta={navigation.contactCta}
+        navLogo={navigation.logo}
+        navLogoAlt={navigation.logoAlt}
       />
       <div className="hero-atmosphere pointer-events-none absolute inset-0" aria-hidden="true" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-chokola-cream sm:h-28" aria-hidden="true" />
@@ -1039,8 +1046,8 @@ function Footer({ content = DEFAULT_SITE_CONTENT.footer, footerLinks = DEFAULT_S
         <div>
           <div className="relative h-20 w-[210px]">
             <Image
-              src="/chokola-logo-main-cropped.png"
-              alt="Chokola Dessert Lounge logo"
+              src={content.logo}
+              alt={content.logoAlt}
               fill
               sizes="210px"
               className="object-contain object-center"
@@ -1069,7 +1076,7 @@ function Footer({ content = DEFAULT_SITE_CONTENT.footer, footerLinks = DEFAULT_S
         <div>
           <h2 className="text-xs font-semibold text-chokola-cream">{content.navigationTitle}</h2>
           <div className="mt-4 space-y-1.5 text-sm text-chokola-cream/82">
-            {[...footerLinks, {label: 'Contact', href: '#contact'}].map((link) => (
+            {footerLinks.map((link) => (
               <p key={link.href}>
                 <a href={link.href} className="inline-flex min-h-8 min-w-11 items-center transition-colors duration-300 hover:text-chokola-gold focus-visible:text-chokola-gold">{link.label}</a>
               </p>
