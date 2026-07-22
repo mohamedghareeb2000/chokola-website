@@ -4,7 +4,7 @@ import {useEffect, useMemo, useState} from 'react'
 import {Badge, Box, Card, Container, Flex, Grid, Heading, Spinner, Stack, Text} from '@sanity/ui'
 import {useClient} from 'sanity'
 
-import {apiVersion} from '../env'
+import {apiVersion, dataset, projectId} from '../env'
 
 const DASHBOARD_QUERY = /* groq */ `
 {
@@ -119,7 +119,11 @@ function CategoryList({categories}) {
 }
 
 export function DashboardTool() {
-  const client = useClient({apiVersion})
+  const client = useClient({
+    apiVersion,
+    projectId,
+    dataset,
+  })
   const [state, setState] = useState({data: null, error: null, loading: true})
 
   useEffect(() => {
