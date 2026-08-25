@@ -10,10 +10,10 @@ import {structureTool, usePaneRouter} from 'sanity/structure'
 import {createElement, useEffect, useMemo, useRef} from 'react'
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
-import {DashboardTool} from './src/sanity/dashboard/DashboardTool'
-import {apiVersion, dataset, projectId} from './src/sanity/env'
-import {schema} from './src/sanity/schemaTypes'
-import {structure} from './src/sanity/structure'
+import {DashboardTool} from './src/sanity/dashboard/DashboardTool.jsx'
+import {apiVersion, dataset, projectId} from './src/sanity/env.js'
+import {schema} from './src/sanity/schemaTypes/index.js'
+import {structure} from './src/sanity/structure.js'
 
 const SITE_SETTINGS_GROUP_BY_VIEW_ID = {
   navigation: 'Navigation',

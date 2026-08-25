@@ -83,15 +83,11 @@ function platformForSocial(label) {
 
 loadEnvFile('.env.local')
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || DEVELOPMENT_DATASET
+const {apiVersion, dataset, projectId} = await import('../src/sanity/env.js')
 const token = process.env.SANITY_API_WRITE_TOKEN
-const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2026-07-06'
 
-if (!projectId || !dataset || !token) {
-  throw new Error(
-    'Missing NEXT_PUBLIC_SANITY_PROJECT_ID, NEXT_PUBLIC_SANITY_DATASET, or SANITY_API_WRITE_TOKEN in .env.local',
-  )
+if (!token) {
+  throw new Error('Missing SANITY_API_WRITE_TOKEN in .env.local')
 }
 
 if (dataset !== DEVELOPMENT_DATASET) {

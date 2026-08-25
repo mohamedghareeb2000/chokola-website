@@ -1,5 +1,5 @@
-import {DEFAULT_SITE_CONTENT} from '../../data/siteContent'
-import {urlFor} from './image'
+import {DEFAULT_SITE_CONTENT} from '../../data/siteContent.js'
+import {urlFor} from './image.js'
 
 const STAT_ICON_BY_TYPE = {
   number: 'cupcake',
